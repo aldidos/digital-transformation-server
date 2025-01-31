@@ -1,16 +1,15 @@
 import sys
 sys.path.append('./')
-from flask import Flask, request, session
+from flask import Flask, request, session, abort
 from dtServer.data.conn import make_database_connection, db_proxy
 from dtServer.api.user import signup_user, singin_user, post_user_survey, get_user_survey, get_user
 from dtServer.api.center import post_center, get_center, get_center_by_id, post_center_member, get_center_members, post_center_staff, get_center_staffs, \
                                    post_center_equipment, get_center_equipment, get_center_equipments, post_equipment, get_equipments, get_center_authentication, \
                                    get_center_member_by_id, put_center_member
-from dtServer.api.workout import get_exercise_libraries, post_exercise_library, post_user_weight_metric, get_user_weight_metric, patch_user_weight_metric, \
+from dtServer.api.workout import get_exercise_libraries, post_exercise_library, post_user_exercise_weight, get_user_exercise_weight, patch_user_exercise_weight, \
                                    post_user_workout_session, get_user_workout_sessions, patch_user_workout_session, get_user_workout_sessions_period, post_workout, \
                                    get_workouts, put_workout, get_workout, post_workout_metric, get_workout_metrics, patch_workout, post_workout_metrics
 import datetime
-import json
 from dtServer.api.certification import get_qr_certification, get_nfc_tag
 
 app = Flask(__name__)
@@ -33,16 +32,12 @@ def close_db_conn(exc) :
           db_conn.close()
 
 @app.errorhandler(400)
-def request_error_bad_request() : 
-     pass
+def request_error_bad_request(e) : 
+     return "Bad request", 400
 
-@app.errorhandler(404) # 
-def request_error_not_found() : 
-     pass
-
-@app.route("/", methods=['GET'])
-def hello_world() : 
-     return ("hello world", 200)
+@app.errorhandler(404)
+def request_error_not_found(e) : 
+     return "Resource not found", 404
 
 @app.route("/signup", methods = ['POST'])
 def signup() :
@@ -53,7 +48,7 @@ def signup() :
 
            user = signup_user(user_account, user_info)
            if user is None : 
-                ("", 400) 
+               return abort(400) 
            return (user, 200)
 
 @app.route("/signin", methods=['GET']) 
@@ -65,12 +60,11 @@ def signin() :
      user_account = singin_user(login_id)
 
      if user_account is None : 
-        return ("wrong id or pw", 400)
-     else :         
-          if login_pw == user_account['login_pw'] : 
-               return (user_account['user_id'], 200)
-          else : 
-               return ("wrong id or pw", 400)
+        return abort(400)
+     
+     if login_pw == user_account['login_pw'] : 
+          return (user_account['user_id'], 200)
+     return abort(400)
 
 @app.route("/centers/authentication", methods=['GET'])
 def center_authentication() : 
@@ -87,78 +81,68 @@ def center_authentication() :
           center_member = get_center_authentication(center_id, user_name, birthday, contact)
           if center_member is not None : 
                return (center_member, 200)
-          else :
-               return ("Center authentication faild", 400)
-     else : 
           return ("Center authentication faild", 400)
+     
+     return ("Center authentication faild", 400)
 
 @app.route("/centers", methods=['POST'])
 def centers() : 
      data = request.get_json()
-     if post_center(data) :
-          return ("POST a new center", 200) 
-     else :
-          return ("Faild : post a new center", 400)
+     center = post_center(data)
+     if center is None :
+          return abort(400)
+     return (center, 201)
 
 @app.route("/centers/<center_id>", methods=['GET'])
 def center(center_id : int) : 
      center = get_center_by_id(center_id) 
      if center is None : 
-          return ("Wrong request", 400)
-     else : 
-          return (center, 200)
+          return abort(400)
+     return (center, 200)
 
 @app.route("/centers/<center_id>/members", methods=['GET', 'POST'])
 def center_members(center_id : int) :
      if request.method == 'POST' : 
           data = request.get_json()
+          center_member = post_center_member(data)
           
-          if post_center_member(data) : 
-               return ("post a center member", 200)
-          else : 
-               return ("Failed : post a center member", 400) 
+          if center_member is None :
+               return abort(400)
+          return (center_member, 200)
+               
      if request.method == 'GET' : 
           center_members = get_center_members(center_id) ####          
           return (center_members, 200)
 
-@app.route("/centers/<center_id>/members<center_member_id>", methods=['GET', 'PUT'])
-def get_put_center_member(center_id, center_member_id) : 
+@app.route("/centers/<center_id>/members/<member_id>", methods=['GET', 'PUT'])
+def get_put_center_member(center_id, member_id) : 
      if request.method == 'GET' : 
-          center_member = get_center_member_by_id(center_member_id)
+          center_member = get_center_member_by_id(member_id)
           if center_member is None : 
                return ("Resource not found", 400)
           return (center_member, 200)
      
      if request.method == 'PUT' : 
           data = request.get_json()
-          if put_center_member(data) :
-               return ("put a center member", 200)
-          else : 
-               return ("Failed : put a center member", 400)
-
+          put_center_member(data)
+          return ("put a center member", 200) 
+     
 @app.route("/centers/<center_id>/staffs", methods=['GET', 'POST'])
 def center_staffs(center_id : int) : 
      if request.method == 'POST' : 
           data = request.get_json()
-
-          if post_center_staff(data) :
-               return ("post a center staff", 200)
-          else :
-               return ("FAILED : post a center staff", 400)  
+          center_staff = post_center_staff(data)
+          if center_staff is None :
+               return abort(400) 
+          return (center_staff, 200)
      
      if request.method == 'GET' : 
           center_staffs = get_center_staffs(center_id)  ####
           return (center_staffs, 200)
 
-@app.route("/centers/<center_id>/equipments", methods=['GET', 'POST'])
+@app.route("/centers/<center_id>/equipments", methods=['GET'])
 def center_equipments(center_id) : 
-     if request.method == 'POST' : 
-          data = request.get_json()
-          if post_center_equipment(data) : 
-               return ("Post a center equipment", 200)
-          else : 
-               return ("FAILD : Post a center equipment", 400)
-     elif request.method == 'GET' : 
+     if request.method == 'GET' : 
           center_equipments = get_center_equipments(center_id) ####
           return (center_equipments, 200) 
 
@@ -176,63 +160,59 @@ def center_equipments(center_id) :
 #           return (equipments, 200)
 
 @app.route("/exercise_libraries", methods=['GET'])
-def exercise_libraries() :          
+def get_req_exercise_libraries() : 
      if request.method == 'GET' : 
           exercise_libs = get_exercise_libraries() 
           return (exercise_libs, 200)
 
-@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['POST']) ####
-def post_user_weight_metric(user_id, exercise_lib_id):
+@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['POST']) 
+def post_req_user_exercise_metric(user_id, exercise_lib_id):
      if request.method == 'POST' : 
           data = request.get_json()
-          weight = data['weight_metric']
-          if  post_user_weight_metric(user_id, exercise_lib_id, weight): 
-               return ("", 200)
-          else :
-               return ("", 400)
+          user_exercise_weight = post_user_exercise_weight(data)
+          return (user_exercise_weight, 200)
 
-@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['GET', 'PATCH']) ####
-def user_weight_metric(user_id, exercise_lib_id) : 
+@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['GET', 'PATCH']) 
+def get_patch_req_user_exercise_metric(user_id, exercise_lib_id) :
      if request.method == 'GET' : 
-          user_weight_metric = get_user_weight_metric(user_id, exercise_lib_id)
-          if user_weight_metric is not None : 
-               return (user_weight_metric, 200)
-          else : 
-               return ("", 404)
+          user_weight_metric = get_user_exercise_weight(user_id, exercise_lib_id)
+          if user_weight_metric is None : 
+               return abort(404)               
+          return (user_weight_metric, 200)
      
-     elif request.method == 'PATCH' : 
+     if request.method == 'PATCH' : 
           data = request.get_json()
-          patch_user_weight_metric(data)
-          return ("", 200)
+          patch_user_exercise_weight(data)
+          return ("PATCH the user exercise weight metric", 200)
 
 @app.route("/users/<user_id>/survey", methods=['GET', 'POST']) 
 def users_survey(user_id) : 
      if request.method == 'POST' : 
           data = request.get_json()
-          if post_user_survey(data) : 
-               return ("POST sent user survey", 200)
-          else : 
-               return ("FAILD : POST sent user survey", 400)
+          user_survey = post_user_survey(data) 
+          if user_survey is None : 
+               return abort(400)               
+          return (user_survey, 200) 
 
      if request.method == 'GET' : 
           user_survey = get_user_survey(user_id)
+          if user_survey is None : 
+               return abort(404)          
           return (user_survey, 200)
 
 @app.route("/users/<user_id>", methods=['GET'])
-def users(user_id):
+def get_req_users(user_id):
      user = get_user(user_id)     
      if user is None : 
-          return ("The user resource not exist", 400)
+          return abort(400)
      return (user, 200)
 
 @app.route("/users/<user_id>/workout_history/workout_sessions", methods=['GET', 'POST', 'PATCH'])  ####
-def user_workout_sessions(user_id) : 
+def get_post_patch_req_user_workout_sessions(user_id) : 
      if request.method == 'POST' : 
-          data = request.get_json()
-          date = data['date'] 
-          status = data['status']
-          user_workout_session = post_user_workout_session(user_id, date, status)
-          return (user_workout_session, 200)
+          data = request.get_json()          
+          user_workout_session = post_user_workout_session(data)
+          return (user_workout_session, 201)
           
      if request.method == 'GET' : 
           type = request.args.get('search_type')
@@ -249,19 +229,17 @@ def user_workout_sessions(user_id) :
      if request.method == 'PATCH' : 
           data = request.get_json()
           patch_user_workout_session(data)
-          return ("", 200)
+          return ("patched user workout session", 200)
 
 @app.route("/users/<user_id>/workout_history/<workout_session_id>/workouts", methods=['GET', 'POST']) 
-def get_post_workouts(user_id, workout_session_id) : 
-     if request.method == "POST" :  ####
-          data = request.get_json()
-          workout = post_workout(data)
-          if workout is None : 
-               return ("FAILD : post workout", 400)
-          return (workout, 200)
+def get_post_req_workouts(user_id, workout_session_id) : 
+     if request.method == "POST" : 
+          data = request.get_json()          
+          post_workout(data)          
+          return ("POSTED user workout data", 200)
      
      if request.method == "GET" :           
-          workouts = get_workouts(workout_session_id) ####
+          workouts = get_workouts(workout_session_id) 
           return (workouts, 200)
 
 @app.route("/users/<user_id>/workout_history/<workout_session_id>/<workout_id>", methods=['GET', 'PATCH']) 
@@ -270,16 +248,16 @@ def get_put_workout(user_id, workout_session_id, workout_id) :
           data = request.get_json()
           if patch_workout(data) : 
                return ("PATCH workout data", 200)
-          return ("FAILD : patch workout data", 400)          
+          return ("FAILD : patch workout data", 400) 
      
      if request.method == "GET" :           
           workout = get_workout(workout_id)
           if workout is None : 
-               return ("FAILD : get workout data", 400)          
+               return abort(400)
           return (workout, 200)
 
-@app.route("/users/<user_id>/workout_metrics", methods=['GET', 'POST']) ##
-def post_get_workout_metrics(user_id) : 
+@app.route("/users/<user_id>/workout_metrics", methods=['GET', 'POST']) 
+def post_get_req_workout_metrics(user_id) : 
      if request.method == "POST" : 
           list_data = request.get_json()
           post_workout_metrics( list_data )
@@ -312,7 +290,7 @@ def nfc_certification() :
                return (session_data, 200)
 
           else : 
-               return ("Wrong request", 400)         
+               return ("Wrong request", 400) 
 
 @app.route("/qr_certification", methods=['GET', 'PUT']) ####
 def qr_certification() : 

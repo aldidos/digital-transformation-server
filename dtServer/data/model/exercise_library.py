@@ -27,8 +27,7 @@ def select_exericse_libraries() :
     return exercise_libs
 
 def select_exercise_library(name : str ) :
-    data_model = ExerciseLibrary.select().where(ExerciseLibrary.name == name).get()
-    return model_to_dict(data_model)
+    return ExerciseLibrary.get_or_none(ExerciseLibrary.name == name)
     
 def insert_many_exercise_libraries(list_data) : 
     with db_proxy.atomic() : 

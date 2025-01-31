@@ -12,14 +12,8 @@ class UserSurvey(BaseModel) :
 
 def save_user_survey(data : dict) :
     model = dict_to_model(UserSurvey, data)
-    n = model.save()
-    if n > 0 : 
-        return True
-    return False    
+    model.save()
+    return model_to_dict(model)    
 
 def select_user_survey(user_id : int) :
-    try : 
-        data = UserSurvey.select().where(UserSurvey.user_id == user_id).get()
-        return model_to_dict(data)
-    except DoesNotExist : 
-        return None
+    return UserSurvey.get_or_none(UserSurvey.user_id == user_id)

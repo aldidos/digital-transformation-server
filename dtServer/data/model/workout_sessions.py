@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 
 from peewee import *
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, db_proxy
 from dtServer.data.model.user import User
 from datetime import date
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -44,3 +44,7 @@ def select_workout_sessions_period(user_id : int, from_date : date, to_date : da
     q = WorkoutSessions.select().where( WorkoutSessions.user_id == user_id and WorkoutSessions.date.between(from_date, to_date) )
     list_data = [model_to_dict(row) for row in q]
     return list_data
+
+def insert_workout_sessions(list_data) : 
+    with db_proxy.atomic() :
+        WorkoutSessions.insert_many(list_data).execute()

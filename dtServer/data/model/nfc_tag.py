@@ -1,12 +1,11 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, db_proxy
 from dtServer.data.model.user import User
 from dtServer.data.model.center import Center
 from dtServer.data.model.center_equipment import CenterEquipment
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 LEN_NFC_TAG_ID = 32
-DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 class NFCTag(BaseModel) : 
     nfc_tag_id = CharField(LEN_NFC_TAG_ID, unique = True) 
@@ -28,5 +27,8 @@ def save_nfc_tag(data) :
     return model_to_dict(model)
 
 def select_nfc_tag(nfc_tag_id) : 
-    model = NFCTag.select().where( NFCTag.nfc_tag_id == nfc_tag_id ).get()
-    return model_to_dict(model)
+    return NFCTag.get_or_none( NFCTag.nfc_tag_id == nfc_tag_id )
+
+def insert_nfc_tags(list_data) : 
+    with db_proxy.atomic() :
+        NFCTag.insert_many(list_data).execute()

@@ -18,7 +18,7 @@ def create_user_exercise_metric(user_id, exercise_library_id, weight) :
         "exercise_library_id" : exercise_library_id, 
         "weight" : weight
     }
-    save_user_exercise_metric(data)
+    return save_user_exercise_metric(data)
 
 def save_user_exercise_metric(data : dict) : 
     model = dict_to_model(UserExerciseMetric, data)
@@ -26,8 +26,7 @@ def save_user_exercise_metric(data : dict) :
     return model_to_dict(model)
 
 def select_user_exer_metric(user_id : int, exercise_library_id : int) : 
-    data_model = UserExerciseMetric.select().where(UserExerciseMetric.user_id == user_id and UserExerciseMetric.exercise_library_id == exercise_library_id).get()
-    return data_model 
+    return UserExerciseMetric.get_or_none(UserExerciseMetric.user_id == user_id and UserExerciseMetric.exercise_library_id == exercise_library_id)    
 
 def select_user_exer_metrics(user_id : int) : 
     q = UserExerciseMetric.select().where(UserExerciseMetric.user_id == user_id)

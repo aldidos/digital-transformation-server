@@ -1,9 +1,8 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, db_proxy
 from dtServer.data.model.user import User
 from dtServer.data.model.center import Center
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from dtServer.util.json_encoder import encode
 
 LEN_NAME = 20
 DATE_FORMAT = '%y-%m-%d'
@@ -23,10 +22,8 @@ class CenterMember(BaseModel) :
 
 def save_center_member(data : dict) : 
     model = dict_to_model(CenterMember, data)
-    n = model.save()
-    if n > 0 :
-        return True
-    return False    
+    model.save()
+    return model_to_dict(model)    
 
 def select_center_members(center_id : int) : 
     q = CenterMember.select().where(CenterMember.center_id == center_id)
@@ -34,15 +31,11 @@ def select_center_members(center_id : int) :
     return center_members
 
 def select_center_member_by_id(center_member_id) : 
-    try : 
-        center_member = CenterMember.get_by_id(center_member_id)
-        return center_member
-    except DoesNotExist : 
-        return None
+    return CenterMember.get_or_none(CenterMember.id == center_member_id)
 
 def select_center_member(center_id, name, birth_day, contact) : 
-    try : 
-        center_member = CenterMember.select().where(CenterMember.center_id == center_id and CenterMember.name == name and CenterMember.birth_day == birth_day and CenterMember.contact == contact).get()
-        return model_to_dict(center_member)
-    except DoesNotExist : 
-        return None
+    return CenterMember.get_or_none(CenterMember.center_id == center_id and CenterMember.name == name and CenterMember.birth_day == birth_day and CenterMember.contact == contact)
+
+def insert_center_members(list_data) : 
+    with db_proxy.atomic() : 
+        CenterMember.insert_many(list_data).execute()

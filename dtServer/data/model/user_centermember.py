@@ -24,9 +24,7 @@ def save_user_centermember(data) :
     return model_to_dict(model)
 
 def select_centermember(user_id) : 
-    center_member = User_CenterMember.select(User_CenterMember.centermember_id).where(User_CenterMember.user_id == user_id).get()
-    return model_to_dict(center_member)
+    return User_CenterMember.get_or_none( User_CenterMember.user_id == user_id )     
 
 def select_user(centermember_id) : 
-    user = User_CenterMember.select(User_CenterMember.user_id).where(User_CenterMember.centermember_id == centermember_id).get()
-    return model_to_dict(user)
+    return User_CenterMember.get_or_none( User_CenterMember.centermember_id == centermember_id ) 

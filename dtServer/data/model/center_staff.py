@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, db_proxy
 from dtServer.data.model.center import Center
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -16,10 +16,8 @@ class CenterStaff(BaseModel) :
 
 def save_center_staff(data : dict) : 
     model = dict_to_model(CenterStaff, data) 
-    n = model.save() 
-    if n > 0 : 
-        return True
-    return False    
+    model.save()
+    return model_to_dict(model)      
 
 def select_center_staffs(center_id : int) : 
     q = CenterStaff.select().where(CenterStaff.center_id == center_id)
@@ -27,5 +25,8 @@ def select_center_staffs(center_id : int) :
     return center_staffs
 
 def select_center_staff(id : int) : 
-    center_staff = CenterStaff.select().where(CenterStaff.id == id).get()
-    return model_to_dict(center_staff)
+    return CenterStaff.get_or_none(CenterStaff.id == id)    
+
+def insert_center_staffs(list_data) : 
+    with db_proxy.atomic() :
+        CenterStaff.insert_many(list_data).execute()
