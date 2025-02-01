@@ -4,7 +4,6 @@ import csv
 
 from dtServer.data.conn import make_database_connection
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.model.equipment import Equipment
 from dtServer.data.model.user import User, insert_users
 from dtServer.data.model.body_part import BodyPart, insert_body_parts
 from dtServer.data.model.center_equipment import CenterEquipment, insert_center_equipments
@@ -114,7 +113,7 @@ def init_nfc_tags() :
         insert_nfc_tags(list_data)  
 
 if __name__ == '__main__' : 
-    tables = [User, Equipment, WorkoutSessions, Workouts, Center, WorkoutMetrics, 
+    tables = [User, WorkoutSessions, Workouts, Center, WorkoutMetrics, 
               BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
               ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, UserExerciseMetric, 
               UserSurvey, NFCTag, ExerciseLibraryEquipment
@@ -135,9 +134,9 @@ if __name__ == '__main__' :
     init_user_account()
     init_center()
     init_center_members()
-
     init_center_equipments()
     init_center_staffs()
+    
     init_user_center()
     init_workout_sessions()
     init_workouts()
