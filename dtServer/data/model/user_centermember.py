@@ -1,6 +1,6 @@
 from peewee import *
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, model_to_dict_or_none
 from dtServer.data.model.user import User
 from dtServer.data.model.center_member import CenterMember
 
@@ -24,7 +24,9 @@ def save_user_centermember(data) :
     return model_to_dict(model)
 
 def select_centermember(user_id) : 
-    return User_CenterMember.get_or_none( User_CenterMember.user_id == user_id )     
+    model = User_CenterMember.get_or_none( User_CenterMember.user_id == user_id )     
+    return model_to_dict_or_none(model)
 
 def select_user(centermember_id) : 
-    return User_CenterMember.get_or_none( User_CenterMember.centermember_id == centermember_id ) 
+    model = User_CenterMember.get_or_none( User_CenterMember.centermember_id == centermember_id ) 
+    return model_to_dict_or_none(model)

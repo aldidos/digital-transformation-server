@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 LEN_NAME = 128
@@ -18,17 +18,12 @@ def save_center(data : dict ) -> int :
     return model_to_dict(model)
 
 def get_center_by_id(center_id : int) : 
-    try : 
-        center = Center.get_by_id(center_id)
-        return model_to_dict(center)
-    except DoesNotExist : 
-        return None
+    center =  Center.get_or_none(Center.id == center_id)
+    return model_to_dict_or_none(center)
 
-def select_center_by_id(center_id : int) : 
-    return Center.get_or_none(Center.id == center_id)    
-
-def select_center_by_name_address(center_name : str, address : str ) :
-    return Center.get_or_none(Center.center_name == center_name and Center.address == address) 
+def get_center_by_name_address(center_name : str, address : str ) :
+    center = Center.get_or_none(Center.center_name == center_name and Center.address == address) 
+    return model_to_dict_or_none(center)
 
 def insert_centers(list_data) : 
     with db_proxy.atomic() : 

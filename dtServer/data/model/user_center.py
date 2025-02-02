@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.user import User
 from dtServer.data.model.center import Center
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -10,7 +10,6 @@ class UserCenter(BaseModel) :
 
     class Meta : 
         table_name = 'user_center'
-
 
 def save_user_center(data : dict) :
     model = dict_to_model(UserCenter, data)
@@ -23,7 +22,8 @@ def get_user_centers(user_id : int) :
     return list_data
 
 def get_user_center(user_id : int, center_id : int) : 
-    return UserCenter.get_or_none(UserCenter.user_id == user_id and UserCenter.center_id == center_id)    
+    model =  UserCenter.get_or_none(UserCenter.user_id == user_id and UserCenter.center_id == center_id)
+    return model_to_dict_or_none(model)
 
 def insert_user_center(list_data) : 
     with db_proxy.atomic() :

@@ -1,4 +1,4 @@
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipment
 from peewee import *
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -27,7 +27,8 @@ def select_exericse_libraries() :
     return exercise_libs
 
 def select_exercise_library(name : str ) :
-    return ExerciseLibrary.get_or_none(ExerciseLibrary.name == name)
+    model = ExerciseLibrary.get_or_none(ExerciseLibrary.name == name)
+    return model_to_dict_or_none(model)
     
 def insert_many_exercise_libraries(list_data) : 
     with db_proxy.atomic() : 

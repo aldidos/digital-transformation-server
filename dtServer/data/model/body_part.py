@@ -1,4 +1,4 @@
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy 
 from peewee import *
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -26,7 +26,6 @@ def get_body_parts() :
     body_parts = [ model_to_dict(row) for row in query ]
     return body_parts
 
-def insert_body_parts(list_data) : 
-    
+def insert_body_parts(list_data) :     
     with db_proxy.atomic() : 
         BodyPart.insert_many(list_data).execute()   

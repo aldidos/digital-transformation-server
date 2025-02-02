@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.center import Center
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -25,7 +25,8 @@ def select_center_staffs(center_id : int) :
     return center_staffs
 
 def select_center_staff(id : int) : 
-    return CenterStaff.get_or_none(CenterStaff.id == id)    
+    center_staff = CenterStaff.get_or_none(CenterStaff.id == id)    
+    return model_to_dict_or_none(center_staff)
 
 def insert_center_staffs(list_data) : 
     with db_proxy.atomic() :

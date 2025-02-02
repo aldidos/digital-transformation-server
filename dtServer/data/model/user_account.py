@@ -1,7 +1,5 @@
-import sys
-sys.path.append('./')
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.user import User
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -22,7 +20,8 @@ def save_user_account(data : dict ) -> UserAccount :
     return model_to_dict(model)
 
 def get_user_account_by_loginid(login_id : str) -> UserAccount : 
-    return UserAccount.get_or_none(UserAccount.login_id == login_id)
+    user_account = UserAccount.get_or_none(UserAccount.login_id == login_id)
+    return model_to_dict_or_none(user_account)
 
 def insert_user_accounts(list_data) : 
     with db_proxy.atomic() : 

@@ -1,6 +1,6 @@
 from peewee import *
 from playhouse.shortcuts import model_to_dict, dict_to_model
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.util.json_encoder import encode
 
 LEN_ID = 16
@@ -30,7 +30,8 @@ def save_user(data : dict) -> User :
     return model_to_dict(user)
 
 def select_user_by_id(id : int) :
-    return User.get_or_none( User.id == id )
+    user = User.get_or_none( User.id == id )
+    return model_to_dict_or_none(user)
 
 def select_users() : 
     query = User.select()

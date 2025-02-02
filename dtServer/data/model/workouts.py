@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.workout_sessions import WorkoutSessions
 from dtServer.data.model.center_equipment import CenterEquipment
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -20,7 +20,8 @@ def save_workout(data : dict) :
     return model_to_dict(model)
 
 def select_workout_by_id(id : int) : 
-    return Workouts.get_or_none(Workouts.id == id)    
+    workout =  Workouts.get_or_none(Workouts.id == id)    
+    return model_to_dict_or_none(workout)
 
 def select_workouts(workout_session_id : int) : 
     q = Workouts.select().where( Workouts.workout_session_id == workout_session_id )

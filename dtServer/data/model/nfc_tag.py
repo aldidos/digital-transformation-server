@@ -1,7 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
-from dtServer.data.model.user import User
-from dtServer.data.model.center import Center
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.center_equipment import CenterEquipment
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -27,7 +25,8 @@ def save_nfc_tag(data) :
     return model_to_dict(model)
 
 def select_nfc_tag(nfc_tag_id) : 
-    return NFCTag.get_or_none( NFCTag.nfc_tag_id == nfc_tag_id )
+    nfc_tag = NFCTag.get_or_none( NFCTag.nfc_tag_id == nfc_tag_id )
+    return model_to_dict_or_none(nfc_tag)
 
 def insert_nfc_tags(list_data) : 
     with db_proxy.atomic() :

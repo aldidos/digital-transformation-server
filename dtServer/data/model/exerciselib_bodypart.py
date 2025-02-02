@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel
+from dtServer.data.model.base_model import BaseModel, model_to_dict_or_none
 from dtServer.data.model.exercise_library import ExerciseLibrary
 from dtServer.data.model.body_part import BodyPart
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -24,8 +24,8 @@ def save_exercise_lib_body_part(data : dict) :
     return model_to_dict(model)
 
 def get_exercise_lib_body_part(exercise_library_id : int, body_part_id : int) : 
-    data_model = ExerciseLibBodyPart.select().where(ExerciseLibBodyPart.exercise_library_id == exercise_library_id and ExerciseLibBodyPart.body_part_id == body_part_id).get()
-    return model_to_dict(data_model)
+    model = ExerciseLibBodyPart.select().where(ExerciseLibBodyPart.exercise_library_id == exercise_library_id and ExerciseLibBodyPart.body_part_id == body_part_id).get()
+    return model_to_dict_or_none(model)
 
 def get_exercise_lib_body_part_by_library(exercise_library_id : int) : 
     q = ExerciseLibBodyPart.select().where( ExerciseLibBodyPart.exercise_library_id == exercise_library_id )

@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
 from dtServer.data.model.center import Center
 from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipment
 from dtServer.data.model.exercise_library import ExerciseLibrary
@@ -27,7 +27,8 @@ def select_center_euipments( center_id : int) :
     return center_equipments
 
 def select_center_euipment( id : int ) : 
-    return CenterEquipment.get_or_none(CenterEquipment.id == id) 
+    center_equipment = CenterEquipment.get_or_none(CenterEquipment.id == id) 
+    return model_to_dict_or_none(center_equipment)
 
 def insert_center_equipments(list_data) : 
     with db_proxy.atomic() :
