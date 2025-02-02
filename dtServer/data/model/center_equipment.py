@@ -23,7 +23,7 @@ def save_center_euipment( data : dict) :
 
 def select_center_euipments( center_id : int) : 
     query = CenterEquipment.select().where(CenterEquipment.center_id == center_id )
-    center_equipments = [ model_to_dict(CenterEquipment, row) for row in query ]
+    center_equipments = [ model_to_dict(row) for row in query ]
     return center_equipments
 
 def select_center_euipment( id : int ) : 

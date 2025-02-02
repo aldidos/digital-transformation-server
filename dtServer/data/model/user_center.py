@@ -11,6 +11,13 @@ class UserCenter(BaseModel) :
     class Meta : 
         table_name = 'user_center'
 
+def create_user_center(user_id, center_id) : 
+    data = {
+        'user_id' : user_id, 
+        'center_id' : center_id
+    }
+    return save_user_center(data)
+
 def save_user_center(data : dict) :
     model = dict_to_model(UserCenter, data)
     model.save()

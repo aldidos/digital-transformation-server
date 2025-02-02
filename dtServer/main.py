@@ -3,7 +3,7 @@ sys.path.append('./')
 from flask import Flask, request, session, abort
 from dtServer.data.conn import make_database_connection, db_proxy
 import datetime
-from dtServer.data.model.user_center import get_user_centers
+from dtServer.data.model.user_center import get_user_centers, create_user_center, get_user_center
 from dtServer.data.model.user import save_user, select_user_by_id
 from dtServer.data.model.user_account import get_user_account_by_loginid, save_user_account
 from dtServer.data.model.center import get_center_by_name_address, save_center, get_center_by_id
@@ -75,7 +75,7 @@ def signin() :
         return abort(400)
      
      if login_pw == user_account['login_pw'] : 
-          return (user_account['user_id'], 200)     
+          return (user_account['user_id'], 200) 
      return abort(400)
 
 @app.route("/centers/authentication", methods=['POST', 'GET'])
@@ -84,6 +84,7 @@ def center_authentication() :
           data = request.get_json()
           center_name = data['center_name']
           center_address = data['center_address']
+          user_id = data['user_id']
           user_name = data['user_name']
           birthday = data['birthday']
           contact = data['contact'] 
@@ -91,8 +92,14 @@ def center_authentication() :
           center = get_center_by_name_address(center_name, center_address)
           if center is not None : 
                center_id = center['id']
+
+               user_center = get_user_center(user_id, center_id)
+               if user_center is None : 
+                    return ("the center authentication has been done", 400)
+
                center_member = get_center_member(center_id, user_name, birthday, contact)
                if center_member is not None : 
+                    create_user_center(user_id, center_id)
                     return (center_member, 200)
                return ("Center authentication faild", 400)
           
@@ -125,14 +132,13 @@ def center(center_id : int) :
 def center_members(center_id : int) :
      if request.method == 'POST' : 
           data = request.get_json()
-          center_member = save_center_member(data)
-          
+          center_member = save_center_member(data)          
           if center_member is None :
                return abort(400)
           return (center_member, 200)
                
      if request.method == 'GET' : 
-          center_members = select_center_members(center_id) ####          
+          center_members = select_center_members(center_id) 
           return (center_members, 200)
 
 @app.route("/centers/<center_id>/members/<member_id>", methods=['GET', 'PUT'])
@@ -193,7 +199,7 @@ def get_patch_req_user_exercise_metric(user_id, exercise_lib_id) :
           save_user_exercise_metric(data)
           return ("PATCH the user exercise weight metric", 200)
 
-@app.route("/users/<user_id>/survey", methods=['GET', 'POST']) 
+@app.route("/users/<user_id>/survey", methods=['GET', 'POST', 'PATCH']) 
 def users_survey(user_id) : 
      if request.method == 'POST' : 
           data = request.get_json()
@@ -205,8 +211,13 @@ def users_survey(user_id) :
      if request.method == 'GET' : 
           user_survey = select_user_survey(user_id)
           if user_survey is None : 
-               return abort(404)          
+               return abort(404)  
           return (user_survey, 200)
+     
+     if request.method == 'PATCH' : 
+          data = request.get_json()
+          user_survey = save_user_survey(data) 
+          return ('PATCH requested user survey', 200)
 
 @app.route("/users/<user_id>", methods=['GET'])
 def get_req_users(user_id):

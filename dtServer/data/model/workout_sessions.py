@@ -1,6 +1,3 @@
-import sys
-sys.path.append('.')
-
 from peewee import *
 from dtServer.data.model.base_model import BaseModel, db_proxy
 from dtServer.data.model.user import User

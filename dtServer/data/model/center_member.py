@@ -14,7 +14,7 @@ class CenterMember(BaseModel) :
     contact = CharField(LEN_CONTACT)
     reg_from = DateField(DATE_FORMAT)
     reg_to = DateField(DATE_FORMAT)
-    visit_date = DateField(DATE_FORMAT)
+    visit_date = DateField(DATE_FORMAT, null = True)
     
     class Meta : 
         table_name = 'center_member'
