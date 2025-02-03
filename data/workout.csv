@@ -1,2 +1,2 @@
-workout_session_id,center_equipment_id,completed_sets,start_time,end_time
-1,1,3,13:00:00,13:20:00
+workout_session_id,exercise_library_id,completed_sets,start_time,end_time
+1,1,3,2025-01-16 13:00:00,2025-01-16 13:20:00

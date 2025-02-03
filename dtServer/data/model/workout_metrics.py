@@ -19,9 +19,7 @@ class WorkoutMetrics(BaseModel) :
     peak_power = FloatField()
     mean_power = FloatField()
     height = FloatField()
-    rom = FloatField()
     power = FloatField(False)
-    speed = FloatField(False)
 
     class Meta : 
         table_name = 'workout_metrics'
@@ -31,11 +29,13 @@ def save_workout_metric(data) :
     model.save()
     return model_to_dict(model)
 
-def insert_multiple_workout_metrics(list_data) : 
+def insert_many_workout_metrics(list_data) : 
     with db_proxy.atomic() : 
         WorkoutMetrics.insert_many(list_data).execute()
 
 def select_join_with_workout_sessions(user_id, from_date, to_date) : 
-    q = WorkoutMetrics.select().join(WorkoutSessions).where(WorkoutMetrics.user_id == user_id and WorkoutSessions.date.between(from_date, to_date) )
+    q = WorkoutMetrics.select(WorkoutMetrics.add_index)\
+        .join(WorkoutSessions)\
+        .where(WorkoutSessions.user_id == user_id and WorkoutSessions.date.between(from_date, to_date) )
     list_data = [ model_to_dict( row ) for row in q ]
     return list_data

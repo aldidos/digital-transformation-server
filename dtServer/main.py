@@ -2,7 +2,7 @@ import sys
 sys.path.append('./')
 from flask import Flask, request, session, abort
 from dtServer.data.conn import make_database_connection, db_proxy
-import datetime
+from datetime import datetime, timedelta
 from dtServer.data.model.user_center import get_user_centers, create_user_center, get_user_center
 from dtServer.data.model.user import save_user, select_user_by_id
 from dtServer.data.model.user_account import get_user_account_by_loginid, save_user_account
@@ -15,12 +15,14 @@ from dtServer.data.model.user_exercise_metric import save_user_exercise_metric, 
 from dtServer.data.model.user_survey import save_user_survey, select_user_survey
 from dtServer.data.model.workout_sessions import save_workout_session, select_workout_sessions_period, select_workout_sessions
 from dtServer.data.model.workouts import save_workout, select_workouts, select_workout_by_id
-from dtServer.data.model.workout_metrics import insert_multiple_workout_metrics, select_join_with_workout_sessions
+from dtServer.data.model.workout_metrics import insert_many_workout_metrics, select_join_with_workout_sessions
 from dtServer.data.model.nfc_tag import select_nfc_tag
+from dtServer.data.model.exerciselib_bodypart import select_all_exercise_library_body_part
 
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
-app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(minutes=5)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 db_conn = make_database_connection()
 db_proxy.initialize(db_conn)
@@ -178,6 +180,12 @@ def get_req_exercise_libraries() :
      if request.method == 'GET' : 
           exercise_libs = select_exericse_libraries() 
           return (exercise_libs, 200)
+     
+@app.route("/exerciselib_bodyparts", methods=['GET'])
+def get_req_exerciselib_bodyparts() : 
+     if request.method == 'GET' : 
+          exericselib_bodyparts = select_all_exercise_library_body_part()
+          return (exericselib_bodyparts, 200)
 
 @app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['POST']) 
 def post_req_user_exercise_metric(user_id, exercise_lib_id):
@@ -279,7 +287,7 @@ def get_put_workout(user_id, workout_session_id, workout_id) :
 def post_get_req_workout_metrics(user_id) : 
      if request.method == "POST" : 
           list_data = request.get_json()
-          insert_multiple_workout_metrics( list_data )
+          insert_many_workout_metrics( list_data )
           return ("post workout metrcis", 200)
      
      if request.method == "GET" : 
@@ -324,6 +332,18 @@ def qr_certification() :
                certification_data = session['qr_certification']
                return (certification_data, 200)          
           return abort(400)
+     
+@app.route("/users/<user_id>/recent_workout", methods=['GET']) 
+def get_recent_user_workouts(user_id) : 
+     # from_date = datetime.now() - timedelta(days = 7)
+     # to_date = datetime.now()
+     
+     from_date = datetime(2025, 1, 10)
+     to_date = datetime(2025, 1, 20)
+
+     recent_user_workout_data = select_join_with_workout_sessions(user_id, from_date, to_date)
+     return (recent_user_workout_data, 200)
+
 
 @app.route("/users/<user_id>/workouts_report", methods=['GET']) ####
 def get_workout_metrics_by_exercise_libs(user_id) : 

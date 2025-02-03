@@ -7,18 +7,10 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 class UserExerciseMetric(BaseModel) : 
     user_id = ForeignKeyField(User)
     exercise_library_id = ForeignKeyField(ExerciseLibrary)
-    weight = FloatField()
-
+    num_sets = IntegerField()
+    
     class Meta : 
         table_name = 'user_exercise_metric'
-
-def create_user_exercise_metric(user_id, exercise_library_id, weight) : 
-    data = {
-        "user_id" : user_id, 
-        "exercise_library_id" : exercise_library_id, 
-        "weight" : weight
-    }
-    return save_user_exercise_metric(data)
 
 def save_user_exercise_metric(data : dict) : 
     model = dict_to_model(UserExerciseMetric, data)

@@ -18,6 +18,11 @@ def insert_exerciselibrary_body_part(exerciselibrary_id, bodypart_id) :
     }
     save_exercise_lib_body_part(data)
 
+def select_all_exercise_library_body_part() : 
+    q = ExerciseLibBodyPart.select()
+    list_data = [ model_to_dict(row) for row in q ]
+    return list_data
+
 def save_exercise_lib_body_part(data : dict) :
     model = dict_to_model(ExerciseLibBodyPart, data)    
     model.save()

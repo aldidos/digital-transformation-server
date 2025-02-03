@@ -1,187 +1,187 @@
 name,type,equipment,difficult
-Seated_Lat_Pulldown,strength,11,beginner
-Seated Leg Extension,strength,14,beginner
-Seated Leg Press Exercise,strength,15,beginner
-Seated Close-Grip Shoulder Press,strength,16,beginner
-Seated Shoulder Press,strength,16,beginner
-Seated Cable Row,strength,10,beginner
-Standing Decline Cable Flyes,strength,19,beginner
-Hip Adduction,strength,20,beginner
-Hip Abduction,strength,20,beginner
-Standing Incline Cable Flyes,strength,19,beginner
-Tricep Extension,strength,17,beginner
-Calf Raise,strength,1,beginner
-Calf Raise on leg press,strength,15,beginner
-Glute Press,strength,2,beginner
-Lateral Shoulder Raise,strength,3,beginner
-Lying Hamstrings Curl,strength,4,beginner
-Seated Biceps Curl,strength,5,beginner
-Seated Chest Press,strength,6,beginner
-Seated Close-Grip Chest Press,strength,6,beginner
-Seated Crunch,strength,8,beginner
-Seated Incline Chest Press,strength,7,beginner
-Decline Chest Press,strength,21,beginner
-Seated Row,strength,9,beginner
-Back Squat,strength,101,intermediate
-Barbell Jammers,strength,101,expert
-Barbell_Bent-over Row,strength,101,expert
-Barbell_Biceps_Curl,strength,101,intermediate
-Barbell_Calf Raises,strength,101,intermediate
-Barbell_Bench Press,strength,101,intermediate
-Barbell_Close-grip Bench Press,strength,101,intermediate
-Barbell_Deadlift,strength,101,expert
-Barbell_Forward Lunge_R,strength,101,intermediate
-Barbell_Forward Lunge_L,strength,101,intermediate
-Barbell_Front Squat,strength,101,expert
-Barbell_Front Squat to Overhead Press,strength,101,expert
-Barbell_Hang Clean,olympic_weightlifting,101,expert
-Barbell_Hip Bridge,strength,101,intermediate
-Barbell_Lying Triceps Extensions,strength,101,intermediate
-Barbell_Power Clean,olympic_weightlifting,101,expert
-Barbell_Push Jerk,olympic_weightlifting,101,expert
-Barbell_Reverse Bicep Curl,strength,101,intermediate
-Barbell_Reverse Lunge_R,strength,101,intermediate
-Barbell_Reverse Lunge_L,strength,101,intermediate
-Barbell_Romanian Deadlift,strength,101,intermediate
-Barbell_Seated Shoulder Press,strength,101,intermediate
-Barbell_Shrug,strength,101,intermediate
-Barbell_Snatch,olympic_weightlifting,101,expert
-Barbell_Standing Shoulder Press,strength,101,expert
-Barbell_Incline Bench Press,strength,101,intermediate
-Barbell Standing Military Press,strength,101,intermediate
-Barbell_Hip Thrust,strength,101,intermediate
-Barbell Preacher Curl,strength,101,beginner
-Barbell Upright Row,strength,101,intermediate
-Barbell_T Bar Row,strength,101,intermediate
-Barbell Decline Bench Press,strength,101,intermediate
-Barbell Bulgarian Split Squat_R,strength,101,expert
-Barbell Bulgarian Split Squat_L,strength,101,expert
-Barbell Stiff-Leg Deadlift,strength,101,intermediate
-Barbell Overhead Tricep Extension,strength,101,intermediate
-Barbell Bent-Over Row (Reverse Grip),strength,101,intermediate
-Barbell Military Press (Seated),strength,101,intermediate
-Barbell Good Morning,strength,101,intermediate
-Barbell Push Press,olympic_weightlifting,101,intermediate
-Barbell Front Raise,strength,101,intermediate
-Barbell Sumo Deadlift,strength,101,intermediate
-Barbell Seated Tricep Extension,strength,101,intermediate
-Barbell Rack Pull,strength,101,intermediate
-Barbell Incline Bench Row,strength,101,intermediate
-Barbell Pullover,strength,101,expert
-Barbell Clean and Jerk,strength,101,expert
-Barbell Lateral Lunge,strength,101,expert
-Barbell Squat with Narrow Stance,strength,101,expert
-Barbell Decline Bench Press (Wide Grip),strength,101,expert
-Barbell Landmine Squat,strength,101,expert
-Barbell Overhead Squat,strength,101,expert
-Barbell Incline Bench Press (Reverse Grip),strength,101,expert
-Barbell Reverse Tricep Bench Press,strength,101,expert
-Barbell Incline Shoulder Raise,strength,101,expert
-Barbell Pullover and Press,strength,101,expert
-Barbell Decline Bench Press (Reverse Grip),strength,101,expert
-Barbell Squat to Upright Row,strength,101,expert
-Seated_Lat_Pulldown(Pause),strength,11,intermediate
-Seated Leg Extension(Pause),strength,14,intermediate
-Seated Leg Press Exercise(Pause),strength,15,intermediate
-Seated Close-Grip Shoulder Press(Pause),strength,16,intermediate
-Seated Shoulder Press(Pause),strength,16,intermediate
-Seated Cable Row(Pause),strength,10,intermediate
-Standing Decline Cable Flyes(Pause),strength,19,intermediate
-Standing Incline Cable Flyes(Pause),strength,19,intermediate
-Tricep Extension(Pause),strength,17,intermediate
-Calf Raise(Pause),strength,1,intermediate
-Calf Raise on leg press(Pause),strength,15,intermediate
-Glute Press(Pause),strength,2,intermediate
-Lying Hamstrings Curl(Pause),strength,4,intermediate
-Seated Biceps Curl(Pause),strength,5,intermediate
-Seated Chest Press(Pause),strength,6,intermediate
-Seated Close-Grip Chest Press(Pause),strength,6,intermediate
-Seated Crunch(Pause),strength,8,intermediate
-Seated Incline Chest Press(Pause),strength,7,intermediate
-Decline Chest Press(Pause),strength,21,intermediate
-Seated Row(Pause),strength,9,intermediate
-Squat Jump(Count Movement),plyometrics,109,beginner
-Squat Jump(Concentric),plyometrics,109,beginner
-Drop Jump,plyometrics,109,expert
-Nordic Hamstring,strength,109,expert
-Seated Leg Press Exercise(wide),strength,15,intermediate
-Seated Leg Press Exercise(narrow),strength,15,intermediate
-Seated single Leg Press Exercise_R,strength,15,intermediate
-Seated single Leg Press Exercise_L,strength,109,intermediate
-Dumbbell Bench Press,strength,100,beginner
-Dumbbell Fly,strength,100,intermediate
-Incline Dumbbell Press,strength,100,beginner
-Decline Dumbbell Press,strength,100,beginner
-Dumbbell Pullover,strength,100,expert
-Dumbbell Shoulder Press,strength,100,beginner
-Dumbbell Lateral Raise,strength,100,intermediate
-Dumbbell Front Raise,strength,100,intermediate
-Dumbbell Rear Delt Fly,strength,100,expert
-Dumbbell Upright Row,strength,100,intermediate
-Dumbbell Bicep Curl,strength,100,beginner
-Dumbbell Hammer Curl,strength,100,beginner
-Dumbbell Preacher Curl,strength,100,beginner
-Dumbbell Concentration Curl_R,strength,100,intermediate
-Dumbbell Concentration Curl_L,strength,100,intermediate
-Dumbbell Seated Tricep Extension,strength,100,beginner
-Dumbbell Kickback,strength,100,beginner
-Dumbbell Standing Tricep Extension,strength,100,intermediate
-Dumbbell Bent-Over Row,strength,100,intermediate
-Dumbbell One-Arm Row_R,strength,100,intermediate
-Dumbbell One-Arm Row_L,strength,100,intermediate
-Dumbbell Shrug,strength,100,beginner
-Dumbbell Deadlift,strength,100,intermediate
-Dumbbell Squat,strength,100,intermediate
-Dumbbell Lunge,strength,100,intermediate
-Dumbbell Step-Up,strength,100,intermediate
-Dumbbell Calf Raise,strength,100,beginner
-Dumbbell Russian Twist,strength,100,intermediate
-Dumbbell Crunch,strength,100,intermediate
-Dumbbell Side Bend,strength,100,beginner
-Dumbbell Woodchopper,strength,100,intermediate
-Dumbbell Plank Row,strength,100,expert
-Dumbbell Turkish Get-Up,strength,100,expert
-Dumbbell Swing,strength,100,intermediate
-Dumbbell Clean,olympic_weightlifting,100,expert
-Dumbbell Snatch,olympic_weightlifting,100,expert
-Dumbbell Jump Squat,plyometrics,100,expert
-Dumbbell Thruster,strength,100,intermediate
-Dumbbell Renegade Row,strength,100,intermediate
-Dumbbell Incline Row,strength,100,intermediate
-Dumbbell Good Morning,strength,100,intermediate
-Dumbbell Hip Thrust,strength,100,intermediate
-Dumbbell Bulgarian Split Squat_R,strength,100,expert
-Dumbbell Bulgarian Split Squat_L,strength,100,expert
-Dumbbell Single-Leg Deadlift_R,strength,100,expert
-Dumbbell Single-Leg Deadlift_L,strength,100,expert
-Dumbbell Arnold Press,strength,100,intermediate
-Dumbbell Reverse Fly,strength,100,intermediate
-Dumbbell Pallof Press,strength,100,intermediate
-Dumbbell Cross-Body Hammer Curl,strength,100,intermediate
-Dumbbell Tricep Pullover,strength,100,intermediate
-Dumbbell Front Squat,strength,100,intermediate
-Dumbbell Goblet Squat,strength,100,intermediate
-Dumbbell Lateral Lunge,strength,100,intermediate
-Dumbbell Reverse Lunge,strength,100,intermediate
-Dumbbell Crossover Lunge,strength,100,expert
-Dumbbell Single-Arm Snatch_R,olympic_weightlifting,100,expert
-Dumbbell Single-Arm Snatch_L,olympic_weightlifting,100,expert
-Dumbbell Single-Arm Clean and Jerk_R,olympic_weightlifting,100,expert
-Dumbbell Single-Arm Clean and Jerk_L,olympic_weightlifting,100,expert
-Dumbbell Spider Curl,strength,100,intermediate
-Dumbbell Zottman Curl,strength,100,intermediate
-Dumbbell Incline Hammer Curl,strength,100,intermediate
-Dumbbell Lying Tricep Extension,strength,100,intermediate
-Dumbbell Incline Fly,strength,100,intermediate
-Dumbbell Decline Fly,strength,100,intermediate
-Dumbbell Crossover,strength,100,intermediate
-Dumbbell Y Raise,strength,100,intermediate
-Dumbbell Front Squat to Press,strength,100,expert
-Dumbbell Lateral Raise Drop Set,strength,100,intermediate
-Dumbbell Incline Y Raise,strength,100,intermediate
-Dumbbell Standing Calf Raise,strength,100,beginner
-Dumbbell Seated Calf Raise,strength,100,beginner
-Dumbbell Single-Leg Calf Raise,strength,100,intermediate
-Dumbbell Wrist Curl,strength,100,beginner
-Dumbbell Reverse Wrist Curl,strength,100,beginner
-Dumbbell Around the World,strength,100,intermediate
+Seated_Lat_Pulldown,5,11,1
+Seated Leg Extension,5,14,1
+Seated Leg Press Exercise,5,15,1
+Seated Close-Grip Shoulder Press,5,16,1
+Seated Shoulder Press,5,16,1
+Seated Cable Row,5,10,1
+Standing Decline Cable Flyes,5,19,1
+Hip Adduction,5,20,1
+Hip Abduction,5,20,1
+Standing Incline Cable Flyes,5,19,1
+Tricep Extension,5,17,1
+Calf Raise,5,1,1
+Calf Raise on leg press,5,15,1
+Glute Press,5,2,1
+Lateral Shoulder Raise,5,3,1
+Lying Hamstrings Curl,5,4,1
+Seated Biceps Curl,5,5,1
+Seated Chest Press,5,6,1
+Seated Close-Grip Chest Press,5,6,1
+Seated Crunch,5,8,1
+Seated Incline Chest Press,5,7,1
+Decline Chest Press,5,21,1
+Seated Row,5,9,1
+Back Squat,5,101,2
+Barbell Jammers,5,101,3
+Barbell_Bent-over Row,5,101,3
+Barbell_Biceps_Curl,5,101,2
+Barbell_Calf Raises,5,101,2
+Barbell_Bench Press,5,101,2
+Barbell_Close-grip Bench Press,5,101,2
+Barbell_Deadlift,5,101,3
+Barbell_Forward Lunge_R,5,101,2
+Barbell_Forward Lunge_L,5,101,2
+Barbell_Front Squat,5,101,3
+Barbell_Front Squat to Overhead Press,5,101,3
+Barbell_Hang Clean,2,101,3
+Barbell_Hip Bridge,5,101,2
+Barbell_Lying Triceps Extensions,5,101,2
+Barbell_Power Clean,2,101,3
+Barbell_Push Jerk,2,101,3
+Barbell_Reverse Bicep Curl,5,101,2
+Barbell_Reverse Lunge_R,5,101,2
+Barbell_Reverse Lunge_L,5,101,2
+Barbell_Romanian Deadlift,5,101,2
+Barbell_Seated Shoulder Press,5,101,2
+Barbell_Shrug,5,101,2
+Barbell_Snatch,2,101,3
+Barbell_Standing Shoulder Press,5,101,3
+Barbell_Incline Bench Press,5,101,2
+Barbell Standing Military Press,5,101,2
+Barbell_Hip Thrust,5,101,2
+Barbell Preacher Curl,5,101,1
+Barbell Upright Row,5,101,2
+Barbell_T Bar Row,5,101,2
+Barbell Decline Bench Press,5,101,2
+Barbell Bulgarian Split Squat_R,5,101,3
+Barbell Bulgarian Split Squat_L,5,101,3
+Barbell Stiff-Leg Deadlift,5,101,2
+Barbell Overhead Tricep Extension,5,101,2
+Barbell Bent-Over Row (Reverse Grip),5,101,2
+Barbell Military Press (Seated),5,101,2
+Barbell Good Morning,5,101,2
+Barbell Push Press,2,101,2
+Barbell Front Raise,5,101,2
+Barbell Sumo Deadlift,5,101,2
+Barbell Seated Tricep Extension,5,101,2
+Barbell Rack Pull,5,101,2
+Barbell Incline Bench Row,5,101,2
+Barbell Pullover,5,101,3
+Barbell Clean and Jerk,5,101,3
+Barbell Lateral Lunge,5,101,3
+Barbell Squat with Narrow Stance,5,101,3
+Barbell Decline Bench Press (Wide Grip),5,101,3
+Barbell Landmine Squat,5,101,3
+Barbell Overhead Squat,5,101,3
+Barbell Incline Bench Press (Reverse Grip),5,101,3
+Barbell Reverse Tricep Bench Press,5,101,3
+Barbell Incline Shoulder Raise,5,101,3
+Barbell Pullover and Press,5,101,3
+Barbell Decline Bench Press (Reverse Grip),5,101,3
+Barbell Squat to Upright Row,5,101,3
+Seated_Lat_Pulldown(Pause),5,11,2
+Seated Leg Extension(Pause),5,14,2
+Seated Leg Press Exercise(Pause),5,15,2
+Seated Close-Grip Shoulder Press(Pause),5,16,2
+Seated Shoulder Press(Pause),5,16,2
+Seated Cable Row(Pause),5,10,2
+Standing Decline Cable Flyes(Pause),5,19,2
+Standing Incline Cable Flyes(Pause),5,19,2
+Tricep Extension(Pause),5,17,2
+Calf Raise(Pause),5,1,2
+Calf Raise on leg press(Pause),5,15,2
+Glute Press(Pause),5,2,2
+Lying Hamstrings Curl(Pause),5,4,2
+Seated Biceps Curl(Pause),5,5,2
+Seated Chest Press(Pause),5,6,2
+Seated Close-Grip Chest Press(Pause),5,6,2
+Seated Crunch(Pause),5,8,2
+Seated Incline Chest Press(Pause),5,7,2
+Decline Chest Press(Pause),5,21,2
+Seated Row(Pause),5,9,2
+Squat Jump(Count Movement),3,109,1
+Squat Jump(Concentric),3,109,1
+Drop Jump,3,109,3
+Nordic Hamstring,5,109,3
+Seated Leg Press Exercise(wide),5,15,2
+Seated Leg Press Exercise(narrow),5,15,2
+Seated single Leg Press Exercise_R,5,15,2
+Seated single Leg Press Exercise_L,5,109,2
+Dumbbell Bench Press,5,100,1
+Dumbbell Fly,5,100,2
+Incline Dumbbell Press,5,100,1
+Decline Dumbbell Press,5,100,1
+Dumbbell Pullover,5,100,3
+Dumbbell Shoulder Press,5,100,1
+Dumbbell Lateral Raise,5,100,2
+Dumbbell Front Raise,5,100,2
+Dumbbell Rear Delt Fly,5,100,3
+Dumbbell Upright Row,5,100,2
+Dumbbell Bicep Curl,5,100,1
+Dumbbell Hammer Curl,5,100,1
+Dumbbell Preacher Curl,5,100,1
+Dumbbell Concentration Curl_R,5,100,2
+Dumbbell Concentration Curl_L,5,100,2
+Dumbbell Seated Tricep Extension,5,100,1
+Dumbbell Kickback,5,100,1
+Dumbbell Standing Tricep Extension,5,100,2
+Dumbbell Bent-Over Row,5,100,2
+Dumbbell One-Arm Row_R,5,100,2
+Dumbbell One-Arm Row_L,5,100,2
+Dumbbell Shrug,5,100,1
+Dumbbell Deadlift,5,100,2
+Dumbbell Squat,5,100,2
+Dumbbell Lunge,5,100,2
+Dumbbell Step-Up,5,100,2
+Dumbbell Calf Raise,5,100,1
+Dumbbell Russian Twist,5,100,2
+Dumbbell Crunch,5,100,2
+Dumbbell Side Bend,5,100,1
+Dumbbell Woodchopper,5,100,2
+Dumbbell Plank Row,5,100,3
+Dumbbell Turkish Get-Up,5,100,3
+Dumbbell Swing,5,100,2
+Dumbbell Clean,2,100,3
+Dumbbell Snatch,2,100,3
+Dumbbell Jump Squat,3,100,3
+Dumbbell Thruster,5,100,2
+Dumbbell Renegade Row,5,100,2
+Dumbbell Incline Row,5,100,2
+Dumbbell Good Morning,5,100,2
+Dumbbell Hip Thrust,5,100,2
+Dumbbell Bulgarian Split Squat_R,5,100,3
+Dumbbell Bulgarian Split Squat_L,5,100,3
+Dumbbell Single-Leg Deadlift_R,5,100,3
+Dumbbell Single-Leg Deadlift_L,5,100,3
+Dumbbell Arnold Press,5,100,2
+Dumbbell Reverse Fly,5,100,2
+Dumbbell Pallof Press,5,100,2
+Dumbbell Cross-Body Hammer Curl,5,100,2
+Dumbbell Tricep Pullover,5,100,2
+Dumbbell Front Squat,5,100,2
+Dumbbell Goblet Squat,5,100,2
+Dumbbell Lateral Lunge,5,100,2
+Dumbbell Reverse Lunge,5,100,2
+Dumbbell Crossover Lunge,5,100,3
+Dumbbell Single-Arm Snatch_R,2,100,3
+Dumbbell Single-Arm Snatch_L,2,100,3
+Dumbbell Single-Arm Clean and Jerk_R,2,100,3
+Dumbbell Single-Arm Clean and Jerk_L,2,100,3
+Dumbbell Spider Curl,5,100,2
+Dumbbell Zottman Curl,5,100,2
+Dumbbell Incline Hammer Curl,5,100,2
+Dumbbell Lying Tricep Extension,5,100,2
+Dumbbell Incline Fly,5,100,2
+Dumbbell Decline Fly,5,100,2
+Dumbbell Crossover,5,100,2
+Dumbbell Y Raise,5,100,2
+Dumbbell Front Squat to Press,5,100,3
+Dumbbell Lateral Raise Drop Set,5,100,2
+Dumbbell Incline Y Raise,5,100,2
+Dumbbell Standing Calf Raise,5,100,1
+Dumbbell Seated Calf Raise,5,100,1
+Dumbbell Single-Leg Calf Raise,5,100,2
+Dumbbell Wrist Curl,5,100,1
+Dumbbell Reverse Wrist Curl,5,100,1
+Dumbbell Around the World,5,100,2
