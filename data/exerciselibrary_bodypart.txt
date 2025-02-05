@@ -1,4 +1,4 @@
-exercise_library_id	body_part_id
+exercise_library	body_part
 1	4,5
 2	19
 3	19,20
