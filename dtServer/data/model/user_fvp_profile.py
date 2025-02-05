@@ -5,8 +5,8 @@ from dtServer.data.model.exercise_library import ExerciseLibrary
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class UserFVPProfile(BaseModel) : 
-    user_id = ForeignKeyField(User)
-    exercise_library_id = ForeignKeyField(ExerciseLibrary)
+    user = ForeignKeyField(User)
+    exercise_library = ForeignKeyField(ExerciseLibrary)
     Force = FloatField()
     Velocity = FloatField()
     Power = FloatField()

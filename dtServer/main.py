@@ -13,11 +13,12 @@ from dtServer.data.model.center_equipment import select_center_euipments
 from dtServer.data.model.exercise_library import select_exericse_libraries
 from dtServer.data.model.user_exercise_metric import save_user_exercise_metric, select_user_exer_metric
 from dtServer.data.model.user_survey import save_user_survey, select_user_survey
-from dtServer.data.model.workout_sessions import save_workout_session, select_workout_sessions_period, select_workout_sessions
+from dtServer.data.model.workout_sessions import save_workout_session, select_workout_sessions_period, select_workout_sessions, select_workout_session
 from dtServer.data.model.workouts import save_workout, select_workouts, select_workout_by_id
 from dtServer.data.model.workout_metrics import insert_many_workout_metrics, select_join_with_workout_sessions
 from dtServer.data.model.nfc_tag import select_nfc_tag
 from dtServer.data.model.exerciselib_bodypart import select_all_exercise_library_body_part
+from dtServer.data.model.workout_data import insert_many_workout_data, select_workout_data_with_exercise_library, select_workout_data_with_body_parts
 
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
@@ -332,19 +333,74 @@ def qr_certification() :
                certification_data = session['qr_certification']
                return (certification_data, 200)          
           return abort(400)
-     
-@app.route("/users/<user_id>/recent_workout", methods=['GET']) 
+####
+@app.route("/users/<user_id>/workout_sessions/recent", methods=['GET']) 
 def get_recent_user_workouts(user_id) : 
-     # from_date = datetime.now() - timedelta(days = 7)
-     # to_date = datetime.now()
+     from_date = datetime.now() - timedelta(days = 7)
+     to_date = datetime.now()
+
+     pass     
+     # recent_user_workout_data = select_join_with_workout_sessions(user_id, from_date, to_date)
+     # return (recent_user_workout_data, 200)
+
+@app.route("/users/<user_id>/workout_sessions", methods=['POST', 'GET']) 
+def get_post_user_workout_sessions(user_id) : 
+     if request.method == 'POST' : 
+          data = request.get_json()
+          save_workout_session(data)
+          return ("", 200)
+
+     if request.method == 'GET' : 
+          from_date = request.args("from_date")
+          to_date = request.args("to_date")
+          workout_sessions = select_workout_sessions(user_id, from_date, to_date)
+          return (workout_sessions, 200)
+
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>", methods=['PATCH', 'GET']) 
+def get_patch_user_workout_sessions(user_id, workout_session_id) : 
+     if request.method == 'PATCH' : 
+          data = request.get_json()
+          save_workout_session(data)
+          return ("", 200)
+
+     if request.method == 'GET' : 
+          workout_session = select_workout_session(workout_session_id)
+          return workout_session, 200
+
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts", methods=['POST', 'GET']) 
+def get_post_user_workouts(user_id, workout_session_id) : 
+     if request.method == 'POST' : 
+          data = request.get_json()
+          save_workout(data)
+          return "", 200
+
+     if request.method == 'GET' : 
+          workout_sessions = select_workouts(workout_session_id)
+          return (workout_sessions, 200)
+          
+
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>", methods=['PATCH', 'GET'])
+def get_patch_user_workout(user_id, workout_session_id, workout_id) : 
+     if request.method == 'PATCH' : 
+          data = request.get_json()
+          save_workout(data)
+          return "", 200
+
+     if request.method == 'GET' : 
+          workout = select_workout_by_id(workout_id)
+          return workout, 200
+
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/workout_metrics", methods=['POST']) 
+def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) : 
+     if request.method == 'POST' : 
+          data = request.get_json()
+          list_workout_metrics = data['workout_metrics']
+          insert_many_workout_metrics(list_workout_metrics)
+          return "", 200
      
-     from_date = datetime(2025, 1, 10)
-     to_date = datetime(2025, 1, 20)
-
-     recent_user_workout_data = select_join_with_workout_sessions(user_id, from_date, to_date)
-     return (recent_user_workout_data, 200)
-
-
-@app.route("/users/<user_id>/workouts_report", methods=['GET']) ####
-def get_workout_metrics_by_exercise_libs(user_id) : 
-     pass 
+@app.route("/users/<user_id>/recent_workout_summary", methods=['GET']) 
+def get_user_recent_workout_summary(user_id) : 
+     to_date = datetime.now()
+     from_date = datetime.now() - timedelta(days = 7)   
+     
+     return "", 200 

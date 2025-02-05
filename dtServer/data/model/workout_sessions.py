@@ -8,7 +8,7 @@ DATE_FORMAT = '%y-%m-%d'
 LEN_STATUS = 20
 
 class WorkoutSessions(BaseModel) : 
-    user_id = ForeignKeyField(model = User)
+    user = ForeignKeyField(model = User)
     date = DateField(DATE_FORMAT, index=True)
     status = CharField(LEN_STATUS)
 
@@ -17,7 +17,7 @@ class WorkoutSessions(BaseModel) :
 
 def create_workout_session(user_id, date, status) : 
     data = {
-        'user_id' : user_id, 
+        'user' : user_id, 
         'date' : date, 
         'status' : status
     }

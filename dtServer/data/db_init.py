@@ -16,19 +16,17 @@ from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart, insert
 from dtServer.data.model.user_account import UserAccount, insert_user_accounts
 from dtServer.data.model.user_center import UserCenter, insert_user_center
 from dtServer.data.model.user_exercise_metric import UserExerciseMetric
-from dtServer.data.model.user_exercise_metric_data import UserExerciseMetricData
+from dtServer.data.model.user_exercise_metric_value import UserExerciseMetricValue
 from dtServer.data.model.user_survey import UserSurvey
 from dtServer.data.model.workout_sessions import WorkoutSessions, insert_workout_sessions
 from dtServer.data.model.workouts import Workouts, insert_workouts
 from dtServer.data.model.workout_metrics import WorkoutMetrics, insert_many_workout_metrics
 from dtServer.data.model.user_fvp_profile import UserFVPProfile
-from dtServer.data.model.user_fvp_profile_data import UserFVPProfileData
+from dtServer.data.model.user_fvp_profile_value import UserFVPProfileValue
 from dtServer.data.model.nfc_tag import NFCTag, insert_nfc_tags
 from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipment, insert_exerciselibrary_equipments
 from dtServer.data.model.exercise_library_type import ExerciseLibraryType, insert_many_exercise_library_type
 from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty, insert_many_exercise_library_difficulty
-
-
 
 def init_exerciselibrary_equipments() : 
     with open('./data/exerciselibrary_equipments.csv', 'r', encoding='utf-8') as f : 
@@ -113,6 +111,12 @@ def init_workouts() :
         list_data = list(csv_reader)
         insert_workouts(list_data)  
 
+def init_workout_metrics() : 
+    with open('./data/workout_metrics.csv', 'r', encoding='utf-8') as f : 
+        csv_reader = csv.DictReader(f)
+        list_data = list(csv_reader)
+        insert_many_workout_metrics(list_data)  
+
 def init_nfc_tags() : 
     with open('./data/nfc_tags.csv', 'r', encoding='utf-8') as f : 
         csv_reader = csv.DictReader(f)
@@ -131,18 +135,12 @@ def init_exercise_library_difficulty() :
         list_data = list(csv_reader)
         insert_many_exercise_library_difficulty(list_data)
 
-def init_workout_metrics() : 
-    with open('./data/work_metrics.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_many_workout_metrics(list_data)
-
 if __name__ == '__main__' : 
     tables = [
-              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, 
+              User, WorkoutSessions, Workouts, Center, WorkoutMetrics,  
               BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
-              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, UserExerciseMetric, UserExerciseMetricData, 
-              UserSurvey, NFCTag, ExerciseLibraryEquipment, UserFVPProfile, UserFVPProfileData, ExerciseLibraryType, ExerciseLibraryDifficulty
+              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, UserExerciseMetric, UserExerciseMetricValue, 
+              UserSurvey, NFCTag, ExerciseLibraryEquipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
               ]
     
     conn = make_database_connection()   
@@ -169,6 +167,7 @@ if __name__ == '__main__' :
     init_workout_sessions()
     init_workouts()
     init_workout_metrics()
+
     init_nfc_tags()
 
     if not conn.is_closed() : 

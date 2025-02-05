@@ -35,3 +35,6 @@ def select_exercise_library(name : str ) :
 def insert_many_exercise_libraries(list_data) : 
     with db_proxy.atomic() : 
         ExerciseLibrary.insert_many(list_data).execute()
+
+
+

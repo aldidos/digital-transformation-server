@@ -6,8 +6,8 @@ from dtServer.data.model.center_equipment import CenterEquipment
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class Workouts(BaseModel) : 
-    workout_session_id = ForeignKeyField(WorkoutSessions)   
-    exercise_library_id = ForeignKeyField(ExerciseLibrary)
+    workout_session = ForeignKeyField(WorkoutSessions)   
+    exercise_library = ForeignKeyField(ExerciseLibrary)
     completed_sets = IntegerField()
     start_time = DateTimeField('%y-%m-%d %H:%M:%S')
     end_time = DateTimeField('%y-%m-%d %H:%M:%S')
@@ -25,7 +25,7 @@ def select_workout_by_id(id : int) :
     return model_to_dict_or_none(workout)
 
 def select_workouts(workout_session_id : int) : 
-    q = Workouts.select().where( Workouts.workout_session_id == workout_session_id )
+    q = Workouts.select().where( Workouts.workout_session == workout_session_id )
     list_data = [model_to_dict(row) for row in q]
     return list_data
 

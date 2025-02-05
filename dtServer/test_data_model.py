@@ -43,6 +43,29 @@ def insert_test_data(list_data) :
     with db.atomic() : 
         TempDataModel.insert_many(list_data).execute()
 
-TempDataModel.drop_table(False)
-TempDataModel.create_table(False)
-insert_test_data( create_test_data() )
+
+from dtServer.data.model.base_model import db_proxy
+from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart, ExerciseLibrary, BodyPart
+from dtServer.data.data_converter import model_to_dict_or_none
+import json
+
+db_proxy.initialize(db)
+
+# q = ExerciseLibBodyPart.select(ExerciseLibBodyPart.exercise_library_id, ExerciseLibBodyPart.body_part_id  )\
+q = ExerciseLibBodyPart.select(ExerciseLibBodyPart.body_part_id)\
+                        .join(ExerciseLibrary, JOIN.INNER)\
+                        .switch(ExerciseLibBodyPart)\
+                        .join(BodyPart, JOIN.INNER)\
+                        .where(ExerciseLibrary.id == 1)
+
+# q = ExerciseLibrary.select(ExerciseLibrary.name, fn.COUNT(ExerciseLibBodyPart.body_part_id).alias('cnt')  )\
+#                         .join(ExerciseLibBodyPart, JOIN.INNER)\
+#                         .group_by(ExerciseLibrary.name) 
+
+# q = ExerciseLibrary.select(ExerciseLibrary)
+
+for row in q : 
+    
+    d = model_to_dict_or_none(row)
+    print( json.dumps(d) )
+    # print(row.exercise_library_id.id, row.body_part_id.id)
