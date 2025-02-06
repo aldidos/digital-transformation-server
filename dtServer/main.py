@@ -439,13 +439,16 @@ def get_req_workout_metric_summary_recent(user_id) :
 @app.route("/users/<user_id>/workout_metric_summary", methods=['GET']) 
 def get_req_workout_metric_summary(user_id) : 
      from_date, to_date = parse_request_args_from_to_dates(request)
-     res = get_workout_metric_stat(user_id, from_date, to_date)
      
+     if from_date > to_date : 
+          return abort(400)
+     
+     res = get_workout_metric_stat(user_id, from_date, to_date)     
      return res, 200
 
 @app.route("/users/<user_id>/workout_summary/recent", methods=['GET']) 
 def get_req_workout_summary_recent(user_id) : 
-     from_date, to_date = get_recent_date_period()
+     from_date, to_date = get_recent_date_period()     
      
      res = get_workout_summary(user_id, from_date, to_date)
      return res, 200
@@ -453,6 +456,9 @@ def get_req_workout_summary_recent(user_id) :
 @app.route("/users/<user_id>/workout_summary", methods=['GET']) 
 def get_req_workout_summary(user_id) : 
      from_date, to_date = parse_request_args_from_to_dates(request)
+
+     if from_date > to_date : 
+          return abort(400)
      
      res = get_workout_summary(user_id, from_date, to_date)
      return res, 200
