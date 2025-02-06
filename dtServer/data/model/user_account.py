@@ -9,7 +9,7 @@ LEN_PW = 128
 class UserAccount(BaseModel) : 
     login_id = CharField(LEN_ID, unique = True)
     login_pw = CharField(LEN_PW, index = True)
-    user_id = ForeignKeyField(User) ####
+    user = ForeignKeyField(User) ####
 
     class Meta : 
         table_name = 'user_account'

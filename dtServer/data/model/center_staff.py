@@ -7,7 +7,7 @@ LEN_NAME = 128
 DATE_FORMAT = '%y-%m-%d'
 
 class CenterStaff(BaseModel) : 
-    center_id = ForeignKeyField(Center)    
+    center = ForeignKeyField(Center)    
     name = CharField(LEN_NAME, index=True)
     birth_day = DateField(DATE_FORMAT)
 
@@ -20,7 +20,7 @@ def save_center_staff(data : dict) :
     return model_to_dict(model)      
 
 def select_center_staffs(center_id : int) : 
-    q = CenterStaff.select().where(CenterStaff.center_id == center_id)
+    q = CenterStaff.select().where(CenterStaff.center == center_id)
     center_staffs = [model_to_dict(row) for row in q]    
     return center_staffs
 

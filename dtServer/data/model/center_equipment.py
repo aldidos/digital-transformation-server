@@ -6,9 +6,9 @@ from dtServer.data.model.exercise_library import ExerciseLibrary
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class CenterEquipment (BaseModel) : 
-    center_id = ForeignKeyField(Center)
-    equipment_id = ForeignKeyField(ExerciseLibraryEquipment)
-    exercise_library_id = ForeignKeyField(ExerciseLibrary) 
+    center = ForeignKeyField(Center)
+    equipment = ForeignKeyField(ExerciseLibraryEquipment)
+    exercise_library = ForeignKeyField(ExerciseLibrary) 
     location_x = FloatField(False)
     location_y = FloatField(False)
     usage = BooleanField(default=False)
@@ -22,7 +22,7 @@ def save_center_euipment( data : dict) :
     return model_to_dict(center_euipment)    
 
 def select_center_euipments( center_id : int) : 
-    query = CenterEquipment.select().where(CenterEquipment.center_id == center_id )
+    query = CenterEquipment.select().where(CenterEquipment.center == center_id )
     center_equipments = [ model_to_dict(row) for row in query ]
     return center_equipments
 

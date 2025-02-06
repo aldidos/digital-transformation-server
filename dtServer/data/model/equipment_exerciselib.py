@@ -5,8 +5,8 @@ from dtServer.data.model.exercise_library import ExerciseLibrary
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class EquipmentExerciseLib(BaseModel) : ####
-    equipment_id = ForeignKeyField(ExerciseLibraryEquipment)
-    exercise_library_id = ForeignKeyField(ExerciseLibrary)
+    equipment = ForeignKeyField(ExerciseLibraryEquipment)
+    exercise_library = ForeignKeyField(ExerciseLibrary)
 
     class Meta : 
         table_name = 'equipment_exerciselib'
@@ -17,9 +17,9 @@ def save_equipment_exercise_lib(data : dict) :
     return model_to_dict(model)
 
 def get_equipment_exercise_lib_by_equipment_id(equipment_id : int) :
-    model = EquipmentExerciseLib.select().where( EquipmentExerciseLib.equipment_id == equipment_id ).get()
+    model = EquipmentExerciseLib.select().where( EquipmentExerciseLib.equipment == equipment_id ).get()
     return model_to_dict_or_none(model)    
 
 def get_equipment_exercise_lib_by_exercise_library_id(exercise_library_id : int) :
-    model = EquipmentExerciseLib.select().where( EquipmentExerciseLib.exercise_library_id == exercise_library_id ).get()
+    model = EquipmentExerciseLib.select().where( EquipmentExerciseLib.exercise_library == exercise_library_id ).get()
     return model_to_dict_or_none(model)

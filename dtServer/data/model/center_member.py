@@ -8,7 +8,7 @@ DATE_FORMAT = '%y-%m-%d'
 LEN_CONTACT = '16'
 
 class CenterMember(BaseModel) : 
-    center_id = ForeignKeyField(Center)
+    center = ForeignKeyField(Center)
     name = CharField(LEN_NAME, index=True)
     birth_day = DateField(DATE_FORMAT)
     contact = CharField(LEN_CONTACT)
@@ -25,7 +25,7 @@ def save_center_member(data : dict) :
     return model_to_dict(model)    
 
 def select_center_members(center_id : int) : 
-    q = CenterMember.select().where(CenterMember.center_id == center_id)
+    q = CenterMember.select().where(CenterMember.center == center_id)
     center_members = [ model_to_dict( row ) for row in q ]
     return center_members
 
@@ -34,7 +34,7 @@ def select_center_member_by_id(center_member_id) :
     return model_to_dict_or_none(center_member)
 
 def get_center_member(center_id, name, birth_day, contact) : 
-    center_member = CenterMember.get_or_none(CenterMember.center_id == center_id and CenterMember.name == name and CenterMember.birth_day == birth_day and CenterMember.contact == contact)
+    center_member = CenterMember.get_or_none(CenterMember.center == center_id and CenterMember.name == name and CenterMember.birth_day == birth_day and CenterMember.contact == contact)
     return model_to_dict_or_none(center_member)
 
 def insert_center_members(list_data) : 

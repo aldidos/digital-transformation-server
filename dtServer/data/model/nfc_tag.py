@@ -7,7 +7,7 @@ LEN_NFC_TAG_ID = 32
 
 class NFCTag(BaseModel) : 
     nfc_tag_id = CharField(LEN_NFC_TAG_ID, unique = True) 
-    center_equipment_id = ForeignKeyField(CenterEquipment, index = True)
+    center_equipment = ForeignKeyField(CenterEquipment, index = True)
     
     class Meta : 
         table_name = 'nfc_tags'
@@ -15,7 +15,7 @@ class NFCTag(BaseModel) :
 def create_nfc_access(nfc_tag_id, center_equipment_id) : 
     data = {
         'nfc_tag_id' : nfc_tag_id, 
-        'center_equipment_id' : center_equipment_id
+        'center_equipment' : center_equipment_id
     }
     return save_nfc_tag(data)
 

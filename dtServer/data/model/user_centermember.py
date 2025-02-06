@@ -5,16 +5,16 @@ from dtServer.data.model.user import User
 from dtServer.data.model.center_member import CenterMember
 
 class User_CenterMember(BaseModel) : 
-    user_id = ForeignKeyField(User, unique = True)
-    centermember_id = ForeignKeyField(CenterMember, unique = True)
+    user = ForeignKeyField(User, unique = True)
+    centermember = ForeignKeyField(CenterMember, unique = True)
 
     class Meta : 
         table_name = 'user_centermember'
 
 def create_user_centermember(user_id, centermember_id) : 
     data = {
-        "user_id" : user_id, 
-        "centermember_id" : centermember_id
+        "user" : user_id, 
+        "centermember" : centermember_id
     }
     save_user_centermember(data)
 
@@ -24,9 +24,9 @@ def save_user_centermember(data) :
     return model_to_dict(model)
 
 def select_centermember(user_id) : 
-    model = User_CenterMember.get_or_none( User_CenterMember.user_id == user_id )     
+    model = User_CenterMember.get_or_none( User_CenterMember.user == user_id )     
     return model_to_dict_or_none(model)
 
 def select_user(centermember_id) : 
-    model = User_CenterMember.get_or_none( User_CenterMember.centermember_id == centermember_id ) 
+    model = User_CenterMember.get_or_none( User_CenterMember.centermember == centermember_id ) 
     return model_to_dict_or_none(model)
