@@ -11,6 +11,7 @@ class WorkoutSessions(BaseModel) :
     user = ForeignKeyField(model = User)
     date = DateField(DATE_FORMAT, index=True)
     status = CharField(LEN_STATUS)
+    is_completed = BooleanField(False)
 
     class Meta : 
         table_name = 'workout_sessions'
@@ -19,7 +20,8 @@ def create_workout_session(user_id, date, status) :
     data = {
         'user' : user_id, 
         'date' : date, 
-        'status' : status
+        'status' : status, 
+        'is_completed' : False
     }
     return save_workout_session(date)
 

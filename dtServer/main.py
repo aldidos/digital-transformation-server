@@ -14,11 +14,10 @@ from dtServer.data.model.exercise_library import select_exericse_libraries
 from dtServer.data.model.user_exercise_metric import save_user_exercise_metric, select_user_exer_metric
 from dtServer.data.model.user_survey import save_user_survey, select_user_survey
 from dtServer.data.model.workout_sessions import save_workout_session, select_workout_sessions_period, select_workout_sessions, select_workout_session
-from dtServer.data.model.workouts import save_workout, select_workouts, select_workout_by_id
-from dtServer.data.model.workout_metrics import insert_many_workout_metrics, select_join_with_workout_sessions
+from dtServer.data.model.workouts import save_workout, select_workouts_by_workout_session_id, select_workout_by_id, select_workouts
+from dtServer.data.model.workout_metrics import insert_many_workout_metrics
 from dtServer.data.model.nfc_tag import select_nfc_tag
 from dtServer.data.model.exerciselib_bodypart import select_all_exercise_library_body_part
-from dtServer.data.model.workout_data import insert_many_workout_data, select_workout_data_with_exercise_library, select_workout_data_with_body_parts
 
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
@@ -267,7 +266,7 @@ def get_post_req_workouts(user_id, workout_session_id) :
           return ("POSTED user workout data", 200)
      
      if request.method == "GET" :           
-          workouts = select_workouts(workout_session_id) 
+          workouts = select_workouts_by_workout_session_id(workout_session_id) 
           return (workouts, 200)
 
 @app.route("/users/<user_id>/workout_history/<workout_session_id>/<workout_id>", methods=['GET', 'PATCH']) 
@@ -375,7 +374,7 @@ def get_post_user_workouts(user_id, workout_session_id) :
           return "", 200
 
      if request.method == 'GET' : 
-          workout_sessions = select_workouts(workout_session_id)
+          workout_sessions = select_workouts_by_workout_session_id(workout_session_id)
           return (workout_sessions, 200)
           
 
@@ -398,9 +397,62 @@ def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) :
           insert_many_workout_metrics(list_workout_metrics)
           return "", 200
      
-@app.route("/users/<user_id>/recent_workout_summary", methods=['GET']) 
-def get_user_recent_workout_summary(user_id) : 
+from dtServer.data.model.workout_metrics import select_period_workout_metrics
+from dtServer.data.statistics.stat_workout_metric import stat_workout_metric
+from dtServer.data.statistics.stat_workout import statWorkout
+
+def parse_date_str(datestr) : 
+     return datetime.strptime(datestr, '%Y-%m-%d')
+
+def parse_request_args_from_to_dates(request) : 
+     arg_from_date = request.args.get('from_date')
+     arg_to_date = request.args.get('to_date')
+
+     from_date = parse_date_str( arg_from_date )
+     to_date = parse_date_str(arg_to_date)
+
+     return from_date, to_date
+
+def get_recent_date_period() : 
      to_date = datetime.now()
      from_date = datetime.now() - timedelta(days = 7)   
+
+     return from_date, to_date
+
+def get_workout_metric_stat(user_id, from_date, to_date) : 
+     list_data = select_period_workout_metrics(user_id, from_date, to_date)
+     res = stat_workout_metric.stat_summary(list_data)
+     return res
+
+def get_workout_summary(user_id, from_date, to_date) : 
+     list_workouts = select_workouts(user_id, from_date, to_date)
+     return statWorkout.stat(list_workouts)
+
+@app.route("/users/<user_id>/workout_metric_summary/recent", methods=['GET']) 
+def get_req_workout_metric_summary_recent(user_id) : 
+     from_date, to_date = get_recent_date_period()
+          
+     res = get_workout_metric_stat(user_id, from_date, to_date)
      
-     return "", 200 
+     return res, 200 
+
+@app.route("/users/<user_id>/workout_metric_summary", methods=['GET']) 
+def get_req_workout_metric_summary(user_id) : 
+     from_date, to_date = parse_request_args_from_to_dates(request)
+     res = get_workout_metric_stat(user_id, from_date, to_date)
+     
+     return res, 200
+
+@app.route("/users/<user_id>/workout_summary/recent", methods=['GET']) 
+def get_req_workout_summary_recent(user_id) : 
+     from_date, to_date = get_recent_date_period()
+     
+     res = get_workout_summary(user_id, from_date, to_date)
+     return res, 200
+
+@app.route("/users/<user_id>/workout_summary", methods=['GET']) 
+def get_req_workout_summary(user_id) : 
+     from_date, to_date = parse_request_args_from_to_dates(request)
+     
+     res = get_workout_summary(user_id, from_date, to_date)
+     return res, 200
