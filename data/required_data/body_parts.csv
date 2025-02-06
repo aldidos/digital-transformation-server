@@ -1,0 +1,23 @@
+category,sub_category,name,muscle_group
+upper_body,Chest,Upper_chest,major_1_2
+upper_body,Chest,Middle_chest,major_1_1
+upper_body,Chest,Lower_chest,major_1_3
+upper_body,Back,Upper_back,major_2_3
+upper_body,Back,Middle_back,major_2_1
+upper_body,Back,Lower_back,major_2_2
+upper_body,Shoulders,Anterior_deltoid(Front_delts),minor_1_2
+upper_body,Shoulders,Lateral_deltoid(Lateral_delts),minor_1_1
+upper_body,Shoulders,Posterior_deltoid(Rear_delts),minor_1_3
+upper_body,Arm,Biceps,minor_2_1
+upper_body,Arm,Triceps,minor_2_2
+upper_body,Arm,Forearms,minor_2_3
+upper_body,Abdominals,Upper_abdomen,minor_3_1
+upper_body,Abdominals,Lower_abdomen,minor_3_2
+upper_body,Abdominals,Lateral_abdomen,minor_3_3
+lower_body,Hip,Hip,major_3_3
+lower_body,Hip,Hip_abductors,minor_4_2
+lower_body,Hip,Hip_adductors,minor_4_3
+lower_body,Legs,Anterior_upper_legs,major_3_1
+lower_body,Legs,Posteror_upper_legs(Posterior_Femur),major_3_2
+lower_body,Legs,Lower_legs(Calves & Shins),minor_4_1
+Whole_body,Whole_body,Whole_body,major_4

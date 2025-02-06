@@ -1,0 +1,4 @@
+user,date,status,is_completed
+1,2025-02-04,complete,TRUE
+2,2025-02-03,complete,TRUE
+3,2025-02-05,complete,TRUE

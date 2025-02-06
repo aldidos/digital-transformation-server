@@ -28,26 +28,26 @@ from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipm
 from dtServer.data.model.exercise_library_type import ExerciseLibraryType, insert_many_exercise_library_type
 from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty, insert_many_exercise_library_difficulty
 
-def init_exerciselibrary_equipments() : 
-    with open('./data/exerciselibrary_equipments.csv', 'r', encoding='utf-8') as f : 
+def open_data_file_csv(file_path : str) : 
+     with open(file_path, 'r', encoding='utf-8') as f : 
         csv_reader = csv.DictReader(f)
         list_data = list(csv_reader)
-        insert_exerciselibrary_equipments(list_data)
+        return list_data
+
+def init_exerciselibrary_equipments() : 
+    list_data = open_data_file_csv('./data/required_data/exerciselibrary_equipments.csv')
+    insert_exerciselibrary_equipments(list_data)
 
 def init_bodyparts() : 
-    with open('./data/body_parts.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_body_parts(list_data)
+    list_data = open_data_file_csv('./data/required_data/body_parts.csv')
+    insert_body_parts(list_data)
 
 def init_exerciselibraries() : 
-    with open('./data/exercise_libraries.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_many_exercise_libraries(list_data)
+    list_data = open_data_file_csv('./data/required_data/exercise_libraries.csv')
+    insert_many_exercise_libraries(list_data)
 
 def init_exerciselibrary_bodypart() : 
-    with open('./data/exerciselibrary_bodypart.txt', 'r', encoding='utf-8') as f : 
+    with open('./data/required_data/exerciselibrary_bodypart.txt', 'r', encoding='utf-8') as f : 
         csv_reader = csv.reader(f, delimiter='\t') 
         csv_reader.__next__()
         for row in csv_reader : 
@@ -58,82 +58,56 @@ def init_exerciselibrary_bodypart() :
                 insert_exerciselibrary_body_part(int(el_id), int(temp_bp_id))
 
 def init_users() : 
-    with open('./data/users.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_users(list_data)
+    list_data = open_data_file_csv('./data/test_data/users.csv')
+    insert_users(list_data)
 
 def init_user_account() : 
-    with open('./data/user_account.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_user_accounts(list_data)
+    list_data = open_data_file_csv('./data/test_data/user_account.csv')
+    insert_user_accounts(list_data)
 
 def init_center() : 
-    with open('./data/center.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_centers(list_data)
+    list_data = open_data_file_csv('./data/test_data/center.csv')
+    insert_centers(list_data)
 
 def init_center_members() : 
-    with open('./data/center_members.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_center_members(list_data)
+    list_data = open_data_file_csv('./data/test_data/center_members.csv')
+    insert_center_members(list_data)
 
 def init_center_equipments() : 
-    with open('./data/center_equipments.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_center_equipments(list_data)
+    list_data = open_data_file_csv('./data/test_data/center_equipments.csv')
+    insert_center_equipments(list_data)
 
 def init_center_staffs() : 
-    with open('./data/center_staffs.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_center_staffs(list_data) 
+    list_data = open_data_file_csv('./data/test_data/center_staffs.csv')
+    insert_center_staffs(list_data)
 
 def init_user_center() : 
-    with open('./data/user_center.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_user_center(list_data)    
+    list_data = open_data_file_csv('./data/test_data/user_center.csv')
+    insert_user_center(list_data) 
 
 def init_workout_sessions() : 
-    with open('./data/workout_session.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_workout_sessions(list_data)
+    list_data = open_data_file_csv('./data/test_data/workout_session.csv')
+    insert_workout_sessions(list_data)
 
 def init_workouts() : 
-    with open('./data/workout.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_workouts(list_data)  
+    list_data = open_data_file_csv('./data/test_data/workout.csv')
+    insert_workouts(list_data)
 
 def init_workout_metrics() : 
-    with open('./data/workout_metrics.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_many_workout_metrics(list_data)  
+    list_data = open_data_file_csv('./data/test_data/workout_metrics.csv')
+    insert_many_workout_metrics(list_data)
 
 def init_nfc_tags() : 
-    with open('./data/nfc_tags.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_nfc_tags(list_data)  
+    list_data = open_data_file_csv('./data/test_data/nfc_tags.csv')
+    insert_nfc_tags(list_data)
 
 def init_exercise_library_type() : 
-    with open('./data/exercise_library_type.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_many_exercise_library_type(list_data)
+    list_data = open_data_file_csv('./data/required_data/exercise_library_type.csv')
+    insert_many_exercise_library_type(list_data)
 
 def init_exercise_library_difficulty() : 
-    with open('./data/exercise_library_difficulty.csv', 'r', encoding='utf-8') as f : 
-        csv_reader = csv.DictReader(f)
-        list_data = list(csv_reader)
-        insert_many_exercise_library_difficulty(list_data)
+    list_data = open_data_file_csv('./data/required_data/exercise_library_difficulty.csv')
+    insert_many_exercise_library_difficulty(list_data)
 
 if __name__ == '__main__' : 
     tables = [
