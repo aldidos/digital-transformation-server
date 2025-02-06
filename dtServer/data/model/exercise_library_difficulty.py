@@ -10,6 +10,3 @@ class ExerciseLibraryDifficulty(BaseModel) :
     class Meta : 
         table_name = 'exercise_library_difficulty'
 
-def insert_many_exercise_library_difficulty(list_data) : 
-    with db_proxy.atomic() : 
-        ExerciseLibraryDifficulty.insert_many(list_data).execute()

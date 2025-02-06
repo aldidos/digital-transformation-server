@@ -10,6 +10,3 @@ class ExerciseLibraryType(BaseModel) :
     class Meta : 
         table_name = 'exercise_library_type'
 
-def insert_many_exercise_library_type(list_data) : 
-    with db_proxy.atomic() : 
-        ExerciseLibraryType.insert_many(list_data).execute()

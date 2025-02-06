@@ -19,24 +19,3 @@ class CenterMember(BaseModel) :
     class Meta : 
         table_name = 'center_member'
 
-def save_center_member(data : dict) : 
-    model = dict_to_model(CenterMember, data)
-    model.save()
-    return model_to_dict(model)    
-
-def select_center_members(center_id : int) : 
-    q = CenterMember.select().where(CenterMember.center == center_id)
-    center_members = [ model_to_dict( row ) for row in q ]
-    return center_members
-
-def select_center_member_by_id(center_member_id) : 
-    center_member = CenterMember.get_or_none(CenterMember.id == center_member_id)
-    return model_to_dict_or_none(center_member)
-
-def get_center_member(center_id, name, birth_day, contact) : 
-    center_member = CenterMember.get_or_none(CenterMember.center == center_id and CenterMember.name == name and CenterMember.birth_day == birth_day and CenterMember.contact == contact)
-    return model_to_dict_or_none(center_member)
-
-def insert_center_members(list_data) : 
-    with db_proxy.atomic() : 
-        CenterMember.insert_many(list_data).execute()

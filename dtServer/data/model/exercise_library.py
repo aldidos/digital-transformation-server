@@ -18,23 +18,4 @@ class ExerciseLibrary(BaseModel) :
     class Meta : 
         table_name = 'exercise_library'
 
-def save_exercise_library(data : dict) : 
-    model = dict_to_model(ExerciseLibrary, data)
-    model.save()
-    return model_to_dict(model)
-
-def select_exericse_libraries() : 
-    q = ExerciseLibrary.select()
-    exercise_libs = [ model_to_dict(row) for row in q ]
-    return exercise_libs
-
-def select_exercise_library(name : str ) :
-    model = ExerciseLibrary.get_or_none(ExerciseLibrary.name == name)
-    return model_to_dict_or_none(model)
-    
-def insert_many_exercise_libraries(list_data) : 
-    with db_proxy.atomic() : 
-        ExerciseLibrary.insert_many(list_data).execute()
-
-
 

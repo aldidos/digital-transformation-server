@@ -13,6 +13,3 @@ class ExerciseLibraryEquipment(BaseModel) :
     class Meta : 
         table_name = 'exerciselibrary_equipment'
 
-def insert_exerciselibrary_equipments(list_data) : 
-    with db_proxy.atomic() : 
-        ExerciseLibraryEquipment.insert_many(list_data).execute()

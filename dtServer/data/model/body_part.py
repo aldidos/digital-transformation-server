@@ -16,16 +16,3 @@ class BodyPart(BaseModel) :
     class Meta : 
         table_name = 'body_part'
 
-def save_body_part(data : dict) : 
-    model = dict_to_model(BodyPart, data)    
-    model.save()
-    return model_to_dict(model)
-
-def get_body_parts() : 
-    query = BodyPart.select()
-    body_parts = [ model_to_dict(row) for row in query ]
-    return body_parts
-
-def insert_body_parts(list_data) :     
-    with db_proxy.atomic() : 
-        BodyPart.insert_many(list_data).execute()   

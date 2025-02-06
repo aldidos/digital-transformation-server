@@ -23,21 +23,3 @@ class User(BaseModel) :
 
     class Meta : 
         table_name = 'user'
-
-def save_user(data : dict) -> User : 
-    user = dict_to_model(User, data)
-    user.save()
-    return model_to_dict(user)
-
-def select_user_by_id(id : int) :
-    user = User.get_or_none( User.id == id )
-    return model_to_dict_or_none(user)
-
-def select_users() : 
-    query = User.select()
-    users = [ model_to_dict(row) for row in query]    
-    return users
-
-def insert_users(list_data) : 
-    with db_proxy.atomic() : 
-        User.insert_many(list_data).execute()
