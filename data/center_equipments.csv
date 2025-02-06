@@ -1,6 +1,0 @@
-center_id,equipment_id,exercise_library_id,location_x,location_y,usage
-1,11,1,10,12,FALSE
-1,14,2,20,12,FALSE
-1,15,3,25,12,FALSE
-1,16,4,30,12,FALSE
-1,16,5,35,12,FALSE
