@@ -14,4 +14,3 @@ class Workouts(BaseModel) :
 
     class Meta : 
         table_name = 'workouts'
-

@@ -13,7 +13,11 @@ class WorkoutMetricsDao(BaseDAO) :
     
     def insert_many(self, list_data) : 
         with db_proxy.atomic() : 
-            WorkoutMetrics.insert_many(list_data).execute()
+            list_ids = []
+            for data in list_data : 
+                id = WorkoutMetrics.insert(data).execute()
+                list_ids.append(id)
+            return list_ids    
 
     def select(self, user_id, from_date, to_date) : 
         q = WorkoutMetrics.select(Workouts.workout_session.date.alias('date'), ExerciseLibrary.name.alias('exercise_library_name'), WorkoutMetrics.set, WorkoutMetrics.rep\

@@ -18,6 +18,6 @@ class CenterStaffDao(BaseDAO) :
 
     def insert_many(self, list_data) : 
         with db_proxy.atomic() :
-            CenterStaff.insert_many(list_data).execute()
+            return CenterStaff.insert_many(list_data).execute()
 
 centerStaffDao = CenterStaffDao()

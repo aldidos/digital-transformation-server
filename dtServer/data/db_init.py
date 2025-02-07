@@ -27,6 +27,7 @@ from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, 
 from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
 from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
 from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
+from dtServer.data.dao.workout_data_dao import workoutDao, WorkoutData
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 
@@ -79,7 +80,7 @@ def init_center_equipments() :
 
 def init_center_staffs() : 
     list_data = open_data_file_csv('./data/test_data/center_staffs.csv')
-    centerStaffDao.insert_many(list_data)
+    centerStaffDao.insert_many(list_data)       
 
 def init_user_center() : 
     list_data = open_data_file_csv('./data/test_data/user_center.csv')
@@ -87,7 +88,7 @@ def init_user_center() :
 
 def init_workout_sessions() : 
     list_data = open_data_file_csv('./data/test_data/workout_session.csv')
-    workoutSessionDao.insert_many(list_data)
+    workoutSessionDao.insert_many(list_data)    
 
 def init_workouts() : 
     list_data = open_data_file_csv('./data/test_data/workout.csv')
@@ -95,7 +96,7 @@ def init_workouts() :
 
 def init_workout_metrics() : 
     list_data = open_data_file_csv('./data/test_data/workout_metrics.csv')
-    workoutMetricDao.insert_many(list_data)
+    workoutMetricDao.insert_many(list_data)    
 
 def init_nfc_tags() : 
     list_data = open_data_file_csv('./data/test_data/nfc_tags.csv')
@@ -111,7 +112,7 @@ def init_exercise_library_difficulty() :
 
 if __name__ == '__main__' : 
     tables = [
-              User, WorkoutSessions, Workouts, Center, WorkoutMetrics,  
+              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutData, 
               BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
               ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
               UserSurvey, NFCTag, ExerciseLibraryEquipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
@@ -140,7 +141,7 @@ if __name__ == '__main__' :
     init_user_center()
     init_workout_sessions()
     init_workouts()
-    init_workout_metrics()
+    # init_workout_metrics()
 
     init_nfc_tags()
 

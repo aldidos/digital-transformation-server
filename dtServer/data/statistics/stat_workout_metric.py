@@ -45,9 +45,8 @@ class StatWorkoutMetric :
             'mean' : stat_mean,
         }
     
-    def stat_summary(self, data) : 
-        df = pd.DataFrame(data)
-        groups = df.groupby(['date', 'exercise_library_name', 'set'])
+    def temp_1(self, df : pd.DataFrame) : ####
+        groups = df.groupby(['date', 'exercise_library_name', 'body_part_name', 'set'])
         result = []
         for group_name, group_df in groups :        
             wm_stat = self.workout_metric_stat( group_df ) 
@@ -63,5 +62,13 @@ class StatWorkoutMetric :
             result.append( wm_stat )
 
         return result
+    
+    def temp_2(self, df : pd.DataFrame ) :
+        pass
+
+    def stat_summary(self, dataset) : 
+        df = pd.DataFrame(dataset)
+        
+        return []
 
 stat_workout_metric = StatWorkoutMetric()

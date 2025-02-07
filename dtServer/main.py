@@ -20,8 +20,11 @@ from dtServer.data.dao.user_survey_dao import userSurveyDao
 from dtServer.data.dao.weight_metric_session_dao import weightMetricSession
 from dtServer.data.dao.weight_metric_dao import weightMetricDao
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
+from dtServer.data.dao.workout_data_dao import workoutDataDao
+
 from dtServer.data.statistics.stat_workout_metric import stat_workout_metric
 from dtServer.data.statistics.stat_workout import statWorkout
+
 
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
@@ -403,8 +406,8 @@ def get_patch_user_workout(user_id, workout_session_id, workout_id) :
 def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) : 
      if request.method == 'POST' : 
           data = request.get_json()
-          list_workout_metrics = data['workout_metrics']
-          workoutDao.insert_many(list_workout_metrics)
+          workout_metric_ids = workoutMetricDao.insert_many(data)
+          workoutDataDao.insert_many(user_id, workout_session_id, workout_id, workout_metric_ids)          
           return "", 200
 
 def parse_date_str(datestr) : 
@@ -426,7 +429,8 @@ def get_recent_date_period() :
      return from_date, to_date
 
 def get_workout_metric_stat(user_id, from_date, to_date) :      
-     list_data = workoutMetricDao.select(user_id, from_date, to_date)
+     # list_data = workoutMetricDao.select(user_id, from_date, to_date)
+     list_data = workoutDataDao.select(user_id, from_date, to_date)
      res = stat_workout_metric.stat_summary(list_data)
      return res
 
@@ -468,3 +472,6 @@ def get_req_workout_summary(user_id) :
      
      res = get_workout_summary(user_id, from_date, to_date)
      return res, 200
+
+if __name__ == '__main__' : 
+     app.run('localhost', port=5000, debug=True)
