@@ -193,7 +193,7 @@ def get_req_exerciselib_bodyparts() :
           return (exericselib_bodyparts, 200)
 
 @app.route("/users/<user_id>/weight_metric_sessions", methods=['GET', 'POST']) 
-def get_patch_req_user_exercise_metric(user_id) :
+def get_post_req_user_exercise_metric(user_id) :
      if request.method == 'POST' or request.method == 'PATCH' : 
           data = request.get_json()
           user_exercise_weight = weightMetricSession.save(data)
