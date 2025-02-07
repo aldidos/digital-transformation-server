@@ -1,5 +1,5 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty, db_proxy, model_to_dict_or_none
+from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty, db_proxy
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class ExerciseLibraryDifficultyDao(BaseDAO) : 

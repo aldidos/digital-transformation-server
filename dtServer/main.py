@@ -16,10 +16,12 @@ from dtServer.data.dao.workouts_dao import workoutDao
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
-
-from dtServer.data.model.user_exercise_metric import save_user_exercise_metric, select_user_exer_metric
-from dtServer.data.model.user_survey import save_user_survey, select_user_survey
-
+from dtServer.data.dao.user_survey_dao import userSurveyDao
+from dtServer.data.dao.weight_metric_session_dao import weightMetricSession
+from dtServer.data.dao.weight_metric_dao import weightMetricDao
+from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
+from dtServer.data.statistics.stat_workout_metric import stat_workout_metric
+from dtServer.data.statistics.stat_workout import statWorkout
 
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
@@ -190,44 +192,51 @@ def get_req_exerciselib_bodyparts() :
           exericselib_bodyparts = exerciseLibBodyPartDao.select_all()
           return (exericselib_bodyparts, 200)
 
-@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['POST']) 
-def post_req_user_exercise_metric(user_id, exercise_lib_id):
-     if request.method == 'POST' : 
+@app.route("/users/<user_id>/weight_metric_sessions", methods=['GET', 'POST']) 
+def get_patch_req_user_exercise_metric(user_id) :
+     if request.method == 'POST' or request.method == 'PATCH' : 
           data = request.get_json()
-          user_exercise_weight = save_user_exercise_metric(data)
+          user_exercise_weight = weightMetricSession.save(data)
           return (user_exercise_weight, 200)
-
-@app.route("/users/<user_id>/weight_metric/<exercise_lib_id>", methods=['GET', 'PATCH']) 
-def get_patch_req_user_exercise_metric(user_id, exercise_lib_id) :
+     
      if request.method == 'GET' : 
-          user_weight_metric = select_user_exer_metric(user_id, exercise_lib_id)
+          from_date, to_date = parse_request_args_from_to_dates(request)
+          user_weight_metric = weightMetricSession.select_by_date_period(from_date, to_date)
+          if user_weight_metric is None : 
+               return abort(404) 
+          return (user_weight_metric, 200)
+     
+@app.route("/users/<user_id>/weight_metric_sessions/<weight_metric_session_id>", methods=['GET', 'PATCH']) 
+def get_patch_req_user_exercise_metric(user_id, weight_metric_session_id) :
+     if request.method == 'PATCH' or request.method == 'PATCH' : 
+          data = request.get_json()
+          user_exercise_weight = weightMetricSession.save(data)
+          return (user_exercise_weight, 200)
+     
+     if request.method == 'GET' : 
+          user_weight_metric = weightMetricSession.select_by_id(weight_metric_session_id)
           if user_weight_metric is None : 
                return abort(404)               
           return (user_weight_metric, 200)
      
-     if request.method == 'PATCH' : 
-          data = request.get_json()
-          save_user_exercise_metric(data)
-          return ("PATCH the user exercise weight metric", 200)
-
 @app.route("/users/<user_id>/survey", methods=['GET', 'POST', 'PATCH']) 
 def users_survey(user_id) : 
      if request.method == 'POST' : 
           data = request.get_json()
-          user_survey = save_user_survey(data) 
+          user_survey = userSurveyDao.save(data) 
           if user_survey is None : 
                return abort(400)               
           return (user_survey, 200) 
 
      if request.method == 'GET' : 
-          user_survey = select_user_survey(user_id)
+          user_survey = userSurveyDao.select_by_user(user_id)
           if user_survey is None : 
                return abort(404)  
           return (user_survey, 200)
      
      if request.method == 'PATCH' : 
           data = request.get_json()
-          user_survey = save_user_survey(data) 
+          user_survey = userSurveyDao.save(data) 
           return ('PATCH requested user survey', 200)
 
 @app.route("/users/<user_id>", methods=['GET'])
@@ -335,15 +344,13 @@ def qr_certification() :
                certification_data = session['qr_certification']
                return (certification_data, 200)          
           return abort(400)
-####
+
 @app.route("/users/<user_id>/workout_sessions/recent", methods=['GET']) 
 def get_recent_user_workouts(user_id) : 
-     from_date = datetime.now() - timedelta(days = 7)
-     to_date = datetime.now()
+     from_date, to_date = get_recent_date_period()
 
-     pass     
-     # recent_user_workout_data = select_join_with_workout_sessions(user_id, from_date, to_date)
-     # return (recent_user_workout_data, 200)
+     workout_sessions = workoutSessionDao.select_by_user_and_date_period(user_id, from_date, to_date)
+     return workout_sessions, 200     
 
 @app.route("/users/<user_id>/workout_sessions", methods=['POST', 'GET']) 
 def get_post_user_workout_sessions(user_id) : 
@@ -399,10 +406,6 @@ def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) :
           list_workout_metrics = data['workout_metrics']
           workoutDao.insert_many(list_workout_metrics)
           return "", 200
-     
-from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-from dtServer.data.statistics.stat_workout_metric import stat_workout_metric
-from dtServer.data.statistics.stat_workout import statWorkout
 
 def parse_date_str(datestr) : 
      return datetime.strptime(datestr, '%Y-%m-%d')

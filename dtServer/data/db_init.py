@@ -4,29 +4,29 @@ import csv
 
 from dtServer.data.conn import make_database_connection
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.model.user import User, insert_users
-from dtServer.data.model.body_part import BodyPart, insert_body_parts
-from dtServer.data.model.center_equipment import CenterEquipment, insert_center_equipments
-from dtServer.data.model.center import Center, insert_centers
-from dtServer.data.model.center_member import CenterMember, insert_center_members
-from dtServer.data.model.center_staff import CenterStaff, insert_center_staffs
-from dtServer.data.model.equipment_exerciselib import EquipmentExerciseLib
-from dtServer.data.model.exercise_library import ExerciseLibrary, insert_many_exercise_libraries
-from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart, insert_exerciselibrary_body_part
-from dtServer.data.model.user_account import UserAccount, insert_user_accounts
-from dtServer.data.model.user_center import UserCenter, insert_user_center
-from dtServer.data.model.user_exercise_metric import UserExerciseMetric
-from dtServer.data.model.user_exercise_metric_value import UserExerciseMetricValue
-from dtServer.data.model.user_survey import UserSurvey
-from dtServer.data.model.workout_sessions import WorkoutSessions, insert_workout_sessions
-from dtServer.data.model.workouts import Workouts, insert_workouts
-from dtServer.data.model.workout_metrics import WorkoutMetrics, insert_many_workout_metrics
-from dtServer.data.model.user_fvp_profile import UserFVPProfile
-from dtServer.data.model.user_fvp_profile_value import UserFVPProfileValue
-from dtServer.data.model.nfc_tag import NFCTag, insert_nfc_tags
-from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipment, insert_exerciselibrary_equipments
-from dtServer.data.model.exercise_library_type import ExerciseLibraryType, insert_many_exercise_library_type
-from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty, insert_many_exercise_library_difficulty
+from dtServer.data.dao.user_dao import userDao, User
+from dtServer.data.dao.body_part_dao import bodyPartDao, BodyPart
+from dtServer.data.dao.center_equipment_dao import centerEquipmentDao, CenterEquipment
+from dtServer.data.dao.center_dao import centerDao, Center
+from dtServer.data.dao.center_member_dao import centerMemberDao, CenterMember
+from dtServer.data.dao.center_staff_dao import centerStaffDao, CenterStaff
+from dtServer.data.dao.equipment_exercise_library_dao import equipmentExerciseLib, EquipmentExerciseLib
+from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao, ExerciseLibrary
+from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao, ExerciseLibBodyPart
+from dtServer.data.dao.user_account_dao import userAccountDao, UserAccount
+from dtServer.data.dao.user_center_dao import userCenterDao, UserCenter
+from dtServer.data.dao.weight_metric_session_dao import weightMetricSession, WeightMetricSession
+from dtServer.data.dao.weight_metric_dao import weightMetricDao, WeightMetric
+from dtServer.data.dao.user_survey_dao import userSurveyDao, UserSurvey
+from dtServer.data.dao.workout_sessions_dao import workoutSessionDao, WorkoutSessions
+from dtServer.data.dao.workouts_dao import workoutDao, Workouts
+from dtServer.data.dao.workout_metrics_dao import workoutMetricDao, WorkoutMetrics
+from dtServer.data.dao.nfc_tag_dao import nfcTagDao, NFCTag
+from dtServer.data.dao.exercise_library_equipment_dao import exerciseLibraryEquipmentDao, ExerciseLibraryEquipment
+from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, ExerciseLibraryType
+from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
+from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
+from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 
@@ -36,15 +36,15 @@ def open_data_file_csv(file_path : str) :
 
 def init_exerciselibrary_equipments() : 
     list_data = open_data_file_csv('./data/required_data/exerciselibrary_equipments.csv')
-    insert_exerciselibrary_equipments(list_data)
+    exerciseLibraryEquipmentDao.insert_many(list_data)
 
 def init_bodyparts() : 
     list_data = open_data_file_csv('./data/required_data/body_parts.csv')
-    insert_body_parts(list_data)
+    bodyPartDao.insert_many(list_data)
 
 def init_exerciselibraries() : 
     list_data = open_data_file_csv('./data/required_data/exercise_libraries.csv')
-    insert_many_exercise_libraries(list_data)
+    exerciseLibraryDao.insert_many(list_data)
 
 def init_exerciselibrary_bodypart() : 
     with open('./data/required_data/exerciselibrary_bodypart.txt', 'r', encoding='utf-8') as f : 
@@ -55,65 +55,65 @@ def init_exerciselibrary_bodypart() :
             bp_id = row[1]  
             bp_ids = bp_id.split(',')
             for temp_bp_id in bp_ids : 
-                insert_exerciselibrary_body_part(int(el_id), int(temp_bp_id))
+                exerciseLibBodyPartDao.insert(int(el_id), int(temp_bp_id))
 
 def init_users() : 
     list_data = open_data_file_csv('./data/test_data/users.csv')
-    insert_users(list_data)
+    userDao.insert_many(list_data)
 
 def init_user_account() : 
     list_data = open_data_file_csv('./data/test_data/user_account.csv')
-    insert_user_accounts(list_data)
+    userAccountDao.insert_many(list_data)
 
 def init_center() : 
     list_data = open_data_file_csv('./data/test_data/center.csv')
-    insert_centers(list_data)
+    centerDao.insert_many(list_data)
 
 def init_center_members() : 
     list_data = open_data_file_csv('./data/test_data/center_members.csv')
-    insert_center_members(list_data)
+    centerMemberDao.insert_many(list_data)
 
 def init_center_equipments() : 
     list_data = open_data_file_csv('./data/test_data/center_equipments.csv')
-    insert_center_equipments(list_data)
+    centerEquipmentDao.insert_many(list_data)
 
 def init_center_staffs() : 
     list_data = open_data_file_csv('./data/test_data/center_staffs.csv')
-    insert_center_staffs(list_data)
+    centerStaffDao.insert_many(list_data)
 
 def init_user_center() : 
     list_data = open_data_file_csv('./data/test_data/user_center.csv')
-    insert_user_center(list_data) 
+    userCenterDao.insert_many(list_data) 
 
 def init_workout_sessions() : 
     list_data = open_data_file_csv('./data/test_data/workout_session.csv')
-    insert_workout_sessions(list_data)
+    workoutSessionDao.insert_many(list_data)
 
 def init_workouts() : 
     list_data = open_data_file_csv('./data/test_data/workout.csv')
-    insert_workouts(list_data)
+    workoutDao.insert_many(list_data)
 
 def init_workout_metrics() : 
     list_data = open_data_file_csv('./data/test_data/workout_metrics.csv')
-    insert_many_workout_metrics(list_data)
+    workoutMetricDao.insert_many(list_data)
 
 def init_nfc_tags() : 
     list_data = open_data_file_csv('./data/test_data/nfc_tags.csv')
-    insert_nfc_tags(list_data)
+    nfcTagDao.insert_many(list_data)
 
 def init_exercise_library_type() : 
     list_data = open_data_file_csv('./data/required_data/exercise_library_type.csv')
-    insert_many_exercise_library_type(list_data)
+    exerciseLibraryTypeDao.insert_many(list_data)
 
 def init_exercise_library_difficulty() : 
     list_data = open_data_file_csv('./data/required_data/exercise_library_difficulty.csv')
-    insert_many_exercise_library_difficulty(list_data)
+    exerciseLibraryDifficultyDao.insert_many(list_data)
 
 if __name__ == '__main__' : 
     tables = [
               User, WorkoutSessions, Workouts, Center, WorkoutMetrics,  
               BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
-              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, UserExerciseMetric, UserExerciseMetricValue, 
+              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
               UserSurvey, NFCTag, ExerciseLibraryEquipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
               ]
     

@@ -2,7 +2,7 @@ from peewee import *
 from dtServer.data.model.base_model import BaseModel, model_to_dict_or_none, db_proxy
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
-class UserExerciseMetricValue(BaseModel) : 
+class WeightMetric(BaseModel) : 
     weight = FloatField()
     set = IntegerField()
     rep = IntegerField()    
@@ -28,18 +28,4 @@ class UserExerciseMetricValue(BaseModel) :
     ecc_con_ration = FloatField()
 
     class Meta : 
-        table_name = 'user_exercise_metric_value'
-
-def save_user_exercise_metric_value(data : dict) : 
-    model = dict_to_model(UserExerciseMetricValue, data)
-    model.save()
-    return model_to_dict(model)
-
-# def insert_many_exercise_metric_data(list_data) : 
-#     with db_proxy.atomic() :
-#         UserExerciseMetricValue.insert_many(list_data).execute()
-
-# def select_exercise_metric_datas(user_exercise_metric_id : int) : 
-#     q = UserExerciseMetricValue.select().where(UserExerciseMetricValue.user_exercise_metric_id == user_exercise_metric_id)
-#     list_data = [model_to_dict(row) for row in q]
-#     return list_data
+        table_name = 'user_exercise_metric'

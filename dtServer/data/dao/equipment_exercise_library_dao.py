@@ -1,5 +1,5 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.equipment_exerciselib import EquipmentExerciseLib, db_proxy, model_to_dict_or_none
+from dtServer.data.model.equipment_exerciselib import EquipmentExerciseLib, model_to_dict_or_none
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class EquipmentExerciseLibDao(BaseDAO) : 
