@@ -12,7 +12,7 @@ class CenterDao(BaseDAO) :
         return model_to_dict_or_none(center)
 
     def get_by_name_and_address(self, center_name : str, address : str ) :
-        center = Center.get_or_none(Center.center_name == center_name and Center.address == address) 
+        center = Center.get_or_none(Center.name == center_name, Center.address == address) 
         return model_to_dict_or_none(center)
 
     def insert_many(self, list_data) : 

@@ -10,12 +10,12 @@ LEN_CONTACT = '16'
 class CenterMember(BaseModel) : 
     center = ForeignKeyField(Center)
     name = CharField(LEN_NAME, index=True)
-    birth_day = DateField(DATE_FORMAT)
-    contact = CharField(LEN_CONTACT)
+    birth_day = DateField(DATE_FORMAT, index=True)
+    contact = CharField(LEN_CONTACT, index=True)
     reg_from = DateField(DATE_FORMAT)
     reg_to = DateField(DATE_FORMAT)
     visit_date = DateField(DATE_FORMAT, null = True)
     
     class Meta : 
-        table_name = 'center_member'
+        table_name = 'center_member'        
 

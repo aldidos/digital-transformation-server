@@ -8,8 +8,8 @@ LEN_SUB_CATEGORY = 512
 LEN_MUSCLE_GROUP = 512
 
 class BodyPart(BaseModel) :     
-    category = CharField(LEN_CATEGORY) # upper body, lower body, whole body
-    sub_category = CharField(LEN_SUB_CATEGORY) # Chest, Back, Shoulders, Arm, Abdominals, Hip, Legs, whole body
+    category = CharField(LEN_CATEGORY) 
+    sub_category = CharField(LEN_SUB_CATEGORY) 
     name = CharField(LEN_NAME)
     muscle_group = CharField(LEN_MUSCLE_GROUP)
 

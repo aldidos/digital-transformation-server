@@ -27,7 +27,7 @@ from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, 
 from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
 from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
 from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
-from dtServer.data.dao.workout_data_dao import workoutDao, WorkoutData
+from dtServer.data.dao.workout_data_dao import workoutDataDao, WorkoutData
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 
@@ -95,9 +95,18 @@ def init_workouts() :
     workoutDao.insert_many(list_data)
 
 def init_workout_metrics() : 
-    list_data = open_data_file_csv('./data/test_data/workout_metrics.csv')
-    workoutMetricDao.insert_many(list_data)    
+    workout_datas = open_data_file_csv('./data/test_data/workout_metric_data.csv')
+    for wd in workout_datas :
+        user = wd['user']
+        workout_session = wd['workout_session']
+        workout = wd['workout_session']
 
+        workout_metrics = open_data_file_csv('./data/test_data/workout_metrics.csv')
+        for wm in workout_metrics : 
+            if wm['workout'] == workout : 
+                workout_metric_id = workoutMetricDao.insert(wm)
+                workoutDataDao.insert( user, workout_session, workout, workout_metric_id )
+    
 def init_nfc_tags() : 
     list_data = open_data_file_csv('./data/test_data/nfc_tags.csv')
     nfcTagDao.insert_many(list_data)
@@ -141,7 +150,7 @@ if __name__ == '__main__' :
     init_user_center()
     init_workout_sessions()
     init_workouts()
-    # init_workout_metrics()
+    init_workout_metrics()
 
     init_nfc_tags()
 

@@ -24,8 +24,20 @@ class WorkoutDataDao(BaseDAO) :
               'workout_metric' : workout_metric_id 
          }
     
+    def insert(self, user_id, workout_session_id, workout_id, workout_metric_id) : 
+        with db_proxy.atomic() : 
+            workout_dict = workoutDao.select_by_id(workout_id) 
+            exercise_lib_dict = workout_dict['exercise_library']
+            exerciselib_bodyparts = exerciseLibBodyPartDao.get_by_exercise_library(exercise_lib_dict['id'])
+
+            for exercise_bodypart in exerciselib_bodyparts : 
+                 bodypart_id = exercise_bodypart['body_part']['id']
+
+                 data = self.create(user_id, workout_session_id, exercise_lib_dict['id'], bodypart_id, workout_metric_id)
+                 WorkoutData.insert(data).execute()
+    
     def insert_many(self, user_id, workout_session_id, workout_id, workout_metric_ids) : 
-        with db_proxy.atomic() :             
+        with db_proxy.atomic() : 
             workout_dict = workoutDao.select_by_id(workout_id) 
             exercise_lib_dict = workout_dict['exercise_library']
             exerciselib_bodyparts = exerciseLibBodyPartDao.get_by_exercise_library(exercise_lib_dict['id'])
@@ -40,14 +52,47 @@ class WorkoutDataDao(BaseDAO) :
 
             WorkoutData.insert_many(list_data).execute()
 
-    def select(self, user_id, from_date, to_date) : 
+    def select(self, user_id, workout_sessions_id) : 
         q = WorkoutData.select(WorkoutSessions.date,\
-                            ExerciseLibrary.name.alias('exercise_library_name'),\
-                            BodyPart.name.alias('body_part_name'),\
-                            WorkoutMetrics.set, WorkoutMetrics.rep, WorkoutMetrics.weight, WorkoutMetrics.volume,\
-                            WorkoutMetrics.peak_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_velocity,\
-                            WorkoutMetrics.mean_power, WorkoutMetrics.power, WorkoutMetrics.height,\
-                            WorkoutMetrics.workout.id.alias('workout_id'), WorkoutMetrics.workout.start_time, WorkoutMetrics.workout.end_time)\
+                               WorkoutSessions.id.alias('workout_session'),
+                               Workouts.id.alias('workout'), 
+                               Workouts.start_time, 
+                               Workouts.end_time, 
+                            ExerciseLibrary.name.alias('exercise_library'),\
+                            BodyPart.name.alias('body_part'),\
+                            WorkoutMetrics.set, WorkoutMetrics.rep, WorkoutMetrics.weight,\
+                            WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con,\
+                            WorkoutMetrics.peak_foce_con, WorkoutMetrics.mean_foce_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con,\
+                            WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc,\
+                            WorkoutMetrics.peak_foce_ecc, WorkoutMetrics.mean_foce_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc,\
+                            WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration,\
+                            WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD,\
+                            )\
+            .join(User)\
+            .join_from(WorkoutData, WorkoutSessions)\
+            .join_from(WorkoutData, ExerciseLibrary)\
+            .join_from(WorkoutData, BodyPart)\
+            .join_from(WorkoutData, WorkoutMetrics)\
+            .join(Workouts)\
+            .where(WorkoutSessions.is_completed == True, WorkoutSessions.user == user_id, WorkoutSessions.id == workout_sessions_id )
+        return [ row for row in q.dicts()]
+
+    def select_by_date_period(self, user_id, from_date, to_date) : 
+        q = WorkoutData.select(WorkoutSessions.date,\
+                               WorkoutSessions.id.alias('workout_session'),
+                               Workouts.id.alias('workout'), 
+                               Workouts.start_time, 
+                               Workouts.end_time, 
+                            ExerciseLibrary.name.alias('exercise_library'),\
+                            BodyPart.name.alias('body_part'),\
+                            WorkoutMetrics.set, WorkoutMetrics.rep, WorkoutMetrics.weight,\
+                            WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con,\
+                            WorkoutMetrics.peak_foce_con, WorkoutMetrics.mean_foce_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con,\
+                            WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc,\
+                            WorkoutMetrics.peak_foce_ecc, WorkoutMetrics.mean_foce_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc,\
+                            WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration,\
+                            WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD,\
+                            )\
             .join(User)\
             .join_from(WorkoutData, WorkoutSessions)\
             .join_from(WorkoutData, ExerciseLibrary)\
@@ -55,6 +100,31 @@ class WorkoutDataDao(BaseDAO) :
             .join_from(WorkoutData, WorkoutMetrics)\
             .join(Workouts)\
             .where(WorkoutSessions.is_completed == True, WorkoutSessions.user == user_id, WorkoutSessions.date.between(from_date, to_date))
+        return [ row for row in q.dicts()]
+    
+    def select_by_date(self, user_id, date) : 
+        q = WorkoutData.select(WorkoutSessions.date,\
+                               WorkoutSessions.id.alias('workout_session'),
+                               Workouts.id.alias('workout'), 
+                               Workouts.start_time, 
+                               Workouts.end_time, 
+                            ExerciseLibrary.name.alias('exercise_library'),\
+                            BodyPart.name.alias('body_part'),\
+                            WorkoutMetrics.set, WorkoutMetrics.rep, WorkoutMetrics.weight,\
+                            WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con,\
+                            WorkoutMetrics.peak_foce_con, WorkoutMetrics.mean_foce_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con,\
+                            WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc,\
+                            WorkoutMetrics.peak_foce_ecc, WorkoutMetrics.mean_foce_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc,\
+                            WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration,\
+                            WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD,\
+                            )\
+            .join(User)\
+            .join_from(WorkoutData, WorkoutSessions)\
+            .join_from(WorkoutData, ExerciseLibrary)\
+            .join_from(WorkoutData, BodyPart)\
+            .join_from(WorkoutData, WorkoutMetrics)\
+            .join(Workouts)\
+            .where(WorkoutSessions.is_completed == True, WorkoutSessions.user == user_id, WorkoutSessions.date == date)
         return [ row for row in q.dicts()]
 
 workoutDataDao = WorkoutDataDao()

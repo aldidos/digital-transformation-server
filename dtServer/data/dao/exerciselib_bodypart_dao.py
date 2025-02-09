@@ -24,7 +24,7 @@ class ExerciseLibBodyPartDao(BaseDAO) :
         return list_data
 
     def get_by_exercise_library_id_and_body_part_id(self, exercise_library_id : int, body_part_id : int) : 
-        model = ExerciseLibBodyPart.select().where(ExerciseLibBodyPart.exercise_library == exercise_library_id and ExerciseLibBodyPart.body_part == body_part_id).get()
+        model = ExerciseLibBodyPart.select().where(ExerciseLibBodyPart.exercise_library == exercise_library_id, ExerciseLibBodyPart.body_part == body_part_id).get()
         return model_to_dict_or_none(model)
 
     def get_by_exercise_library(self, exercise_library_id : int) : 

@@ -12,7 +12,7 @@ class WeightMetricSessionDao(BaseDAO) :
         return model_to_dict_or_none(weight_session)
     
     def select_by_user_and_exercise_library(self, user : int, exercise_library : int) : 
-        user_exercise_metric = WeightMetricSession.get_or_none(WeightMetricSession.user == user and WeightMetricSession.exercise_library == exercise_library)
+        user_exercise_metric = WeightMetricSession.get_or_none(WeightMetricSession.user == user, WeightMetricSession.exercise_library == exercise_library)
         return model_to_dict_or_none(user_exercise_metric)
 
     def select_by_user(self, user : int) : 

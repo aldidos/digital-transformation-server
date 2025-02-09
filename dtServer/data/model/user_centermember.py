@@ -5,8 +5,8 @@ from dtServer.data.model.user import User
 from dtServer.data.model.center_member import CenterMember
 
 class UserCenterMember(BaseModel) : 
-    user = ForeignKeyField(User, unique = True)
-    centermember = ForeignKeyField(CenterMember, unique = True)
+    user = ForeignKeyField(User, index = True)
+    centermember = ForeignKeyField(CenterMember, index = True)
 
     class Meta : 
         table_name = 'user_centermember'

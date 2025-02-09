@@ -5,8 +5,8 @@ from dtServer.data.model.center import Center
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class UserCenter(BaseModel) : 
-    user = ForeignKeyField(User)
-    center = ForeignKeyField(Center)
+    user = ForeignKeyField(User, index = True)
+    center = ForeignKeyField(Center, index = True)
 
     class Meta : 
         table_name = 'user_center'

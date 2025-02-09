@@ -20,7 +20,7 @@ class UserCenterDao(BaseDAO) :
         return list_data
 
     def get_by_user_and_center(self, user_id : int, center_id : int) : 
-        model =  UserCenter.get_or_none(UserCenter.user == user_id and UserCenter.center == center_id)
+        model =  UserCenter.get_or_none(UserCenter.user == user_id, UserCenter.center == center_id)
         return model_to_dict_or_none(model)
 
     def insert_many(self, list_data) : 

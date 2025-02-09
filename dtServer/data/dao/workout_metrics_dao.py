@@ -18,17 +18,8 @@ class WorkoutMetricsDao(BaseDAO) :
                 id = WorkoutMetrics.insert(data).execute()
                 list_ids.append(id)
             return list_ids    
-
-    def select(self, user_id, from_date, to_date) : 
-        q = WorkoutMetrics.select(Workouts.workout_session.date.alias('date'), ExerciseLibrary.name.alias('exercise_library_name'), WorkoutMetrics.set, WorkoutMetrics.rep\
-                        , WorkoutMetrics.weight, WorkoutMetrics.volume, WorkoutMetrics.peak_velocity, WorkoutMetrics.mean_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_power, WorkoutMetrics.height, WorkoutMetrics.power )\
-            .join(Workouts)\
-            .join(WorkoutSessions)\
-            .join(User)\
-            .join_from(Workouts, ExerciseLibrary)\
-            .where(User.id == user_id, WorkoutSessions.date.between(from_date, to_date) )
-        
-        list_data = [ row for row in q.dicts() ]
-        return list_data
+    
+    def insert(self, data) : 
+        return WorkoutMetrics.insert(data).execute()
     
 workoutMetricDao = WorkoutMetricsDao()

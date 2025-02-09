@@ -16,7 +16,7 @@ class User(BaseModel) :
     height = FloatField(False)
     birthday = DateField(DATE_FORMAT)
     contact = CharField(LEN_CONTACT)
-    gender = CharField(LEN_GENDER) 
+    gender = CharField(LEN_GENDER)
 
     workout_routine = IntegerField(True)
     workout_freq = IntegerField(True)
