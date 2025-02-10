@@ -1,5 +1,6 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.user_fvp_profile import UserFVPProfile, model_to_dict_or_none
+from dtServer.data.model.base_model import model_to_dict_or_none
+from dtServer.data.model.user_fvp_profile import UserFVPProfile
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class UserFVPProfileDao(BaseDAO) : 

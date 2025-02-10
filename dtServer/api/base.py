@@ -34,7 +34,7 @@ def nfc_certification() :
                session_data = session['nfc_tag_certification']
                machine_init_data = appBaseDataDao.get_machine_init_data(session_data['user'], session_data['center_equipment'])
 
-               return ( machine_init_data, 200)
+               return create_response( machine_init_data, 200)
           
           return abort(400)
 
@@ -54,7 +54,7 @@ def qr_certification() :
           if 'qr_certification' in session : 
                session_data = session['qr_certification']
                machine_init_data = appBaseDataDao.get_machine_init_data(session_data['user'], session_data['center_equipment'])
-               return (machine_init_data, 200)          
+               return create_response(machine_init_data, 200)          
           return abort(400)
 
 @app.route("/signup", methods = ['POST'])
@@ -70,7 +70,7 @@ def signup() : ###
 
           if prev_user_account == None : 
                user = signupDao.insert_signup_data(user_info, user_account) 
-               return (user, 201)
+               return create_response(user, 201)
           else : 
                return abort(400)
 
@@ -87,26 +87,26 @@ def signin() :
      
      if login_pw == user_account['login_pw'] : 
           app_init_data = appBaseDataDao.get_user_app_init_data(user_account['user']['id'])
-          return (app_init_data, 200) 
+          return create_response(app_init_data, 200) 
      return abort(400)
 
 @app.route("/exercise_libraries", methods=['GET'])
 def get_req_exercise_libraries() : 
      if request.method == 'GET' : 
           exercise_libs = exerciseLibraryDao.select_all() 
-          return (exercise_libs, 200)
+          return create_response(exercise_libs, 200)
      
 @app.route("/exerciselib_bodyparts", methods=['GET'])
 def get_req_exerciselib_bodyparts() : 
      if request.method == 'GET' : 
           exericselib_bodyparts = exerciseLibBodyPartDao.select_all()
-          return (exericselib_bodyparts, 200)
+          return create_response(exericselib_bodyparts, 200)
      
 @app.route("/exerciselib_bodyparts/<exerciselib_id>/<body_part_id>", methods=['GET'])
 def get_req_exerciselib_bodypart(exerciselib_id, body_part_id) : 
      if request.method == 'GET' : 
           data = exerciseLibBodyPartDao.get_by_exercise_library_id_and_body_part_id(exerciselib_id, body_part_id)
-          return (data, 200)
+          return create_response(data, 200)
      
 @app.route("/center_authentication", methods=['PUT', 'GET'])
 def center_authentication() : ###
@@ -134,7 +134,7 @@ def center_authentication() : ###
                return ('The user is not a member of the center', 400)
           
           user_center = userCenterDao.create_user_center(user_id, center_id)
-          return (user_center, 201)  #### 
+          return create_response(user_center, 201)  #### 
      
      if request.method == 'GET' : #
           data = request.get_json()
@@ -151,4 +151,4 @@ def center_authentication() : ###
 
           center_member = centerMemberDao.get(center_id, name, birthday, contact)
 
-          return (center_member, 200)
+          return create_response(center_member, 200)

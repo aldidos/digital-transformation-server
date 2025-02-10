@@ -1,8 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 from dtServer.data.conn import make_database_connection, db_proxy
 from datetime import datetime, timedelta
 from dtServer.data.dao.workout_data_dao import workoutDataDao
 from dtServer.data.statistics.stat_workout import statWorkout
+import json
 
 def parse_date_str(datestr) : 
      return datetime.strptime(datestr, '%Y-%m-%d')
@@ -31,6 +32,7 @@ app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['JSON_AS_ASCII'] = False
 
 RES_MES_200 = 'Request OK'
 RES_MES_201 = 'Resource created'
@@ -39,6 +41,10 @@ RES_MES_404 = 'Not Found'
 
 db_conn = make_database_connection()
 db_proxy.initialize(db_conn)
+
+## For utf-8 encoding of text.
+def create_response(data, status) : 
+     return make_response( json.dumps(data, ensure_ascii=False, default = str, indent=4), status)
 
 def check_header_app_token() :      
     APP_TOKEN_VALUE = 'aDiQ2X@&a$!2hcoIJdtyaYwBcghP2)kc'

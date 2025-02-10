@@ -2,6 +2,9 @@ from peewee import Model
 from dtServer.data.conn import db_proxy
 from playhouse.shortcuts import model_to_dict
 
+DATE_FORMAT = '%y-%m-%d'
+DATETIME_FORMAT = '%y-%m-%d %H:%M:%S'
+
 class BaseModel(Model) : 
 
     class Meta : 
