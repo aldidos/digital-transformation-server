@@ -14,8 +14,8 @@ def create_connection(db, user, password, host, port) :
 
 def make_database_connection() -> MySQLDatabase : 
     load_dotenv()
-    user = os.getenv('USER')
-    password = os.getenv('PASSWORD')
+    user = os.getenv('DB_USER')
+    password = os.getenv('DB_PASSWORD')
     host = os.getenv('HOST')
     port = int(os.getenv('PORT'))
     db = os.getenv('DATABASE')
