@@ -1,7 +1,7 @@
 import sys
 sys.path.append('.')
-import csv
 
+import csv
 from dtServer.data.conn import make_database_connection
 from dtServer.data.model.base_model import db_proxy
 from dtServer.data.dao.user_dao import userDao, User
