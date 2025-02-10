@@ -9,6 +9,8 @@ from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
 from dtServer.data.dao.signup_dao import signupDao
 from dtServer.data.dao.app_base_data_dao import appBaseDataDao
+from dtServer.data.dto.app_base_data import AppBaseData
+from dtServer.data.dto.machine_app_base_data import MachAppBaseData
 
 @app.route("/nfc_certification", methods=['POST', "GET"])
 def nfc_certification() : 
@@ -32,9 +34,9 @@ def nfc_certification() :
      if request.method == 'GET' : 
           if 'nfc_tag_certification' in session : 
                session_data = session['nfc_tag_certification']
-               machine_init_data = appBaseDataDao.get_machine_init_data(session_data['user'], session_data['center_equipment'])
+               base_data = MachAppBaseData.get_data( session_data['user'], session_data['center_equipment'] ) 
 
-               return create_response( machine_init_data, 200)
+               return create_response( base_data, 200)
           
           return abort(400)
 
@@ -48,13 +50,13 @@ def qr_certification() :
                'user' : user, 
                'center_equipment' : center_equipment
           }
-
           return (RES_MES_200, 200)
+     
      if request.method == 'GET' :           
           if 'qr_certification' in session : 
                session_data = session['qr_certification']
-               machine_init_data = appBaseDataDao.get_machine_init_data(session_data['user'], session_data['center_equipment'])
-               return create_response(machine_init_data, 200)          
+               base_data = MachAppBaseData.get_data( session_data['user'], session_data['center_equipment'] ) 
+               return create_response(base_data, 200)          
           return abort(400)
 
 @app.route("/signup", methods = ['POST'])
@@ -69,7 +71,7 @@ def signup() : ###
           prev_user_account = userAccountDao.get_by_loginid(login_id)
 
           if prev_user_account == None : 
-               user = signupDao.insert_signup_data(user_info, user_account) 
+               user = signupDao.insert_signup_data(user_info, user_account) ####
                return create_response(user, 201)
           else : 
                return abort(400)
@@ -86,8 +88,8 @@ def signin() :
         return abort(400)
      
      if login_pw == user_account['login_pw'] : 
-          app_init_data = appBaseDataDao.get_user_app_init_data(user_account['user']['id'])
-          return create_response(app_init_data, 200) 
+          app_base_data = AppBaseData.get_data(user_account['user']['id'])
+          return create_response(app_base_data, 200) 
      return abort(400)
 
 @app.route("/exercise_libraries", methods=['GET'])

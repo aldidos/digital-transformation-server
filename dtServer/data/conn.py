@@ -21,5 +21,6 @@ def make_database_connection() -> MySQLDatabase :
     port = int(os.environ.get('PORT'))
     db = os.environ.get('DATABASE')
 
-    return create_connection(db, user, password, host, port)
+    print(user) ##
 
+    return create_connection(db, user, password, host, port)
