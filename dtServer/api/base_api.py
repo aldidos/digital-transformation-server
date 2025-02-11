@@ -9,74 +9,86 @@ from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
 from dtServer.data.dao.signup_dao import signupDao
 from dtServer.data.dao.app_base_data_dao import appBaseDataDao
-from dtServer.data.dto.app_base_data import AppBaseData
-from dtServer.data.dto.machine_app_base_data import MachAppBaseData
+from dtServer.data.tranjection.app_base_data_trans import appBaseDataTrans
+from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDataTrans
+from dtServer.data.tranjection.signup_trans import signupTrans
+from dtServer.data.form.machine_certification_form import MachineCertificationForm
+from dtServer.data.form.center_certification_form import CenterCertificationForm
+
+SESSION_MACHINE_CERTIFICATION = 'machine_certification'
+
+def make_session(key : str, data : dict) : 
+     if key in session : 
+          return False     
+     session[key] = data
+     return True
+
+def destroy_session(key) : 
+     if key in session :
+           session.pop(key, None)
+           return "Destroyed workout session", 200
+     return abort(400)
 
 @app.route("/nfc_certification", methods=['POST', "GET"])
 def nfc_certification() : 
      if request.method == 'POST' :
           data = request.get_json()
-          nfc_tag_id = data['nfc_tag_id']
-          user_id = data['user_id']
-          center_equipment_id = data['center_equipment_id']
+          form = MachineCertificationForm(data)
 
-          nfc_tag = nfcTagDao.select_by_nfc_tag_id(nfc_tag_id)
+          nfc_tag = nfcTagDao.select_by_nfc_tag_id( form.get_nfc_tag_id() )
           if nfc_tag is None : 
                return abort(400)
-          else :                
-               session['nfc_tag_certification'] = {
-                    'nfc_tag_id' : nfc_tag_id, 
-                    'user' : user_id, 
-                    'center_equipment' : center_equipment_id
-               }
+          else : 
+               if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
+                    return "The user has unfinished machine certification", 400
                return (RES_MES_200, 200) 
           
      if request.method == 'GET' : 
-          if 'nfc_tag_certification' in session : 
-               session_data = session['nfc_tag_certification']
-               base_data = MachAppBaseData.get_data( session_data['user'], session_data['center_equipment'] ) 
+          if SESSION_MACHINE_CERTIFICATION in session : 
+               session_data = session[SESSION_MACHINE_CERTIFICATION]
+               base_data = machinAppBaseDataTrans.get_data( session_data['user_id'], session_data['center_equipment_id'], session_data['workout_session_id'] ) 
 
                return create_response( base_data, 200)
           
           return abort(400)
 
 @app.route("/qr_certification", methods=['PUT', 'GET']) ####
-def qr_certification() : 
-     data = request.get_json()
+def qr_certification() :      
      if request.method == 'PUT' :  
-          user = data['user_id']
-          center_equipment = data['center_equipment_id']
-          session['qr_certification'] = {
-               'user' : user, 
-               'center_equipment' : center_equipment
-          }
+          data = request.get_json()
+          form = MachineCertificationForm(data)          
+
+          if not make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
+               return "The user has unfinished machine certification", 400
+          
           return (RES_MES_200, 200)
      
      if request.method == 'GET' :           
-          if 'qr_certification' in session : 
-               session_data = session['qr_certification']
-               base_data = MachAppBaseData.get_data( session_data['user'], session_data['center_equipment'] ) 
-               return create_response(base_data, 200)          
+          if SESSION_MACHINE_CERTIFICATION in session : 
+               session_data = session[SESSION_MACHINE_CERTIFICATION]
+               base_data = machinAppBaseDataTrans.get_data( session_data['user_id'], session_data['center_equipment_id'], session_data['workout_session_id'] ) 
+               return create_response(base_data, 200) 
           return abort(400)
-
+     
+@app.route("/end_wokrout_session", methods=['PUT'])
+def end_workout() : 
+      return destroy_session( SESSION_MACHINE_CERTIFICATION )
+      
 @app.route("/signup", methods = ['POST'])
 def signup() : ###
     if request.method == 'POST' : 
           data = request.get_json()
           user_account = data['user_account']
           user_info = data['user_info'] 
+          login_id = user_account['login_id']          
 
-          login_id = user_account['login_id']
-          
-          prev_user_account = userAccountDao.get_by_loginid(login_id)
-
-          if prev_user_account == None : 
-               user = signupDao.insert_signup_data(user_info, user_account) ####
-               return create_response(user, 201)
-          else : 
+          if userAccountDao.is_user_account(login_id) : 
                return abort(400)
+          
+          user = signupTrans.insert_signup_data(user_info, user_account) ####
+          return create_response(user, 201)          
 
-@app.route("/signin", methods=['GET']) 
+@app.route("/signin", methods=['PUT']) 
 def signin() : 
      data = request.get_json()
      login_id = data['login_id'] 
@@ -88,7 +100,7 @@ def signin() :
         return abort(400)
      
      if login_pw == user_account['login_pw'] : 
-          app_base_data = AppBaseData.get_data(user_account['user']['id'])
+          app_base_data = appBaseDataTrans.get_data(user_account['user']['id'])
           return create_response(app_base_data, 200) 
      return abort(400)
 
@@ -114,29 +126,25 @@ def get_req_exerciselib_bodypart(exerciselib_id, body_part_id) :
 def center_authentication() : ###
      if request.method == 'PUT' : 
           data = request.get_json()
-          center_name = data['center_name']
-          center_address = data['center_address']
-          user_id = data['user_id']
-          user_name = data['user_name']
-          birthday = data['birthday']
-          contact = data['contact'] 
+          form = CenterCertificationForm(data)
 
-          center = centerDao.get_by_name_and_address(center_name, center_address)
+          center = centerDao.get_by_name_and_address(form.get_center_name(), form.get_center_address())
           if center is None : ## 센터가 플랫폼에 등록되지 않은 경우
                return ("The center is not involved in out service", 400) 
           
           center_id = center['id']
-          user_center = userCenterDao.get_by_user_and_center(user_id, center_id)
+          user_center = userCenterDao.get_by_user_and_center(form.get_user_id(), center_id)
           if user_center is not None : ## 사용자 센터 인증이 이미 되어 있는 경우
                # user_center = userCenterDao.get_by_user_and_center(user_id, center_id)
-               return ("The user and center has been authenticated already", 200)
+               return ("The user and center has been authenticated already", 400)
           
-          center_member = centerMemberDao.get(center_id, user_name, birthday, contact)
+          user = user_center['user']          
+          center_member = centerMemberDao.get(center_id, user['name'], user['birthday'], user['contact'])
           if center_member is None : ## 사용자가 센터 회원이 아닌 경우
                return ('The user is not a member of the center', 400)
           
           user_center = userCenterDao.create_user_center(user_id, center_id)
-          return create_response(user_center, 201)  #### 
+          return create_response(user_center, 201)  
      
      if request.method == 'GET' : #
           data = request.get_json()
@@ -147,9 +155,10 @@ def center_authentication() : ###
           if user_center is None : 
                return abort(404) ## user's center authentication cannot found.
           
-          name = user_center['user']['name']
-          birthday = user_center['user']['birthday']
-          contact = user_center['user']['contact']
+          user = user_center['user']          
+          name = user['name']
+          birthday = user['birthday']
+          contact = user['contact']
 
           center_member = centerMemberDao.get(center_id, name, birthday, contact)
 

@@ -1,9 +1,8 @@
 from dtServer.data.model.base_model import db_proxy
 from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
-from dtServer.data.dao.center_equipment_dao import centerEquipmentDao
 
-class AppBaseData : 
+class AppBaseDataTrans : 
 
     def get_authenticated_centers(self, user_centers) : 
         centers = []        
@@ -20,3 +19,5 @@ class AppBaseData :
                 'user' : user,                 
                 'authenticated_centers' : authenticated_centers
             }
+        
+appBaseDataTrans = AppBaseDataTrans()

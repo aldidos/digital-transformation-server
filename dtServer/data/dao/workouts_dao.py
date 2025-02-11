@@ -28,6 +28,9 @@ class WorkoutsDao(BaseDAO) :
         
         return [ row for row in q.dicts() ]
     
+    def insert(self, data) : 
+        return Workouts.insert(data).execute()
+
     def insert_many(self, list_data) : 
         with db_proxy.atomic() :
             Workouts.insert_many(list_data).execute()

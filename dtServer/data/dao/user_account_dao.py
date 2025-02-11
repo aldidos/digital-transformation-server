@@ -10,6 +10,11 @@ class UserAccountDao(BaseDAO) :
     def get_by_loginid(self, login_id : str) -> UserAccount : 
         user_account = UserAccount.get_or_none(UserAccount.login_id == login_id)
         return model_to_dict_or_none(user_account)
+    
+    def is_user_account(self, login_id : str) -> bool : 
+        if self.get_by_loginid(login_id) is None : 
+            return False
+        return True
 
     def insert_many(self, list_data) : 
         with db_proxy.atomic() : 

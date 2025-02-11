@@ -1,4 +1,2 @@
 name,weight,height,birthday,contact,gender,workout_routine,workout_freq
 test_user_1,88.2,183.5,1982-01-31,010-2123-2111,M,None,None
-kim,70,170,1983-03-12,010-0000-0001,M,None,None
-lee,60,160,1975-03-31,010-0000-0002,F,None,None

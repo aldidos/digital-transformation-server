@@ -4,6 +4,7 @@ from playhouse.shortcuts import model_to_dict
 
 DATE_FORMAT = '%y-%m-%d'
 DATETIME_FORMAT = '%y-%m-%d %H:%M:%S'
+TIME_FORMAT = '%H:%M:%S'
 
 class BaseModel(Model) : 
 

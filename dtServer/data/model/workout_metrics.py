@@ -1,18 +1,12 @@
 from peewee import *
 from dtServer.data.model.base_model import BaseModel, db_proxy
-from dtServer.data.model.workout_sessions import WorkoutSessions
-from dtServer.data.model.workouts import Workouts
-from dtServer.data.model.exercise_library import ExerciseLibrary
-from dtServer.data.model.user import User
-from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart
-from dtServer.data.model.body_part import BodyPart
+from dtServer.data.model.workout_set import WorkoutSet
+
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutMetrics(BaseModel) :
-    workout = ForeignKeyField(Workouts)
-    set = IntegerField(False)
+    workout_set = ForeignKeyField(WorkoutSet)
     rep = IntegerField(False)
-    weight = FloatField()
     peak_velocity_con = FloatField()
     mean_velocity_con = FloatField()
     peak_power_con = FloatField()
