@@ -31,21 +31,23 @@ def get_post_center_members(center_id : int) :
           return "The center member is already in the center.", 400
                
      if request.method == 'GET' : 
-          data = request.get_json()
-          name = data['name']
-          birthday = data['birth_day']
-          contact = data['contact']
-          center_member = centerMemberDao.get(center_id, name, birthday, contact)
-          if center_member is None : 
+          center_members = centerMemberDao.select_by_center_id(center_id)
+          if not center_members : 
                return abort(404)
-          return create_response(center_member, 200)
+          return create_response(center_members, 200)          
      
-@app.route("/centers/<center_id>/members/<member_id>", methods=['PATCH']) ####
+@app.route("/centers/<center_id>/members/<member_id>", methods=['PATCH', 'GET']) 
 def patch_center_members(center_id : int, member_id : int) :
      if request.method == 'PATCH' : 
           data = request.get_json()
           center_member = centerMemberDao.save( data )
           return create_response(center_member, 200)
+     
+     if request.method == 'GET' : 
+          center_member = centerMemberDao.get_by_id(member_id)
+          if center_member == None : 
+               abort(404)
+          return center_member, 200          
    
 @app.route("/centers/<center_id>/staffs", methods=['GET', 'POST'])
 def center_staffs(center_id : int) : 

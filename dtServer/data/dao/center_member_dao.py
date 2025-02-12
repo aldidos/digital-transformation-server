@@ -13,7 +13,7 @@ class CenterMemberDao(BaseDAO) :
         return center_members
     
     def get_by_id(self, id) : 
-        return CenterMember.get_or_none( CenterMember.id == id )
+        return model_to_dict_or_none( CenterMember.get_or_none( CenterMember.id == id ) )
 
     def get(self, center_id, name, birth_day, contact) : 
         center_member = CenterMember.get_or_none(CenterMember.center == center_id, CenterMember.name == name, CenterMember.birth_day == birth_day, CenterMember.contact == contact)

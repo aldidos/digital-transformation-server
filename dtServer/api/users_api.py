@@ -62,9 +62,9 @@ def post_users() :
      data = request.get_json()
      user = userDao.save(data)
      if user is None : 
-          return abort(400)          
+          return abort(400) 
      
-     return create_response(user, 200)
+     return create_response(user, 201)
 
 @app.route("/users/<user_id>", methods=['GET'])
 def get_req_users(user_id):          

@@ -1,5 +1,6 @@
 from dtServer.app import *
 from flask import request, abort, session
+from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
 from dtServer.data.dao.user_account_dao import userAccountDao
 from dtServer.data.dao.center_dao import centerDao
@@ -29,9 +30,9 @@ def destroy_session(key) :
            return "Destroyed workout session", 200
      return abort(400)
 
-@app.route("/nfc_certification", methods=['POST', "GET"])
+@app.route("/nfc_certification", methods=['PUT', "GET"])
 def nfc_certification() : 
-     if request.method == 'POST' :
+     if request.method == 'PUT' :
           data = request.get_json()
           form = MachineCertificationForm(data)
 
@@ -40,8 +41,8 @@ def nfc_certification() :
                return abort(400)
           else : 
                if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
-                    return "The user has unfinished machine certification", 400
-               return (RES_MES_200, 200) 
+                    return (RES_MES_200, 200) 
+               return "The user has unfinished machine certification", 400               
           
      if request.method == 'GET' : 
           if SESSION_MACHINE_CERTIFICATION in session : 
@@ -50,7 +51,7 @@ def nfc_certification() :
 
                return create_response( base_data, 200)
           
-          return abort(400)
+          return abort(404)
 
 @app.route("/qr_certification", methods=['PUT', 'GET']) ####
 def qr_certification() :      
@@ -58,17 +59,16 @@ def qr_certification() :
           data = request.get_json()
           form = MachineCertificationForm(data)          
 
-          if not make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
-               return "The user has unfinished machine certification", 400
-          
-          return (RES_MES_200, 200)
+          if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
+               return (RES_MES_200, 200)          
+          return "The user has unfinished machine certification", 400     
      
-     if request.method == 'GET' :           
+     if request.method == 'GET' : 
           if SESSION_MACHINE_CERTIFICATION in session : 
                session_data = session[SESSION_MACHINE_CERTIFICATION]
                base_data = machinAppBaseDataTrans.get_data( session_data['user_id'], session_data['center_equipment_id'], session_data['workout_session_id'] ) 
                return create_response(base_data, 200) 
-          return abort(400)
+          return abort(404)
      
 @app.route("/end_wokrout_session", methods=['PUT'])
 def end_workout() : 
@@ -120,7 +120,9 @@ def get_req_exerciselib_bodyparts() :
 def get_req_exerciselib_bodypart(exerciselib_id, body_part_id) : 
      if request.method == 'GET' : 
           data = exerciseLibBodyPartDao.get_by_exercise_library_id_and_body_part_id(exerciselib_id, body_part_id)
-          return create_response(data, 200)
+          if data : 
+               return create_response(data, 200)
+          return abort(404)
      
 @app.route("/center_authentication", methods=['PUT', 'GET'])
 def center_authentication() : ###
@@ -128,17 +130,19 @@ def center_authentication() : ###
           data = request.get_json()
           form = CenterCertificationForm(data)
 
+          user_id = form.get_user_id()
+
           center = centerDao.get_by_name_and_address(form.get_center_name(), form.get_center_address())
           if center is None : ## 센터가 플랫폼에 등록되지 않은 경우
                return ("The center is not involved in out service", 400) 
           
           center_id = center['id']
-          user_center = userCenterDao.get_by_user_and_center(form.get_user_id(), center_id)
+          user_center = userCenterDao.get_by_user_and_center( user_id, center_id)
           if user_center is not None : ## 사용자 센터 인증이 이미 되어 있는 경우
                # user_center = userCenterDao.get_by_user_and_center(user_id, center_id)
                return ("The user and center has been authenticated already", 400)
           
-          user = user_center['user']          
+          user = userDao.select_by_id( user_id )
           center_member = centerMemberDao.get(center_id, user['name'], user['birthday'], user['contact'])
           if center_member is None : ## 사용자가 센터 회원이 아닌 경우
                return ('The user is not a member of the center', 400)
@@ -153,13 +157,6 @@ def center_authentication() : ###
 
           user_center = userCenterDao.get_by_user_and_center(user_id, center_id)
           if user_center is None : 
-               return abort(404) ## user's center authentication cannot found.
+               return "user's center authentication cannot found.", 404
           
-          user = user_center['user']          
-          name = user['name']
-          birthday = user['birthday']
-          contact = user['contact']
-
-          center_member = centerMemberDao.get(center_id, name, birthday, contact)
-
-          return create_response(center_member, 200)
+          return create_response(user_center, 200)
