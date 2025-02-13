@@ -28,6 +28,9 @@ def get_workout_metric_stat(list_data) :
           return statWorkout.stat(list_data)
      return []
 
+def json_to_dict(data) : 
+     return json.loads(data)
+
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)

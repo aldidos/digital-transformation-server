@@ -1,3 +1,4 @@
+from peewee import Select
 from dtServer.data.dao.base_dao import BaseDAO
 from dtServer.data.model.workout_metrics import WorkoutMetrics, db_proxy
 from dtServer.data.model.workout_sessions import WorkoutSessions
@@ -20,13 +21,19 @@ class WorkoutMetricsDao(BaseDAO) :
             for data in list_data : 
                 id = WorkoutMetrics.insert(data).execute()
                 list_ids.append(id)
-            return list_ids    
+            return list_ids
     
     def insert(self, data) : 
         return WorkoutMetrics.insert(data).execute()
     
-    def select(self, user_id, from_date, to_date ) : 
-        q = WorkoutMetrics.select().join(WorkoutSet)\
+    def select(self, user_id, from_date, to_date ) :         
+        q = WorkoutMetrics.select( WorkoutSessions.id.alias('workout_session'), WorkoutSessions.date, Workouts.completed_sets, 
+                                  Workouts.start_time.alias('workout_start_time'), Workouts.end_time.alias('workout_end_time'), 
+                                  ExerciseLibrary.name.alias('exercise_library'), BodyPart.name.alias('body_part'),
+                                  WorkoutMetrics.rep, WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con, 
+                                  WorkoutMetrics.peak_foce_con, WorkoutMetrics.mean_foce_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con, 
+                                  WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc, WorkoutMetrics.peak_foce_ecc, WorkoutMetrics.mean_foce_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc, WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration, WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD
+                                            ).join(WorkoutSet)\
             .join(Workouts)\
             .join(ExerciseLibrary)\
             .join(ExerciseLibBodyPart)\

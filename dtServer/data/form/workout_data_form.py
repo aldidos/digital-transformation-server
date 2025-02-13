@@ -1,12 +1,11 @@
 
-class WorkoutDataForm : 
+class WorkoutSetMetricsDTO : 
 
-    def __init__(self, data) : 
-        self.workout = data['workout']
-        self.workout_sets = data['workout_sets']
+    def __init__(self, data : dict) : 
+        self.data = data
 
-    def get_workout(self) : 
-        return self.workout
-
-    def get_workout_sets(self) : 
-        return self.workout_sets 
+    def get_workout_set(self) : 
+        return self.data['workout_set']
+    
+    def get_workout_metrics(self) : 
+        return self.data['workout_metrics']

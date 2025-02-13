@@ -7,7 +7,7 @@ from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 from dtServer.data.dao.user_survey_dao import userSurveyDao
 from dtServer.data.dao.weight_metric_session_dao import weightMetricSession
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-from dtServer.data.form.workout_data_form import WorkoutDataForm 
+from dtServer.data.form.workout_data_form import WorkoutSetMetricsDTO 
 from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
 
 @app.route("/users/<user_id>/weight_metric_sessions", methods=['GET', 'POST']) ####
@@ -120,18 +120,16 @@ def get_patch_user_workout_sessions(user_id, workout_session_id) :
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts", methods=['POST', 'GET']) 
 def get_post_user_workouts(user_id, workout_session_id) : 
      if request.method == 'POST' : 
-          data = request.get_json()
-          workout_data_form = WorkoutDataForm(data)
-          workoutDataTrans.insert(workout_session_id, workout_data_form)
-          
-          return create_response('Created user''s workout data', 201)
+          data = request.get_json()         
+          workout = workoutDao.save(data)
+          return create_response(workout, 201)
 
      if request.method == 'GET' : 
           workouts = workoutDao.select_by_workout_session(workout_session_id)
           if not workouts : 
                return abort(404)
           return create_response(workouts, 200)
-
+     
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>", methods=['PATCH', 'GET'])
 def get_patch_user_workout(user_id, workout_session_id, workout_id) : 
      if request.method == 'PATCH' : 
@@ -144,6 +142,15 @@ def get_patch_user_workout(user_id, workout_session_id, workout_id) :
           if workout is None : 
                return abort(404)
           return create_response(workout, 200)
+     
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets", methods = ['POST'])
+def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, workout_id) : 
+     if request.method == 'POST' : 
+          data = request.get_json()
+          workout_set_metrics_dto = WorkoutSetMetricsDTO(data)
+          workoutDataTrans.insert_workout_set_metrics(workout_id, workout_set_metrics_dto)
+          return "Created workout set and its metrics data", 201
+     
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/workout_metrics", methods=['POST']) 
 def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) : 
