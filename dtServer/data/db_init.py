@@ -28,7 +28,6 @@ from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, 
 from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
 from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
 from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
-from dtServer.data.dao.workout_data_dao import workoutDataDao, WorkoutData
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 

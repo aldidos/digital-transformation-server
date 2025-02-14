@@ -1,7 +1,6 @@
 from flask import Flask, request, make_response
 from dtServer.data.conn import make_database_connection, db_proxy
 from datetime import datetime, timedelta
-from dtServer.data.dao.workout_data_dao import workoutDataDao
 from dtServer.data.statistics.stat_workout import statWorkout
 import json
 

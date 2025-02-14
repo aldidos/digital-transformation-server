@@ -3,12 +3,13 @@ from flask import request, abort
 from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
 from dtServer.data.dao.workouts_dao import workoutDao
+from dtServer.data.dao.workout_set_dao import workoutSetDao
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 from dtServer.data.dao.user_survey_dao import userSurveyDao
 from dtServer.data.dao.weight_metric_session_dao import weightMetricSession
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-from dtServer.data.form.workout_data_form import WorkoutSetMetricsDTO 
 from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
+from dtServer.data.dto.workout_data_form import WorkoutSetMetricsDTO
 
 @app.route("/users/<user_id>/weight_metric_sessions", methods=['GET', 'POST']) ####
 def get_post_req_user_exercise_metric(user_id) :
@@ -143,6 +144,34 @@ def get_patch_user_workout(user_id, workout_session_id, workout_id) :
                return abort(404)
           return create_response(workout, 200)
      
+from dtServer.data.dao.workout_report_data_dao import workoutReportDataDao
+from dtServer.data.report.workout_set_report import workoutSetReport
+from dtServer.data.report.workout_report import workoutReport
+import pandas as pd
+
+@app.route("/users/<user_id>/recent_report/<exercise_library_id>/<set_number>", methods=['GET'])
+def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) :                
+     workout_set = workoutSetDao.get_recent_by_exerciselibrary(user_id, exercise_library_id, set_number)     
+     if workout_set :   
+          workout_set_id = workout_set['id']
+          workout_id = workout_set['workout']['id']
+          set_data = workoutReportDataDao.get_set_data(workout_id, workout_set_id)        
+          
+          set_report = workoutSetReport.make_report( workout_set, pd.DataFrame(set_data) )
+          return set_report.get_with_dict(), 200
+
+     return abort(404)
+
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/report", methods=['GET'])
+def get_user_workout_report(workout_id) : 
+     workout = workoutDao.select_by_id(workout_id)
+     if workout : 
+          workout_data = workoutReportDataDao.get_workout_data(workout)
+          workout_report_dto = workoutReport.make_report(workout, workout_data)
+          return workout_report_dto.get_with_dict(), 200
+     
+     abort(404)
+     
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets", methods = ['POST'])
 def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, workout_id) : 
      if request.method == 'POST' : 
@@ -150,49 +179,61 @@ def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, wo
           workout_set_metrics_dto = WorkoutSetMetricsDTO(data)
           workoutDataTrans.insert_workout_set_metrics(workout_id, workout_set_metrics_dto)
           return "Created workout set and its metrics data", 201
+    
+@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/<set_id>", methods = ['GET'])
+def get_user_workout_set_report(user_id, workout_session_id, workout_id, set_id) : 
+     workout_set = workoutSetDao.get_by_id(set_id)
+     if workout_set :   
+          workout_set_id = workout_set['id']
+          workout_id = workout_set['workout']['id']
+          set_data = workoutReportDataDao.get_set_data(workout_id, workout_set_id)        
+          
+          set_report = workoutSetReport.make_report( workout_set, pd.DataFrame(set_data) )
+          return set_report.get_with_dict(), 200
+
+     return abort(404)
+
+# @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/workout_metrics", methods=['POST']) 
+# def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) : 
+#      if request.method == 'POST' : 
+#           data = request.get_json()
+#           workout_metric_ids = workoutMetricDao.insert_many(data)
+#           workoutDataDao.insert_many(user_id, workout_session_id, workout_id, workout_metric_ids)          
+#           return RES_MES_201, 201
+
+# @app.route("/users/<user_id>/workout_sessions/reports/recent", methods=['GET']) 
+# def get_user_workoutsessions_reports_recent(user_id) :      
+#      from_date, to_date = get_recent_date_period() 
+#      list_data = workoutDataDao.select_by_date_period(user_id, from_date, to_date) 
+#      res = get_workout_metric_stat(list_data) 
+#      if not res :
+#           return abort(404)
+#      return create_response(res, 200)
+
+# @app.route("/users/<user_id>/workout_sessions/reports", methods=['GET']) 
+# def get_user_workoutsessions_reports(user_id) : 
+#      search_date = request.args.get('search_date')
+#      if search_date == 'period' :           
+#           from_date, to_date = parse_request_args_from_to_dates(request)
+#           list_data = workoutDataDao.select_by_date_period(user_id, from_date, to_date) 
+#           res = get_workout_metric_stat(list_data) 
+#           if not res :
+#                return abort(404)
+#           return res, 200 
+#      elif search_date == 'date' : 
+#           date = request.args.get('date')
+#           list_data = workoutDataDao.select_by_date(user_id, date) 
+#           res = get_workout_metric_stat(list_data)
+#           if not res :
+#                return abort(404)
+#           return create_response(res, 200)
      
+#      return abort(400)
 
-@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/workout_metrics", methods=['POST']) 
-def get_post_user_workout_metrics(user_id, workout_session_id, workout_id) : 
-     if request.method == 'POST' : 
-          data = request.get_json()
-          workout_metric_ids = workoutMetricDao.insert_many(data)
-          workoutDataDao.insert_many(user_id, workout_session_id, workout_id, workout_metric_ids)          
-          return RES_MES_201, 201
-
-@app.route("/users/<user_id>/workout_sessions/reports/recent", methods=['GET']) 
-def get_user_workoutsessions_reports_recent(user_id) :      
-     from_date, to_date = get_recent_date_period() 
-     list_data = workoutDataDao.select_by_date_period(user_id, from_date, to_date) 
-     res = get_workout_metric_stat(list_data) 
-     if not res :
-          return abort(404)
-     return create_response(res, 200)
-
-@app.route("/users/<user_id>/workout_sessions/reports", methods=['GET']) 
-def get_user_workoutsessions_reports(user_id) : 
-     search_date = request.args.get('search_date')
-     if search_date == 'period' :           
-          from_date, to_date = parse_request_args_from_to_dates(request)
-          list_data = workoutDataDao.select_by_date_period(user_id, from_date, to_date) 
-          res = get_workout_metric_stat(list_data) 
-          if not res :
-               return abort(404)
-          return res, 200 
-     elif search_date == 'date' : 
-          date = request.args.get('date')
-          list_data = workoutDataDao.select_by_date(user_id, date) 
-          res = get_workout_metric_stat(list_data)
-          if not res :
-               return abort(404)
-          return create_response(res, 200)
-     
-     return abort(400)
-
-@app.route("/users/<user_id>/workout_sessions/<workout_session_id>/report", methods=['GET']) 
-def get_user_workoutsession_report(user_id, workout_session_id) : 
-     list_data = workoutDataDao.select(user_id, workout_session_id)
-     res = get_workout_metric_stat(list_data) 
-     if not res :
-               return abort(404)
-     return create_response(res, 200)
+# @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/report", methods=['GET']) 
+# def get_user_workoutsession_report(user_id, workout_session_id) : 
+#      list_data = workoutDataDao.select(user_id, workout_session_id)
+#      res = get_workout_metric_stat(list_data) 
+#      if not res :
+#                return abort(404)
+#      return create_response(res, 200)
