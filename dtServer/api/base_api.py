@@ -13,8 +13,8 @@ from dtServer.data.dao.app_base_data_dao import appBaseDataDao
 from dtServer.data.tranjection.app_base_data_trans import appBaseDataTrans
 from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDataTrans
 from dtServer.data.tranjection.signup_trans import signupTrans
-from dtServer.data.form.machine_certification_form import MachineCertificationForm
-from dtServer.data.form.center_certification_form import CenterCertificationForm
+from dtServer.data.dto.machine_certification_form import MachineCertificationForm
+from dtServer.data.dto.center_certification_form import CenterCertificationForm
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
