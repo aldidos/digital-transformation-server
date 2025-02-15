@@ -26,7 +26,7 @@ class WorkoutSessionsDao(BaseDAO) :
         return list_data
 
     def select_by_user_and_date_period(self, user_id, from_date, to_date ) : 
-        q = WorkoutSessions.select().where( WorkoutSessions.user == user_id, WorkoutSessions.date.between(from_date, to_date) )
+        q = WorkoutSessions.select().where( WorkoutSessions.user == user_id, WorkoutSessions.is_completed == True, WorkoutSessions.date.between(from_date, to_date) )
         list_data = [model_to_dict(row) for row in q]
         return list_data
 

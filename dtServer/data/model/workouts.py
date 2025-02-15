@@ -8,7 +8,8 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 class Workouts(BaseModel) : 
     workout_session = ForeignKeyField(WorkoutSessions)   
     exercise_library = ForeignKeyField(ExerciseLibrary)
-    completed_sets = IntegerField()
+    is_completed = BooleanField(null = False, default = False)
+    completed_sets = IntegerField()    
     start_time = DateTimeField(DATETIME_FORMAT)
     end_time = DateTimeField(DATETIME_FORMAT)
 

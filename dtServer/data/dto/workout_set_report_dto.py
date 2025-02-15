@@ -9,7 +9,7 @@ class WorkoutSetReportDTO :
 
         self.workout_metric_report = workout_metric_report
 
-    def get_with_dict(self) : 
+    def as_dict(self) : 
         return {
             'set' : self.set, 
             'weight' : self.weight, 

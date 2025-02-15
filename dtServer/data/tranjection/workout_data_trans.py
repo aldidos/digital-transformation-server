@@ -24,4 +24,6 @@ class WorkoutDataTrans :
 
             workoutMetricDao.insert_many(workout_metrics) 
 
+            return workout_set_id
+
 workoutDataTrans = WorkoutDataTrans()

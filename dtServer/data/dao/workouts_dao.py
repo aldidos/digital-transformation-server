@@ -28,6 +28,19 @@ class WorkoutsDao(BaseDAO) :
         
         return [ row for row in q.dicts() ]
     
+    def select_recent_user_exercise_library_workouts(self, user_id, exercise_library_id) : 
+        q = Workouts.select( WorkoutSessions.id.alias('workout_session'), WorkoutSessions.date, 
+                            Workouts.id.alias('workout'),  Workouts.completed_sets, Workouts.start_time, Workouts.end_time,\
+                            ExerciseLibrary.id.alias('exercise_library'))\
+                            .join(WorkoutSessions)\
+                            .join(User)\
+                            .join_from(Workouts, ExerciseLibrary)\
+                            .where(Workouts.is_completed == True, User.id == user_id,  ExerciseLibrary.id == exercise_library_id)\
+                            .order_by(WorkoutSessions.date.desc())\
+                            .limit(7)
+        
+        return [ row for row in q.dicts() ]
+    
     def insert(self, data) : 
         return Workouts.insert(data).execute()
 

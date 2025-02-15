@@ -4,14 +4,26 @@ from dtServer.data.dto.workout_report_dto import WorkoutReportDTO
 
 class WorkoutReport : 
 
-    def make_report(self, workout, df : pd.DataFrame ) : 
+    def __init__(self) : 
+        self.total_sets = 0
+        self.total_volume = 0
+        self.total_reps = 0
+        self.total_lifting_time = 0
+        self.avg_reps_pet_set = 0
+        self.total_workout_time = 0 
+        self.list_set_reports = []
 
-        total_sets = df['set'].drop_duplicates().count()
-        total_volume = 0
-        total_reps = 0
-        total_lifting_time = 0
+    def conver_datatype(self) : 
+        self.total_sets = int(self.total_sets)
+        self.total_volume = float(self.total_volume)
+        self.total_reps = int(self.total_reps)
+        self.avg_reps_pet_set = float(self.avg_reps_pet_set)
+        self.total_workout_time = self.total_workout_time = self.total_workout_time.total_seconds()
 
-        list_set_reports = []
+    def make_report(self, workout, dataset ) : 
+        df = pd.DataFrame(dataset)
+
+        self.total_sets = df['set'].drop_duplicates().count()
 
         groups = df.groupby([ 'set', 'weight', 'total_reps', 'set_start_time', 'set_end_time', 'res_start_time', 'res_end_time'])
         for name, df_group in groups : 
@@ -22,20 +34,20 @@ class WorkoutReport :
             }
 
             workout_set_report = workoutSetReport.make_report(workout_set, df_group)            
-            total_volume = total_volume + workout_set_report.volume
-            total_reps = total_reps + workout_set_report.total_reps
+            self.total_volume = self.total_volume + workout_set_report.volume
+            self.total_reps = self.total_reps + workout_set_report.total_reps
             
-            total_lifting_time = total_lifting_time + workout_set_report.workout_metric_report['sum_rep_duration']  ####
+            self.total_lifting_time = self.total_lifting_time + workout_set_report.workout_metric_report['sum_rep_duration']  ####
 
-            list_set_reports.append( workout_set_report.get_with_dict() )
+            self.list_set_reports.append( workout_set_report.as_dict() )
 
-        total_sets = int(total_sets)
-        total_volume = float(total_volume)
-        avg_reps_pet_set = total_reps / total_sets
+        self.total_sets = int(self.total_sets)
+        self.total_volume = float(self.total_volume)
+        self.avg_reps_pet_set = self.total_reps / self.total_sets
 
-        total_workout_time = workout['end_time'] - workout['start_time']
-        total_workout_time = total_workout_time.total_seconds()
+        self.total_workout_time = workout['end_time'] - workout['start_time']        
 
-        return WorkoutReportDTO(total_workout_time, total_lifting_time, total_sets, total_volume, total_reps, avg_reps_pet_set, list_set_reports )
+        self.conver_datatype()
+        return WorkoutReportDTO(self.total_workout_time, self.total_lifting_time, self.total_sets, self.total_volume, self.total_reps, self.avg_reps_pet_set, self.list_set_reports )
         
 workoutReport = WorkoutReport()

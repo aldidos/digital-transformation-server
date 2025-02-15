@@ -9,6 +9,7 @@ from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart
 from dtServer.data.model.user import User
 from dtServer.data.model.body_part import BodyPart
 from playhouse.shortcuts import model_to_dict, dict_to_model
+from dtServer.data.dao.query.workout_metric_query_builder import WorkoutMatricQueryBuilder
 
 class WorkoutMetricsDao(BaseDAO) : 
 
@@ -25,81 +26,30 @@ class WorkoutMetricsDao(BaseDAO) :
     
     def insert(self, data) : 
         return WorkoutMetrics.insert(data).execute()
-    
-    def make_select_query_session_level(self) : 
-        q = WorkoutMetrics.select( 
-                                  Workouts.completed_sets, Workouts.start_time.alias('workout_start_time'), Workouts.end_time.alias('workout_end_time'), 
-                                  ExerciseLibrary.name.alias('exercise_library'), 
-                                  WorkoutSet.set, WorkoutSet.weight, WorkoutSet.total_reps, WorkoutSet.set_start_time, WorkoutSet.set_end_time, WorkoutSet.res_start_time, WorkoutSet.res_end_time, 
-                                  WorkoutMetrics.rep, WorkoutMetrics.peak_velocity, WorkoutMetrics.mean_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_power, WorkoutMetrics.peak_force, WorkoutMetrics.mean_force,
-                                  WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con, 
-                                  WorkoutMetrics.peak_force_con, WorkoutMetrics.mean_force_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con, 
-                                  WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc, 
-                                  WorkoutMetrics.peak_force_ecc, WorkoutMetrics.mean_force_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc, 
-                                  WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration, 
-                                  WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD
-                                            )\
-            .join(WorkoutSet)\
-            .join(Workouts)\
-            .join(ExerciseLibrary)\
-            .join_from(Workouts, WorkoutSessions)\
-            .join_from(WorkoutSessions, User)\
         
-        return q
-    
-    def make_select_query_workout_level(self) : 
-        q = WorkoutMetrics.select( 
-                                WorkoutSet.set, WorkoutSet.weight, WorkoutSet.total_reps, WorkoutSet.set_start_time, WorkoutSet.set_end_time, WorkoutSet.res_start_time, WorkoutSet.res_end_time, 
-                                WorkoutMetrics.rep, WorkoutMetrics.peak_velocity, WorkoutMetrics.mean_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_power, WorkoutMetrics.peak_force, WorkoutMetrics.mean_force,
-                                WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con, 
-                                WorkoutMetrics.peak_force_con, WorkoutMetrics.mean_force_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con, 
-                                WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc, 
-                                WorkoutMetrics.peak_force_ecc, WorkoutMetrics.mean_force_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc, 
-                                WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration, 
-                                WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD)\
-                                .join(WorkoutSet)\
-                                .join(Workouts)
-        
-        return q
-    
-    def make_select_query_workout_set_level(self) : 
-        q = WorkoutMetrics.select(                                
-                                WorkoutMetrics.rep, WorkoutMetrics.peak_velocity, WorkoutMetrics.mean_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_power, WorkoutMetrics.peak_force, WorkoutMetrics.mean_force,
-                                WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con, 
-                                WorkoutMetrics.peak_force_con, WorkoutMetrics.mean_force_con, WorkoutMetrics.peak_acceleration_con, WorkoutMetrics.mean_acceleration_con, 
-                                WorkoutMetrics.peak_velocity_ecc, WorkoutMetrics.mean_velocity_ecc, WorkoutMetrics.peak_power_ecc, WorkoutMetrics.mean_power_ecc, 
-                                WorkoutMetrics.peak_force_ecc, WorkoutMetrics.mean_force_ecc, WorkoutMetrics.peak_acceleration_ecc, WorkoutMetrics.mean_acceleration_ecc, 
-                                WorkoutMetrics.rep_duration_con, WorkoutMetrics.rep_duration_ecc, WorkoutMetrics.top_stay_duration, WorkoutMetrics.bottom_stay_duration, 
-                                WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD)\
-                                .join(WorkoutSet)\
-                                .join(Workouts)
-        
-        return q
-
-    
     def select_by_user_and_dateperiod(self, user_id, from_date, to_date ) : 
-        q = self.make_select_query_session_level()
+        q = WorkoutMatricQueryBuilder.query_for_session_data()
         q = q.where(User.id == user_id, WorkoutSessions.is_completed == True, WorkoutSessions.date.between( from_date, to_date) )
 
         list_data = [ row for row in q.dicts()]
         return list_data  
     
     def select_workout_session_level_data(self, workout_session_id ) : 
-        q = self.make_select_query_session_level()
+        q = WorkoutMatricQueryBuilder.query_for_session_data()
         q = q.where( WorkoutSessions.id == workout_session_id )
 
         list_data = [ row for row in q.dicts()]
-        return list_data  
+        return list_data
     
     def select_woekout_level_data(self, workout_id) : 
-        q = self.make_select_query_workout_level()
+        q = WorkoutMatricQueryBuilder.query_for_workout_data()
         q = q.where(Workouts.id == workout_id)
 
         list_data = [ row for row in q.dicts()]
         return list_data  
-
+    
     def select_workoutset_level_data(self, workout_id, workoutset_id) : 
-        q = self.make_select_query_workout_set_level()
+        q = WorkoutMatricQueryBuilder.query_for_set_data()
         q = q.where(Workouts.id == workout_id, WorkoutSet.id == workoutset_id)
 
         list_data = [ row for row in q.dicts()]
