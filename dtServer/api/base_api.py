@@ -8,13 +8,11 @@ from dtServer.data.dao.center_member_dao import centerMemberDao
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
-from dtServer.data.dao.signup_dao import signupDao
-from dtServer.data.dao.app_base_data_dao import appBaseDataDao
 from dtServer.data.tranjection.app_base_data_trans import appBaseDataTrans
 from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDataTrans
 from dtServer.data.tranjection.signup_trans import signupTrans
-from dtServer.data.dto.machine_certification_form import MachineCertificationForm
-from dtServer.data.dto.center_certification_form import CenterCertificationForm
+from dtServer.data.dto.machine_certification_dto import MachineCertificationDTO
+from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
@@ -34,7 +32,7 @@ def destroy_session(key) :
 def nfc_certification() : 
      if request.method == 'PUT' :
           data = request.get_json()
-          form = MachineCertificationForm(data)
+          form = MachineCertificationDTO(data)
 
           nfc_tag = nfcTagDao.select_by_nfc_tag_id( form.get_nfc_tag_id() )
           if nfc_tag is None : 
@@ -57,7 +55,7 @@ def nfc_certification() :
 def qr_certification() :      
      if request.method == 'PUT' :  
           data = request.get_json()
-          form = MachineCertificationForm(data)          
+          form = MachineCertificationDTO(data)          
 
           if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
                return (RES_MES_200, 200)          
@@ -128,7 +126,7 @@ def get_req_exerciselib_bodypart(exerciselib_id, body_part_id) :
 def center_authentication() : ###
      if request.method == 'PUT' : 
           data = request.get_json()
-          form = CenterCertificationForm(data)
+          form = CenterCertificationDTO(data)
 
           user_id = form.get_user_id()
 

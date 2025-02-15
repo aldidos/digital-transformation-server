@@ -4,7 +4,7 @@ from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
 from dtServer.data.dao.workouts_dao import workoutDao
 from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
-from dtServer.data.dto.workout_data_form import WorkoutSetMetricsDTO
+from dtServer.data.dto.workout_data_dto import WorkoutSetMetricsDTO
 from dtServer.data.report.workout_report_builder import WorkoutReportBuilder
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 
@@ -132,7 +132,7 @@ def get_user_workout_set_report(user_id, workout_session_id, workout_id, set_id)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/workout_metrics", methods = ['GET'])
 def get_workout_sets_metrics(user_id, workout_session_id, workout_id) : 
-     list_workout_metric_data = workoutMetricDao.select_woekout_level_data(workout_id)
+     list_workout_metric_data = workoutMetricDao.select_workout_sets_data(workout_id)
      if not list_workout_metric_data : 
           return abort(404)
      return list_workout_metric_data

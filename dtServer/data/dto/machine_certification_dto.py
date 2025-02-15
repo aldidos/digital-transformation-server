@@ -1,5 +1,5 @@
 
-class MachineCertificationForm : 
+class MachineCertificationDTO : 
 
     def __init__(self, data : dict) : 
         self.form = data

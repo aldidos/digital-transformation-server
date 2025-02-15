@@ -54,5 +54,12 @@ class WorkoutMetricsDao(BaseDAO) :
 
         list_data = [ row for row in q.dicts()]
         return list_data
+    
+    def select_workout_sets_data(self, workout_id) : 
+        q = WorkoutMatricQueryBuilder.query_for_set_data()
+        q = q.where(Workouts.id == workout_id)
+
+        list_data = [ row for row in q.dicts()]
+        return list_data  
 
 workoutMetricDao = WorkoutMetricsDao()

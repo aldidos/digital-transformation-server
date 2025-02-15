@@ -3,7 +3,7 @@ from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
 from dtServer.data.dao.workouts_dao import workoutDao
 from dtServer.data.dao.workout_set_dao import workoutSetDao
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-from dtServer.data.dto.workout_data_form import WorkoutSetMetricsDTO
+from dtServer.data.dto.workout_data_dto import WorkoutSetMetricsDTO
 
 class WorkoutDataTrans : 
 
