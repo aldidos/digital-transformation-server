@@ -1,5 +1,4 @@
 
-
 class WorkoutSessionReportsDTO : 
 
     def __init__(self, total_volume, total_exercise_libraries, total_workout_time, list_workout_session_reports) : 

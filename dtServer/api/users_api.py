@@ -100,27 +100,27 @@ def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, wo
           data = request.get_json()
           workout_set_metrics_dto = WorkoutSetMetricsDTO(data)
           set_id = workoutDataTrans.insert_workout_set_metrics(workout_id, workout_set_metrics_dto)
-          return { 'message' : 'Created workout set metrics', 'set_id' : set_id }, 201 ####
+          return create_response({ 'message' : 'Created workout set metrics', 'set_id' : set_id }, 201 ) ####
      
 @app.route("/users/<user_id>/recent_report/<exercise_library_id>/<set_number>", methods=['GET'])
 def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) : 
      report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set_number)
      if not report : 
           return abort(404)
-     return report, 200 
+     return create_response(report, 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/report", methods=['GET'])
 def get_workout_session_report(user_id, workout_session_id) : 
      report = WorkoutReportBuilder.build_workout_session_report(workout_session_id)
      if not report : 
           return abort(404)
-     return report, 200
+     return create_response(report, 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/report", methods=['GET'])
 def get_user_workout_report(user_id, workout_session_id, workout_id) : 
      workout_report = WorkoutReportBuilder.build_workout_report(workout_id)
      if workout_report : 
-          return workout_report, 200
+          return create_response(workout_report, 200)
      return abort(404)
      
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/<set_id>/report", methods = ['GET'])
@@ -128,18 +128,34 @@ def get_user_workout_set_report(user_id, workout_session_id, workout_id, set_id)
      report = WorkoutReportBuilder.build_workout_set_report(workout_id, set_id)
      if not report : 
           return abort(404)
-     return report, 200 
+     return create_response(report, 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/workout_metrics", methods = ['GET'])
 def get_workout_sets_metrics(user_id, workout_session_id, workout_id) : 
      list_workout_metric_data = workoutMetricDao.select_workout_sets_data(workout_id)
      if not list_workout_metric_data : 
           return abort(404)
-     return list_workout_metric_data
+     return create_response(list_workout_metric_data, 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/<set_id>/workout_metrics", methods = ['GET'])
 def get_workout_set_metrics(user_id, workout_session_id, workout_id, set_id) : 
      list_workout_metrics = workoutMetricDao.select_workoutset_level_data(workout_id, set_id)
      if not list_workout_metrics : 
           return abort(404)
-     return list_workout_metrics, 200
+     return create_response(list_workout_metrics, 200)
+
+@app.route("/users/<user_id>/workout_report", methods = ['GET'])
+def get_user_workout_report_recent(user_id) : 
+     from_date = request.args.get('from_date')
+     to_date = request.args.get('to_date')
+
+     if from_date > to_date : 
+          return abort(400)
+     
+     return create_response("", 200)
+     
+@app.route("/users/<user_id>/workout_report/recent", methods = ['GET'])
+def get_user_workout_report(user_id) : 
+     from_date, to_date = get_recent_date_period()
+
+     return create_response("", 200)
