@@ -15,7 +15,12 @@ class ExerciseLibraryDao(BaseDAO) :
     def select_by_name(self, name : str ) :
         model = ExerciseLibrary.get_or_none(ExerciseLibrary.name == name)
         return model_to_dict_or_none(model)
-        
+    
+    def select_by_equipment(self, equipment_id) : 
+        q = ExerciseLibrary.select().where(ExerciseLibrary.equipment == equipment_id)
+        exercise_libs = [ model_to_dict(row) for row in q ]
+        return exercise_libs
+                
     def insert_many(self, list_data) : 
         with db_proxy.atomic() : 
             ExerciseLibrary.insert_many(list_data).execute()

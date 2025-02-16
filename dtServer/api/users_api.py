@@ -72,7 +72,8 @@ def get_patch_user_workout_sessions(user_id, workout_session_id) :
 def get_post_user_workouts(user_id, workout_session_id) : 
      if request.method == 'POST' : 
           data = request.get_json()         
-          workout = workoutDao.save(data)
+          workout_id = workoutDao.insert(data)
+          workout = workoutDao.select_by_id(workout_id)
           return create_response(workout, 201)
 
      if request.method == 'GET' : 

@@ -3,6 +3,10 @@ from dtServer.data.model.workouts import Workouts, db_proxy, model_to_dict_or_no
 from dtServer.data.model.workout_sessions import WorkoutSessions
 from dtServer.data.model.exercise_library import ExerciseLibrary
 from dtServer.data.model.user import User
+from dtServer.data.model.equipment import Equipment
+from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
+from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
+from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutsDao(BaseDAO) : 
@@ -20,29 +24,37 @@ class WorkoutsDao(BaseDAO) :
         return list_data
 
     def select_by_user_and_date_period(self, user_id, from_date, to_date) : 
-        q = Workouts.select( ExerciseLibrary.name.alias('exercise_library_name'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time)\
+        q = Workouts.select( Equipment.id.alias('equipment'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time)\
             .join(WorkoutSessions)\
             .join(User)\
-            .join_from(Workouts, ExerciseLibrary)\
+            .join_from(Workouts, Equipment)\
             .where(WorkoutSessions.is_completed == True, User.id == user_id,  WorkoutSessions.date.between(from_date, to_date))
         
         return [ row for row in q.dicts() ]
     
     def select_recent_user_exercise_library_workouts(self, user_id, exercise_library_id) : 
         q = Workouts.select( WorkoutSessions.id.alias('workout_session'), WorkoutSessions.date, 
-                            Workouts.id.alias('workout'),  Workouts.completed_sets, Workouts.start_time, Workouts.end_time,\
+                            Workouts.id.alias('workout'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time,
                             ExerciseLibrary.id.alias('exercise_library'))\
                             .join(WorkoutSessions)\
                             .join(User)\
-                            .join_from(Workouts, ExerciseLibrary)\
-                            .where(Workouts.is_completed == True, User.id == user_id,  ExerciseLibrary.id == exercise_library_id)\
+                            .join_from(Workouts, WorkoutExerciseLib)\
+                            .join(ExerciseLibrary)\
+                            .where(Workouts.is_completed == True, User.id == user_id, ExerciseLibrary.id == exercise_library_id)\
                             .order_by(WorkoutSessions.date.desc())\
                             .limit(7)
         
         return [ row for row in q.dicts() ]
     
     def insert(self, data) : 
-        return Workouts.insert(data).execute()
+        with db_proxy.atomic() : 
+            workout_id = Workouts.insert(data).execute()
+            equipment_id = data['equipment']
+            list_exercise_lib = exerciseLibraryDao.select_by_equipment(equipment_id)
+            for exer_lib in list_exercise_lib : 
+                exer_lib_id = exer_lib['id'] 
+                workoutExerciselibDao.create(workout_id, exer_lib_id)
+            return workout_id
 
     def insert_many(self, list_data) : 
         with db_proxy.atomic() :

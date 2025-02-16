@@ -1,0 +1,43 @@
+id,equipment_type,is_machine,name
+1,weight,TRUE,Calf Raise machine
+2,weight,TRUE,Glute Press machine
+3,weight,TRUE,Lateral Shoulder Raise machine
+4,weight,TRUE,Lying Hamstrings Curl machine
+5,weight,TRUE,Biceps Curl machine
+6,weight,TRUE,Seated Chest Press machine
+7,weight,TRUE,Seated Incline Chest Press machine
+8,weight,TRUE,Seated Crunch machine
+9,weight,TRUE,Seated Rows machine
+10,weight,TRUE,Seated Cable Row machine
+11,weight,TRUE,Lat Pulldown machine
+12,weight,TRUE,Cable Lat Pulldown machine
+13,weight,TRUE,Assisted Pull up machine
+14,weight,TRUE,Leg Extension machine
+15,weight,TRUE,Seated Leg Press machine
+16,weight,TRUE,Seated Shoulder Press machine
+17,weight,TRUE,Tricep Extension machine
+18,weight,TRUE,Cable 1 machine
+19,weight,TRUE,Cable 2 machine
+20,weight,TRUE,Hip Adduction/Abduction machine
+21,weight,TRUE,"Decline ,machine"
+100,other,FASLE,dumbbells
+101,other,FASLE,barbell
+102,other,FASLE,bench
+103,other,FASLE,resistance band
+104,other,FASLE,bosu
+105,other,FASLE,trx
+106,other,FASLE,box
+107,other,FASLE,stability ball
+108,other,FASLE,medicine ball
+109,other,FASLE,body weight
+110,other,FASLE,pull up bar
+111,other,FASLE,ladder
+112,other,FASLE,kettlebells
+113,other,FASLE,heavy ropes
+120,cardio,TRUE,Treadmill
+121,cardio,TRUE,Elliptical
+122,cardio,TRUE,Step machine
+123,cardio,TRUE,Stationary bike
+124,cardio,TRUE,Rowing
+125,cardio,TRUE,Indoor cycling
+126,cardio,TRUE,Recumbent bike

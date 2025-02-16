@@ -1,5 +1,5 @@
 name,type,equipment,difficult
-Seated_Lat_Pulldown,5,11,1
+Seated Lat Pulldown,5,11,1
 Seated Leg Extension,5,14,1
 Seated Leg Press Exercise,5,15,1
 Seated Close-Grip Shoulder Press,5,16,1
@@ -24,38 +24,38 @@ Decline Chest Press,5,21,1
 Seated Row,5,9,1
 Back Squat,5,101,2
 Barbell Jammers,5,101,3
-Barbell_Bent-over Row,5,101,3
-Barbell_Biceps_Curl,5,101,2
-Barbell_Calf Raises,5,101,2
-Barbell_Bench Press,5,101,2
-Barbell_Close-grip Bench Press,5,101,2
-Barbell_Deadlift,5,101,3
-Barbell_Forward Lunge_R,5,101,2
-Barbell_Forward Lunge_L,5,101,2
-Barbell_Front Squat,5,101,3
-Barbell_Front Squat to Overhead Press,5,101,3
-Barbell_Hang Clean,2,101,3
-Barbell_Hip Bridge,5,101,2
-Barbell_Lying Triceps Extensions,5,101,2
-Barbell_Power Clean,2,101,3
-Barbell_Push Jerk,2,101,3
-Barbell_Reverse Bicep Curl,5,101,2
-Barbell_Reverse Lunge_R,5,101,2
-Barbell_Reverse Lunge_L,5,101,2
-Barbell_Romanian Deadlift,5,101,2
-Barbell_Seated Shoulder Press,5,101,2
-Barbell_Shrug,5,101,2
-Barbell_Snatch,2,101,3
-Barbell_Standing Shoulder Press,5,101,3
-Barbell_Incline Bench Press,5,101,2
+Barbell Bent-over Row,5,101,3
+Barbell Biceps Curl,5,101,2
+Barbell Calf Raises,5,101,2
+Barbell Bench Press,5,101,2
+Barbell Close-grip Bench Press,5,101,2
+Barbell Deadlift,5,101,3
+Barbell Forward Lunge R,5,101,2
+Barbell Forward Lunge L,5,101,2
+Barbell Front Squat,5,101,3
+Barbell Front Squat to Overhead Press,5,101,3
+Barbell Hang Clean,2,101,3
+Barbell Hip Bridge,5,101,2
+Barbell Lying Triceps Extensions,5,101,2
+Barbell Power Clean,2,101,3
+Barbell Push Jerk,2,101,3
+Barbell Reverse Bicep Curl,5,101,2
+Barbell Reverse Lunge R,5,101,2
+Barbell Reverse Lunge L,5,101,2
+Barbell Romanian Deadlift,5,101,2
+Barbell Seated Shoulder Press,5,101,2
+Barbell Shrug,5,101,2
+Barbell Snatch,2,101,3
+Barbell Standing Shoulder Press,5,101,3
+Barbell Incline Bench Press,5,101,2
 Barbell Standing Military Press,5,101,2
-Barbell_Hip Thrust,5,101,2
+Barbell Hip Thrust,5,101,2
 Barbell Preacher Curl,5,101,1
 Barbell Upright Row,5,101,2
-Barbell_T Bar Row,5,101,2
+Barbell T Bar Row,5,101,2
 Barbell Decline Bench Press,5,101,2
-Barbell Bulgarian Split Squat_R,5,101,3
-Barbell Bulgarian Split Squat_L,5,101,3
+Barbell Bulgarian Split Squat R,5,101,3
+Barbell Bulgarian Split Squat L,5,101,3
 Barbell Stiff-Leg Deadlift,5,101,2
 Barbell Overhead Tricep Extension,5,101,2
 Barbell Bent-Over Row (Reverse Grip),5,101,2
@@ -80,7 +80,7 @@ Barbell Incline Shoulder Raise,5,101,3
 Barbell Pullover and Press,5,101,3
 Barbell Decline Bench Press (Reverse Grip),5,101,3
 Barbell Squat to Upright Row,5,101,3
-Seated_Lat_Pulldown(Pause),5,11,2
+Seated Lat Pulldown(Pause),5,11,2
 Seated Leg Extension(Pause),5,14,2
 Seated Leg Press Exercise(Pause),5,15,2
 Seated Close-Grip Shoulder Press(Pause),5,16,2
@@ -106,8 +106,8 @@ Drop Jump,3,109,3
 Nordic Hamstring,5,109,3
 Seated Leg Press Exercise(wide),5,15,2
 Seated Leg Press Exercise(narrow),5,15,2
-Seated single Leg Press Exercise_R,5,15,2
-Seated single Leg Press Exercise_L,5,109,2
+Seated single Leg Press Exercise R,5,15,2
+Seated single Leg Press Exercise L,5,109,2
 Dumbbell Bench Press,5,100,1
 Dumbbell Fly,5,100,2
 Incline Dumbbell Press,5,100,1
@@ -121,14 +121,14 @@ Dumbbell Upright Row,5,100,2
 Dumbbell Bicep Curl,5,100,1
 Dumbbell Hammer Curl,5,100,1
 Dumbbell Preacher Curl,5,100,1
-Dumbbell Concentration Curl_R,5,100,2
-Dumbbell Concentration Curl_L,5,100,2
+Dumbbell Concentration Curl R,5,100,2
+Dumbbell Concentration Curl L,5,100,2
 Dumbbell Seated Tricep Extension,5,100,1
 Dumbbell Kickback,5,100,1
 Dumbbell Standing Tricep Extension,5,100,2
 Dumbbell Bent-Over Row,5,100,2
-Dumbbell One-Arm Row_R,5,100,2
-Dumbbell One-Arm Row_L,5,100,2
+Dumbbell One-Arm Row R,5,100,2
+Dumbbell One-Arm Row L,5,100,2
 Dumbbell Shrug,5,100,1
 Dumbbell Deadlift,5,100,2
 Dumbbell Squat,5,100,2
@@ -150,10 +150,10 @@ Dumbbell Renegade Row,5,100,2
 Dumbbell Incline Row,5,100,2
 Dumbbell Good Morning,5,100,2
 Dumbbell Hip Thrust,5,100,2
-Dumbbell Bulgarian Split Squat_R,5,100,3
-Dumbbell Bulgarian Split Squat_L,5,100,3
-Dumbbell Single-Leg Deadlift_R,5,100,3
-Dumbbell Single-Leg Deadlift_L,5,100,3
+Dumbbell Bulgarian Split Squat R,5,100,3
+Dumbbell Bulgarian Split Squat L,5,100,3
+Dumbbell Single-Leg Deadlift R,5,100,3
+Dumbbell Single-Leg Deadlift L,5,100,3
 Dumbbell Arnold Press,5,100,2
 Dumbbell Reverse Fly,5,100,2
 Dumbbell Pallof Press,5,100,2
@@ -164,10 +164,10 @@ Dumbbell Goblet Squat,5,100,2
 Dumbbell Lateral Lunge,5,100,2
 Dumbbell Reverse Lunge,5,100,2
 Dumbbell Crossover Lunge,5,100,3
-Dumbbell Single-Arm Snatch_R,2,100,3
-Dumbbell Single-Arm Snatch_L,2,100,3
-Dumbbell Single-Arm Clean and Jerk_R,2,100,3
-Dumbbell Single-Arm Clean and Jerk_L,2,100,3
+Dumbbell Single-Arm Snatch R,2,100,3
+Dumbbell Single-Arm Snatch L,2,100,3
+Dumbbell Single-Arm Clean and Jerk R,2,100,3
+Dumbbell Single-Arm Clean and Jerk L,2,100,3
 Dumbbell Spider Curl,5,100,2
 Dumbbell Zottman Curl,5,100,2
 Dumbbell Incline Hammer Curl,5,100,2

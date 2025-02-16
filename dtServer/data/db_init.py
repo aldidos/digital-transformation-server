@@ -23,11 +23,12 @@ from dtServer.data.dao.workouts_dao import workoutDao, Workouts
 from dtServer.data.dao.workout_set_dao import workoutSetDao, WorkoutSet
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao, WorkoutMetrics
 from dtServer.data.dao.nfc_tag_dao import nfcTagDao, NFCTag
-from dtServer.data.dao.exercise_library_equipment_dao import exerciseLibraryEquipmentDao, ExerciseLibraryEquipment
+from dtServer.data.dao.equipment_dao import equipmentDao, Equipment
 from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, ExerciseLibraryType
 from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
 from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
 from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
+from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao, WorkoutExerciseLib
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 
@@ -35,9 +36,9 @@ def open_data_file_csv(file_path : str) :
         list_data = list(csv_reader)
         return list_data
 
-def init_exerciselibrary_equipments() : 
-    list_data = open_data_file_csv('./data/required_data/exerciselibrary_equipments.csv')
-    exerciseLibraryEquipmentDao.insert_many(list_data)
+def init_equipments() : 
+    list_data = open_data_file_csv('./data/required_data/equipments.csv')
+    equipmentDao.insert_many(list_data)
 
 def init_bodyparts() : 
     list_data = open_data_file_csv('./data/required_data/body_parts.csv')
@@ -114,12 +115,16 @@ def init_exercise_library_difficulty() :
     list_data = open_data_file_csv('./data/required_data/exercise_library_difficulty.csv')
     exerciseLibraryDifficultyDao.insert_many(list_data)
 
+def init_workout_exerciselib() : 
+    list_data = open_data_file_csv('./data/test_data/workout_exerciselib.csv')
+    workoutExerciselibDao.insert_many(list_data)    
+
 if __name__ == '__main__' : 
     tables = [
-              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, 
+              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, WorkoutExerciseLib, 
               BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
               ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
-              UserSurvey, NFCTag, ExerciseLibraryEquipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
+              UserSurvey, NFCTag, Equipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
               ]
     
     conn = make_database_connection()   
@@ -131,7 +136,7 @@ if __name__ == '__main__' :
     init_exercise_library_type()
     init_exercise_library_difficulty()
     init_bodyparts()
-    init_exerciselibrary_equipments()
+    init_equipments()
     init_exerciselibraries()
     init_exerciselibrary_bodypart()
 
@@ -145,6 +150,7 @@ if __name__ == '__main__' :
     init_user_center()
     init_workout_sessions()
     init_workouts()
+    init_workout_exerciselib()
     init_workout_sets()
     init_workout_metrics()
 

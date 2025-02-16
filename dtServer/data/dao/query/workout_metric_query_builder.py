@@ -4,7 +4,7 @@ from dtServer.data.model.workout_sessions import WorkoutSessions
 from dtServer.data.model.workouts import Workouts
 from dtServer.data.model.workout_set import WorkoutSet
 from dtServer.data.model.exercise_library import ExerciseLibrary
-from dtServer.data.model.exerciselib_bodypart import ExerciseLibBodyPart
+from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
 from dtServer.data.model.user import User
 
 class WorkoutMatricQueryBuilder : 
@@ -52,6 +52,7 @@ class WorkoutMatricQueryBuilder :
                                   )\
                                 .join(WorkoutSet)\
                                 .join(Workouts)\
+                                .join(WorkoutExerciseLib)\
                                 .join(ExerciseLibrary)\
                                 .join_from(Workouts, WorkoutSessions)\
                                 .join_from(WorkoutSessions, User)

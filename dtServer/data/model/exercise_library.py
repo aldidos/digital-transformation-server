@@ -1,5 +1,5 @@
 from dtServer.data.model.base_model import BaseModel, db_proxy, model_to_dict_or_none
-from dtServer.data.model.exercise_library_equipment import ExerciseLibraryEquipment
+from dtServer.data.model.equipment import Equipment
 from dtServer.data.model.exercise_library_difficulty import ExerciseLibraryDifficulty
 from dtServer.data.model.exercise_library_type import ExerciseLibraryType
 from peewee import *
@@ -11,7 +11,7 @@ LEN_MUSCLE_GROUP = 128
 class ExerciseLibrary(BaseModel) : 
     name = CharField(LEN_NAME, index = True)
     type = ForeignKeyField(ExerciseLibraryType)
-    equipment = ForeignKeyField(ExerciseLibraryEquipment)
+    equipment = ForeignKeyField(Equipment)
     difficult = ForeignKeyField(ExerciseLibraryDifficulty)
     description = TextField(True)
 
