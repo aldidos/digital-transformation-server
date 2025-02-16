@@ -110,6 +110,13 @@ def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_nu
           return abort(404)
      return create_response(report, 200)
 
+@app.route("/users/<user_id>/recent_report/<exercise_library_id>", methods = ['GET'])
+def get_recent_exercise_library_workout_report(user_id, exercise_library_id) : 
+     report = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
+     if not report : 
+          return abort(404)
+     return create_response(report, 200)
+
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/report", methods=['GET'])
 def get_workout_session_report(user_id, workout_session_id) : 
      report = WorkoutReportBuilder.build_workout_session_report(workout_session_id)
@@ -145,7 +152,7 @@ def get_workout_set_metrics(user_id, workout_session_id, workout_id, set_id) :
           return abort(404)
      return create_response(list_workout_metrics, 200)
 
-@app.route("/users/<user_id>/workout_report", methods = ['GET'])
+@app.route("/users/<user_id>/workout_sessions/report", methods = ['GET'])
 def get_user_workout_report_recent(user_id) : 
      from_date = request.args.get('from_date')
      to_date = request.args.get('to_date')
@@ -153,10 +160,18 @@ def get_user_workout_report_recent(user_id) :
      if from_date > to_date : 
           return abort(400)
      
-     return create_response("", 200)
+     report = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+     if not report : 
+          return abort(404)
+          
+     return create_response(report, 200)
      
-@app.route("/users/<user_id>/workout_report/recent", methods = ['GET'])
-def get_user_workout_report(user_id) : 
+@app.route("/users/<user_id>/workout_sessions/recent_report", methods = ['GET'])
+def get_user_workoutreports_recent(user_id) : 
      from_date, to_date = get_recent_date_period()
 
-     return create_response("", 200)
+     report = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+     if not report : 
+          return abort(404)
+          
+     return create_response(report, 200)

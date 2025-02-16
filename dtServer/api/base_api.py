@@ -108,6 +108,15 @@ def get_req_exercise_libraries() :
           exercise_libs = exerciseLibraryDao.select_all() 
           return create_response(exercise_libs, 200)
      
+@app.route("/exercise_libraries/<equipment_id>", methods=['GET'])
+def get_exercise_libraries_by_equipment(equipment_id) : 
+     if request.method == 'GET' : 
+          exercise_libs = exerciseLibraryDao.select_by_equipment(equipment_id)
+          if not exercise_libs : 
+               return abort(404)
+          
+          return create_response(exercise_libs, 200)
+     
 @app.route("/exerciselib_bodyparts", methods=['GET'])
 def get_req_exerciselib_bodyparts() : 
      if request.method == 'GET' : 

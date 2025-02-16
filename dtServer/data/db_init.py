@@ -10,7 +10,6 @@ from dtServer.data.dao.center_equipment_dao import centerEquipmentDao, CenterEqu
 from dtServer.data.dao.center_dao import centerDao, Center
 from dtServer.data.dao.center_member_dao import centerMemberDao, CenterMember
 from dtServer.data.dao.center_staff_dao import centerStaffDao, CenterStaff
-from dtServer.data.dao.equipment_exercise_library_dao import equipmentExerciseLib, EquipmentExerciseLib
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao, ExerciseLibrary
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao, ExerciseLibBodyPart
 from dtServer.data.dao.user_account_dao import userAccountDao, UserAccount
@@ -122,7 +121,7 @@ def init_workout_exerciselib() :
 if __name__ == '__main__' : 
     tables = [
               User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, WorkoutExerciseLib, 
-              BodyPart, CenterEquipment, CenterMember, CenterStaff, EquipmentExerciseLib, 
+              BodyPart, CenterEquipment, CenterMember, CenterStaff, 
               ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
               UserSurvey, NFCTag, Equipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
               ]

@@ -6,6 +6,7 @@ from dtServer.data.model.workout_set import WorkoutSet
 from dtServer.data.model.exercise_library import ExerciseLibrary
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
 from dtServer.data.model.user import User
+from dtServer.data.model.equipment import Equipment
 
 class WorkoutMatricQueryBuilder : 
 
@@ -40,7 +41,7 @@ class WorkoutMatricQueryBuilder :
     def query_for_session_data() : 
         q = WorkoutMetrics.select( 
                                   Workouts.id.alias('workout'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time, 
-                                  ExerciseLibrary.name.alias('exercise_library'), 
+                                  Equipment.id.alias('equipment'), 
                                   WorkoutSet.set, WorkoutSet.weight, WorkoutSet.total_reps, WorkoutSet.set_start_time, WorkoutSet.set_end_time, WorkoutSet.res_start_time, WorkoutSet.res_end_time, 
                                   WorkoutMetrics.rep, WorkoutMetrics.peak_velocity, WorkoutMetrics.mean_velocity, WorkoutMetrics.peak_power, WorkoutMetrics.mean_power, WorkoutMetrics.peak_force, WorkoutMetrics.mean_force,
                                   WorkoutMetrics.peak_velocity_con, WorkoutMetrics.mean_velocity_con, WorkoutMetrics.peak_power_con, WorkoutMetrics.mean_power_con, 
@@ -52,8 +53,7 @@ class WorkoutMatricQueryBuilder :
                                   )\
                                 .join(WorkoutSet)\
                                 .join(Workouts)\
-                                .join(WorkoutExerciseLib)\
-                                .join(ExerciseLibrary)\
+                                .join(Equipment)\
                                 .join_from(Workouts, WorkoutSessions)\
                                 .join_from(WorkoutSessions, User)
         return q

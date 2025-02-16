@@ -41,7 +41,7 @@ class WorkoutMetricsDao(BaseDAO) :
         list_data = [ row for row in q.dicts()]
         return list_data
     
-    def select_woekout_level_data(self, workout_id) : 
+    def select_workout_level_data(self, workout_id) : 
         q = WorkoutMatricQueryBuilder.query_for_workout_data()
         q = q.where(Workouts.id == workout_id)
 

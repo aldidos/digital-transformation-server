@@ -9,9 +9,9 @@ class WorkoutMetricReportDTO :
         self.mean_power = mean_power
         self.max_velocity = max_velocity
         self.max_power = max_power
-        self.initial_velocity = initial_velocity
-        self.inc_velocity = inc_velocity
+        self.initial_velocity = initial_velocity        
         self.last_velocity = last_velocity
+        self.inc_velocity = inc_velocity
         self.sum_rep_duration = sum_rep_duration 
         
         if recommended_weight :
@@ -23,7 +23,7 @@ class WorkoutMetricReportDTO :
     def get_mean_power(self) : 
         return self.mean_power
 
-    def get_data_with_dict(self) : 
+    def as_dict(self) : 
         return {
             'mean_velocity' : self.mean_velocity, 
             'mean_power' : self.mean_power,

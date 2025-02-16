@@ -2,8 +2,8 @@ from dtServer.data.dao.workout_report_data_dao import workoutReportDao
 from dtServer.data.report.workout_session_report import workoutSessionReport
 from dtServer.data.report.workout_report import workoutReport
 from dtServer.data.report.workout_set_report import workoutSetReport
-from dtServer.data.report.workout_reports import workoutReports
-from dtServer.data.report.workout_session_reports import workoutSessionReports
+from dtServer.data.report.workout_collection_report import workoutColReport
+from dtServer.data.report.workout_session_collection_report import workoutSessionCollectionReports
 
 class WorkoutReportBuilder : 
 
@@ -42,20 +42,20 @@ class WorkoutReportBuilder :
 
         return workout_set_report.as_dict()
 
-    def build_workout_reports(user_id, exercise_library_id) : 
+    def build_recent_exerciselib_workout_reports(user_id, exercise_library_id) : 
         list_dataset = workoutReportDao.get_recent_workout_data_by_user_and_exercise(user_id, exercise_library_id)
         if not list_dataset : 
             return None
         
-        workout_reports = workoutReports.make_report(list_dataset)    
+        workout_reports = workoutColReport.make_report(list_dataset)    
 
         return workout_reports.as_dict()
 
-    def build_workout_session_reports( user_id, from_date, to_date ) : 
+    def build_date_period_workout_session_reports( user_id, from_date, to_date ) : 
         list_dataset = workoutReportDao.get_workout_sessions_by_dateperiod(user_id, from_date, to_date)
         if not list_dataset : 
             return None
         
-        workout_session_reports = workoutSessionReports.make_report(list_dataset)
+        workout_session_reports = workoutSessionCollectionReports.make_report(list_dataset)
 
         return workout_session_reports.as_dict()

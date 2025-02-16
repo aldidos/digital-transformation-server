@@ -29,20 +29,20 @@ def test_build_workout_set_report() :
 
     print(workout_set_report)
 
-def test_build_workout_reports() : 
+def test_build_col_workout_report() : 
     user_id = 1
     exercise_library_id = 1
 
-    workout_reports = WorkoutReportBuilder.build_workout_reports(user_id, exercise_library_id)
+    workout_reports = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
 
     print(workout_reports)
 
-def test_build_workout_session_reports() : 
+def test_build_date_period_workout_session_reports() : 
     user_id = 1
     from_date = '2025-01-01'
     to_date = '2025-03-01'
 
-    workout_session_reports = WorkoutReportBuilder.build_workout_session_reports(user_id, from_date, to_date)
+    workout_session_reports = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
 
     print(workout_session_reports)
 
@@ -51,15 +51,24 @@ def test_build_recent_exercise_library_set_report() :
     exercise_library_id = 1
     set = 1
 
-    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set)
+    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set)    
 
     print(recent_exercise_library_set_report)
 
-if __name__ == "__main__" : 
-    test_build_workout_session_report()
-    test_build_workout_report()
-    test_build_workout_set_report()
-    test_build_workout_reports()
-    test_build_workout_session_reports()
+def test_build_recent_exerciselib_workout_reports() : 
+    user_id = 1
+    exercise_library_id = 1
 
-    test_build_recent_exercise_library_set_report()
+    reports = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
+
+    print(reports)
+
+if __name__ == "__main__" : 
+    # test_build_workout_session_report()
+    # test_build_workout_report()
+    # test_build_workout_set_report()
+    # test_build_col_workout_report()
+    # test_build_date_period_workout_session_reports()
+    # test_build_recent_exercise_library_set_report()
+
+    test_build_recent_exerciselib_workout_reports()

@@ -31,7 +31,7 @@ class WorkoutReportDao :
             workout = workoutDao.select_by_id(workout_id)
             if not workout : 
                 return None, None      
-            workout_metrics = workoutMetricDao.select_woekout_level_data(workout_id)
+            workout_metrics = workoutMetricDao.select_workout_level_data(workout_id)
             return workout, workout_metrics
 
     def get_workoutsession_data(self, workout_session_id) : 
@@ -48,7 +48,7 @@ class WorkoutReportDao :
             list = []
             for workout in workouts : 
                 workout_id = workout['workout']
-                workout_metrics = workoutMetricDao.select_woekout_level_data(workout_id)
+                workout_metrics = workoutMetricDao.select_workout_level_data(workout_id)
                 
                 list.append({
                     'workout' : workout, 

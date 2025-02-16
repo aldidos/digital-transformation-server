@@ -78,3 +78,16 @@ def center_equipments(center_id) :
           if not center_equipments : 
                return abort(404)
           return create_response(center_equipments, 200)
+     
+@app.route("/centers/<center_id>/equipments/<center_equipment_id>", methods=['PATCH', 'GET'])
+def patch_center_equipments(center_id, center_equipment_id) : 
+     if request.method == 'PATCH' : 
+          data = request.get_json()
+          centerEquipmentDao.save(data)
+          return create_response("OK", 200)
+
+     if request.method == 'GET' : 
+          center_equipments = centerEquipmentDao.get_by_id(center_equipment_id)
+          if not center_equipments : 
+               return abort(404)
+          return create_response(center_equipments, 200)

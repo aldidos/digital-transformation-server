@@ -35,7 +35,7 @@ class WorkoutsDao(BaseDAO) :
     def select_recent_user_exercise_library_workouts(self, user_id, exercise_library_id) : 
         q = Workouts.select( WorkoutSessions.id.alias('workout_session'), WorkoutSessions.date, 
                             Workouts.id.alias('workout'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time,
-                            ExerciseLibrary.id.alias('exercise_library'))\
+                            )\
                             .join(WorkoutSessions)\
                             .join(User)\
                             .join_from(Workouts, WorkoutExerciseLib)\
