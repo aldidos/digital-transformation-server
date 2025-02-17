@@ -1,6 +1,8 @@
 from dtServer.data.dao.base_dao import BaseDAO
 from dtServer.data.model.workout_metrics import db_proxy
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
+from dtServer.data.model.workouts import Workouts
+from dtServer.data.model.exercise_library import ExerciseLibrary
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutExerciseLibDAO(BaseDAO) : 
@@ -23,7 +25,15 @@ class WorkoutExerciseLibDAO(BaseDAO) :
             return list_ids
     
     def insert(self, data) : 
-        return WorkoutExerciseLib.insert(data).execute()       
+        return WorkoutExerciseLib.insert(data).execute() 
+    
+    def select_exerciselibs_by_workout(self, workout_id) : 
+        q = WorkoutExerciseLib.select(ExerciseLibrary)\
+                                .join(Workouts)\
+                                .join_from(WorkoutExerciseLib, ExerciseLibrary)\
+                                .where(Workouts.id == workout_id)
+                
+        return [ d for d in q.dicts() ]
 
 
 workoutExerciselibDao = WorkoutExerciseLibDAO()

@@ -5,7 +5,7 @@ from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
 from dtServer.data.dao.workouts_dao import workoutDao
 from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
 from dtServer.data.dto.workout_data_dto import WorkoutSetMetricsDTO
-from dtServer.data.report.workout_report_builder import WorkoutReportBuilder
+from dtServer.data.report.builder.workout_report_builder import WorkoutReportBuilder
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 
 @app.route("/users", methods=['POST'])

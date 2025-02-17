@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy
+from dtServer.data.model.base_model import BaseModel, db_proxy, TIME_FORMAT
 from dtServer.data.model.workout_set import WorkoutSet
 
 from playhouse.shortcuts import model_to_dict, dict_to_model
@@ -29,11 +29,11 @@ class WorkoutMetrics(BaseModel) :
     mean_force_ecc = FloatField()
     peak_acceleration_ecc = FloatField()
     mean_acceleration_ecc = FloatField()    
-    rep_duration_con = FloatField()
-    rep_duration_ecc = FloatField()
-    top_stay_duration = FloatField()
-    bottom_stay_duration = FloatField()
-    rep_duration = FloatField()
+    rep_duration_con = TimeField(TIME_FORMAT)
+    rep_duration_ecc = TimeField(TIME_FORMAT)
+    top_stay_duration = TimeField(TIME_FORMAT)
+    bottom_stay_duration = TimeField(TIME_FORMAT)
+    rep_duration = TimeField(TIME_FORMAT)
     RSI = FloatField()
     RFD = FloatField()
     

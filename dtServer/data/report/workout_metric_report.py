@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 from dtServer.data.dto.workout_metric_report_dto import WorkoutMetricReportDTO
 from dtServer.util.datetime_util import diff_time_second
+from datetime import timedelta
+
+def time_2_timedelta(t) : 
+    return timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)    
 
 class WorkoutMetricReport :
 
@@ -13,7 +17,12 @@ class WorkoutMetricReport :
         self.initial_mean_velocity = 0
         self.last_mean_velocity = 0
         self.inc_mean_velocity = 0
-        self.sum_rep_duration = 0
+        
+        self.total_rep_duration = 0
+        self.total_rep_duration_con = 0
+        self.total_rep_duration_ecc = 0
+        self.total_top_stay_duration = 0
+        self.total_bottom_stay_duration = 0
 
     def convert_datatype(self) : 
         self.mean_velocity = float(self.mean_velocity)
@@ -23,7 +32,15 @@ class WorkoutMetricReport :
         self.initial_mean_velocity = float(self.initial_mean_velocity)
         self.last_mean_velocity = float(self.last_mean_velocity)
         self.inc_mean_velocity = float(self.inc_mean_velocity)
-        self.sum_rep_duration = float(self.sum_rep_duration)      
+        self.total_rep_duration = self.total_rep_duration.total_seconds()
+        self.total_rep_duration_con = self.total_rep_duration_con.total_seconds()
+        self.total_rep_duration_ecc = self.total_rep_duration_ecc.total_seconds()
+        self.total_top_stay_duration = self.total_top_stay_duration.total_seconds()
+        self.total_bottom_stay_duration = self.total_bottom_stay_duration.total_seconds()
+
+    def total_time_duration(self, time) : 
+         timedeltas = time.transform(time_2_timedelta)
+         return timedeltas.sum()
 
     def make_report(self, df_workout_metrics : pd.DataFrame) -> WorkoutMetricReportDTO : 
         df = df_workout_metrics       
@@ -47,11 +64,13 @@ class WorkoutMetricReport :
         inc_values = last_values -  first_values
         self.inc_mean_velocity = inc_values['mean_velocity']
 
-        self.sum_rep_duration = df['rep_duration'].sum()
-        self.sum_rep_duration = self.sum_rep_duration
+        self.total_rep_duration = self.total_time_duration(df['rep_duration'])
+        self.total_rep_duration_con = self.total_time_duration(df['rep_duration_con'])
+        self.total_rep_duration_ecc = self.total_time_duration(df['rep_duration_ecc'])
+        self.total_top_stay_duration = self.total_time_duration(df['top_stay_duration'])
+        self.total_bottom_stay_duration = self.total_time_duration(df['bottom_stay_duration'])
 
         self.convert_datatype()
         return WorkoutMetricReportDTO( self.mean_velocity, self.mean_power, self.max_velocity, self.max_power, 
-                                    self.initial_mean_velocity, self.last_mean_velocity, self.inc_mean_velocity, self.sum_rep_duration )
-        
-workoutMetricReport = WorkoutMetricReport()
+                                    self.initial_mean_velocity, self.last_mean_velocity, self.inc_mean_velocity, self.total_rep_duration,
+                                     self.total_rep_duration_con, self.total_rep_duration_ecc, self.total_top_stay_duration, self.total_bottom_stay_duration )

@@ -4,7 +4,9 @@ from dtServer.data.model.workout_sessions import WorkoutSessions
 from dtServer.data.model.workouts import Workouts
 from dtServer.data.model.workout_set import WorkoutSet
 from dtServer.data.model.exercise_library import ExerciseLibrary
+from dtServer.data.model.body_part import BodyPart
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
+from dtServer.data.model.workout_body_part import WorkoutBodypart
 from dtServer.data.model.user import User
 from dtServer.data.model.equipment import Equipment
 
@@ -21,7 +23,6 @@ class WorkoutMatricQueryBuilder :
                                 WorkoutMetrics.rep_duration, WorkoutMetrics.RSI, WorkoutMetrics.RFD)
         return q
 
-
     def query_for_set_data() : 
         q = WorkoutMatricQueryBuilder.base_query()
         q = q.join(WorkoutSet).join(Workouts)        
@@ -30,17 +31,21 @@ class WorkoutMatricQueryBuilder :
     
     def query_for_workout_data() : 
         q = WorkoutMatricQueryBuilder.base_query()
-        q = q.select_extend(WorkoutSet.set, WorkoutSet.weight, WorkoutSet.total_reps, WorkoutSet.set_start_time, WorkoutSet.set_end_time, WorkoutSet.res_start_time, WorkoutSet.res_end_time)
-        q = q.join(WorkoutSet).join(Workouts)
+        q = q.select_extend(WorkoutSet.set, WorkoutSet.weight, WorkoutSet.total_reps, WorkoutSet.set_start_time, WorkoutSet.set_end_time, 
+                            WorkoutSet.res_start_time, WorkoutSet.res_end_time, ExerciseLibrary.name.alias('exercise_library'), BodyPart.name.alias('body_part') )
+        q = q.join(WorkoutSet)\
+                .join(Workouts)\
+                .join_from(Workouts, WorkoutExerciseLib)\
+                .join(ExerciseLibrary)\
+                .join_from(Workouts, WorkoutBodypart)\
+                .join(BodyPart)
 
         return q
     
     def query_for_session_data() :         
         q = WorkoutMatricQueryBuilder.query_for_workout_data()
-        q = q.select_extend(Workouts.id.alias('workout'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time, 
-                            Equipment.id.alias('equipment'))
-        q = q.join(Equipment)\
-            .join_from(Workouts, WorkoutSessions)\
+        q = q.select_extend(Workouts.id.alias('workout'), Workouts.completed_sets, Workouts.start_time, Workouts.end_time )
+        q = q.join_from(Workouts, WorkoutSessions)\
             .join_from(WorkoutSessions, User)
 
         return q

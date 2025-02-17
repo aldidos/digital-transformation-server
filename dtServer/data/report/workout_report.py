@@ -1,5 +1,5 @@
 import pandas as pd
-from dtServer.data.report.workout_set_report import workoutSetReport
+from dtServer.data.report.workout_set_report import WorkoutSetReport
 from dtServer.data.dto.workout_report_dto import WorkoutReportDTO
 
 class WorkoutReport : 
@@ -12,6 +12,11 @@ class WorkoutReport :
         self.avg_weight = 0
         self.avg_reps_pet_set = 0
         self.total_workout_time = 0 
+        self.burned_kcl = 0 #### 소모 칼로리
+        self.intensity = 0  #### 운동 강도
+        self.exercise_libraries = []
+        self.body_parts = []
+
         self.list_set_reports = []
 
     def conver_datatype(self) : 
@@ -25,6 +30,10 @@ class WorkoutReport :
 
     def make_report(self, workout, dataset ) : 
         df = pd.DataFrame(dataset)
+        self.exercise_libraries = df['exercise_library'].drop_duplicates().to_list()
+        self.body_parts = df['body_part'].drop_duplicates().to_list()
+        df = df.drop(columns=['exercise_library', 'body_part'])
+        df = df.drop_duplicates()
 
         self.total_sets = df['set'].drop_duplicates().count()
 
@@ -33,15 +42,19 @@ class WorkoutReport :
         groups = df.groupby([ 'set', 'weight', 'total_reps', 'set_start_time', 'set_end_time', 'res_start_time', 'res_end_time'])
         for name, df_group in groups : 
             weight = name[1]
-            total_reps = name[2]
+            total_reps = name[2] 
 
             workout_set = {
                 'set' : name[0], 
                 'weight' : weight,
-                'total_reps' : total_reps
+                'total_reps' : total_reps,
+                'set_start_time' : name[3],
+                'set_end_time' : name[4],
+                'res_start_time' : name[5],
+                'res_end_time' : name[6],
             }
 
-            workout_set_report = workoutSetReport.make_report(workout_set, df_group)            
+            workout_set_report = WorkoutSetReport().make_report(workout_set, df_group)            
             self.total_volume = self.total_volume + workout_set_report.volume
             self.total_reps = self.total_reps + total_reps
             self.total_lifting_time = self.total_lifting_time + workout_set_report.total_lifting_time
@@ -54,9 +67,8 @@ class WorkoutReport :
         self.total_workout_time = workout['end_time'] - workout['start_time'] 
         self.total_workout_time = self.total_workout_time.total_seconds()
 
-        self.conver_datatype()
+        self.conver_datatype()        
         return WorkoutReportDTO(self.total_workout_time, self.total_lifting_time, self.total_sets, self.total_volume, 
-                                self.total_reps, self.avg_reps_pet_set, self.avg_weight,  self.list_set_reports 
+                                self.total_reps, self.avg_reps_pet_set, self.avg_weight, self.burned_kcl, self.intensity, self.exercise_libraries, self.body_parts, self.list_set_reports 
                                 )
        
-workoutReport = WorkoutReport()

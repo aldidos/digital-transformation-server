@@ -2,7 +2,8 @@
 class WorkoutMetricReportDTO : 
 
     def __init__(self, mean_velocity, mean_power, max_velocity, max_power,
-                 initial_velocity, last_velocity, inc_velocity, sum_rep_duration, 
+                 initial_velocity, last_velocity, inc_velocity, total_rep_duration, 
+                 total_rep_duration_con, total_rep_duration_ecc, total_top_stay_duration, total_bottom_stay_duration,
                  recommended_weight = None) : 
                 
         self.mean_velocity = mean_velocity
@@ -12,7 +13,11 @@ class WorkoutMetricReportDTO :
         self.initial_velocity = initial_velocity        
         self.last_velocity = last_velocity
         self.inc_velocity = inc_velocity
-        self.sum_rep_duration = sum_rep_duration 
+        self.total_rep_duration = total_rep_duration 
+        self.total_rep_duration_con = total_rep_duration_con
+        self.total_rep_duration_ecc = total_rep_duration_ecc
+        self.total_top_stay_duration = total_top_stay_duration
+        self.total_bottom_stay_duration = total_bottom_stay_duration
         
         if recommended_weight :
             self.recommended_weight = recommended_weight        
@@ -32,6 +37,11 @@ class WorkoutMetricReportDTO :
             'initial_velocity' : self.initial_velocity,
             'inc_velocity' : self.inc_velocity,
             'last_velocity' : self.last_velocity, 
-            'sum_rep_duration' : self.sum_rep_duration
+            'total_rep_duration' : self.total_rep_duration,
+            'total_rep_duration_con' : self.total_rep_duration_con,
+            'total_rep_duration_ecc' : self.total_rep_duration_ecc,
+            'total_top_stay_duration' : self.total_top_stay_duration,
+            'total_bottom_stay_duration' : self.total_bottom_stay_duration
+
         }
         

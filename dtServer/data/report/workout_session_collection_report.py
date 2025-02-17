@@ -1,6 +1,6 @@
 import pandas as pd
 
-from dtServer.data.report.workout_session_report import workoutSessionReport
+from dtServer.data.report.workout_session_report import WokroutSessionReport
 from dtServer.data.dto.workout_session_collection_report_dto import WorkoutSessionCollectionReportDTO
 
 class WokroutSessionCollectionReport : 
@@ -18,7 +18,7 @@ class WokroutSessionCollectionReport :
             workout_session = dataset['workout_session']
             workout_session_metric = dataset['workout_session_metric']
 
-            ws_report = workoutSessionReport.make_report(workout_session_metric)
+            ws_report = WokroutSessionReport().make_report(workout_session_metric)
 
             self.total_volume = self.total_volume + ws_report.total_volume
             self.total_workout_time = self.total_workout_time + ws_report.total_workout_time
@@ -32,5 +32,3 @@ class WokroutSessionCollectionReport :
             )
         
         return WorkoutSessionCollectionReportDTO(self.total_volume, self.total_workout_time, self.total_sets, self.total_workouts, self.list_workout_session_reports)
-
-workoutSessionCollectionReports = WokroutSessionCollectionReport()

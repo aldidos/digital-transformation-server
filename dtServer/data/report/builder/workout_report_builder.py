@@ -1,9 +1,9 @@
 from dtServer.data.dao.workout_report_data_dao import workoutReportDao
-from dtServer.data.report.workout_session_report import workoutSessionReport
-from dtServer.data.report.workout_report import workoutReport
-from dtServer.data.report.workout_set_report import workoutSetReport
-from dtServer.data.report.workout_collection_report import workoutColReport
-from dtServer.data.report.workout_session_collection_report import workoutSessionCollectionReports
+from dtServer.data.report.workout_session_report import WokroutSessionReport
+from dtServer.data.report.workout_report import WorkoutReport
+from dtServer.data.report.workout_set_report import WorkoutSetReport
+from dtServer.data.report.workout_collection_report import WorkoutColectionReport
+from dtServer.data.report.workout_session_collection_report import WokroutSessionCollectionReport
 
 class WorkoutReportBuilder : 
 
@@ -12,7 +12,7 @@ class WorkoutReportBuilder :
         if not workout_set : 
             return None
 
-        workout_set_report = workoutSetReport.make_report(workout_set, workout_metric)
+        workout_set_report = WorkoutSetReport().make_report(workout_set, workout_metric)
         return workout_set_report.as_dict()
 
     def build_workout_session_report(workout_session_id) : 
@@ -20,7 +20,7 @@ class WorkoutReportBuilder :
         if not workout_session : 
             return None
                 
-        workout_session_report = workoutSessionReport.make_report(dataset)
+        workout_session_report = WokroutSessionReport().make_report(dataset)
 
         return workout_session_report.as_dict()
 
@@ -29,7 +29,7 @@ class WorkoutReportBuilder :
         if not workout : 
             return None
         
-        workout_report = workoutReport.make_report(workout, dataset)
+        workout_report = WorkoutReport().make_report(workout, dataset)
         
         return workout_report.as_dict()
 
@@ -38,7 +38,7 @@ class WorkoutReportBuilder :
         if not workout_set : 
             return None
         
-        workout_set_report = workoutSetReport.make_report(workout_set, dataset)
+        workout_set_report = WorkoutSetReport().make_report(workout_set, dataset)
 
         return workout_set_report.as_dict()
 
@@ -47,7 +47,7 @@ class WorkoutReportBuilder :
         if not list_dataset : 
             return None
         
-        workout_reports = workoutColReport.make_report(list_dataset)    
+        workout_reports = WorkoutColectionReport().make_report(list_dataset)    
 
         return workout_reports.as_dict()
 
@@ -56,6 +56,6 @@ class WorkoutReportBuilder :
         if not list_dataset : 
             return None
         
-        workout_session_reports = workoutSessionCollectionReports.make_report(list_dataset)
+        workout_session_reports = WokroutSessionCollectionReport().make_report(list_dataset)
 
         return workout_session_reports.as_dict()

@@ -1,5 +1,5 @@
 from peewee import *
-from dtServer.data.model.base_model import BaseModel, db_proxy, TIME_FORMAT
+from dtServer.data.model.base_model import BaseModel, db_proxy, TIME_FORMAT, DATETIME_FORMAT
 from dtServer.data.model.workout_sessions import WorkoutSessions
 from dtServer.data.model.workouts import Workouts
 from dtServer.data.model.exercise_library import ExerciseLibrary
@@ -13,10 +13,10 @@ class WorkoutSet(BaseModel) :
     set = IntegerField(False)    
     weight = FloatField()
     total_reps = IntegerField(default = 0)
-    set_start_time = TimeField(TIME_FORMAT, null = True)
-    set_end_time = TimeField(TIME_FORMAT, null = True)
-    res_start_time = TimeField(TIME_FORMAT, null = True)
-    res_end_time = TimeField(TIME_FORMAT, null = True)
+    set_start_time = DateTimeField(DATETIME_FORMAT, null = True)
+    set_end_time = DateTimeField(DATETIME_FORMAT, null = True)
+    res_start_time = DateTimeField(DATETIME_FORMAT, null = True)
+    res_end_time = DateTimeField(DATETIME_FORMAT, null = True)
     
     class Meta : 
         table_name = 'wokrout_set'
