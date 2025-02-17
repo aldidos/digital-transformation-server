@@ -1,6 +1,5 @@
 import pandas as pd
 from dtServer.data.report.workout_metric_report import WorkoutMetricReport
-from dtServer.data.dto.workout_set_report_dto import WorkoutSetReportDTO
 
 class WorkoutSetReport : 
 
@@ -45,20 +44,32 @@ class WorkoutSetReport :
         self.volume = self.weight * self.total_reps 
         self.set_time_duration = workout_set['set_end_time'] - workout_set['set_start_time']
 
-        wm_report = WorkoutMetricReport().make_report(df)
+        wm_report = WorkoutMetricReport()
+        wm_report.make_report(df)
         self.mean_velocity = wm_report.mean_velocity
         self.mean_power = wm_report.mean_power
         self.max_velocity = wm_report.max_velocity
         self.max_power = wm_report.max_power
-        self.initial_mean_velocity = wm_report.initial_velocity
-        self.last_mean_velocity = wm_report.last_velocity
-        self.inc_mean_velocity = wm_report.inc_velocity
+        self.initial_mean_velocity = wm_report.initial_mean_velocity
+        self.last_mean_velocity = wm_report.last_mean_velocity
+        self.inc_mean_velocity = wm_report.inc_mean_velocity
         self.total_lifting_time = wm_report.total_rep_duration 
 
         self.convert_datatype()
 
-        return WorkoutSetReportDTO(self.set, self.weight, self.total_reps, self.volume, 
-                                   self.mean_velocity, self.mean_power, self.max_velocity, self.max_power, 
-                                   self.initial_mean_velocity, self.last_mean_velocity, self.inc_mean_velocity, self.total_lifting_time, 
-                                   wm_report )
 
+    def as_dict(self) : 
+        return {
+            'set' : self.set, 
+            'weight' : self.weight, 
+            'total_reps' : self.total_reps, 
+            'volume' : self.volume, 
+            'mean_velocity' : self.mean_velocity, 
+            'mean_power' : self.mean_power, 
+            'max_velocity' : self.max_velocity, 
+            'max_power' : self.max_power, 
+            'initial_mean_velocity' : self.initial_mean_velocity, 
+            'last_mean_velocity' : self.last_mean_velocity, 
+            'inc_mean_velocity' : self.inc_mean_velocity, 
+            'total_lifting_time' : self.total_lifting_time
+        }

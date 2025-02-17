@@ -12,50 +12,57 @@ class WorkoutReportBuilder :
         if not workout_set : 
             return None
 
-        workout_set_report = WorkoutSetReport().make_report(workout_set, workout_metric)
-        return workout_set_report.as_dict()
+        workout_set_report = WorkoutSetReport()
+        workout_set_report.make_report(workout_set, workout_metric)
+
+        return workout_set_report
 
     def build_workout_session_report(workout_session_id) : 
         workout_session, dataset = workoutReportDao.get_workoutsession_data(workout_session_id)
         if not workout_session : 
             return None
                 
-        workout_session_report = WokroutSessionReport().make_report(dataset)
+        workout_session_report = WokroutSessionReport()
+        workout_session_report.make_report(dataset)
 
-        return workout_session_report.as_dict()
+        return workout_session_report
 
     def build_workout_report(workout_id) : 
         workout, dataset = workoutReportDao.get_workout_data(workout_id)
         if not workout : 
             return None
         
-        workout_report = WorkoutReport().make_report(workout, dataset)
+        workout_report = WorkoutReport()
+        workout_report.make_report(workout, dataset)
         
-        return workout_report.as_dict()
+        return workout_report
 
     def build_workout_set_report(workout_id, workout_set_id) : 
         workout_set, dataset = workoutReportDao.get_set_data(workout_id, workout_set_id)
         if not workout_set : 
             return None
         
-        workout_set_report = WorkoutSetReport().make_report(workout_set, dataset)
+        workout_set_report = WorkoutSetReport()
+        workout_set_report.make_report(workout_set, dataset)
 
-        return workout_set_report.as_dict()
+        return workout_set_report
 
     def build_recent_exerciselib_workout_reports(user_id, exercise_library_id) : 
         list_dataset = workoutReportDao.get_recent_workout_data_by_user_and_exercise(user_id, exercise_library_id)
         if not list_dataset : 
             return None
         
-        workout_reports = WorkoutColectionReport().make_report(list_dataset)    
+        workout_reports = WorkoutColectionReport()
+        workout_reports.make_report(list_dataset)
 
-        return workout_reports.as_dict()
+        return workout_reports
 
     def build_date_period_workout_session_reports( user_id, from_date, to_date ) : 
         list_dataset = workoutReportDao.get_workout_sessions_by_dateperiod(user_id, from_date, to_date)
         if not list_dataset : 
             return None
         
-        workout_session_reports = WokroutSessionCollectionReport().make_report(list_dataset)
+        workout_session_reports = WokroutSessionCollectionReport()
+        workout_session_reports.make_report(list_dataset)
 
-        return workout_session_reports.as_dict()
+        return workout_session_reports

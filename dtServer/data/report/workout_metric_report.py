@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from dtServer.data.dto.workout_metric_report_dto import WorkoutMetricReportDTO
 from dtServer.util.datetime_util import diff_time_second
 from datetime import timedelta
 
@@ -42,7 +41,7 @@ class WorkoutMetricReport :
          timedeltas = time.transform(time_2_timedelta)
          return timedeltas.sum()
 
-    def make_report(self, df_workout_metrics : pd.DataFrame) -> WorkoutMetricReportDTO : 
+    def make_report(self, df_workout_metrics : pd.DataFrame) : 
         df = df_workout_metrics       
 
         means = df[['mean_velocity', 'peak_velocity', 'mean_power', 'peak_power']].mean()
@@ -70,7 +69,20 @@ class WorkoutMetricReport :
         self.total_top_stay_duration = self.total_time_duration(df['top_stay_duration'])
         self.total_bottom_stay_duration = self.total_time_duration(df['bottom_stay_duration'])
 
-        self.convert_datatype()
-        return WorkoutMetricReportDTO( self.mean_velocity, self.mean_power, self.max_velocity, self.max_power, 
-                                    self.initial_mean_velocity, self.last_mean_velocity, self.inc_mean_velocity, self.total_rep_duration,
-                                     self.total_rep_duration_con, self.total_rep_duration_ecc, self.total_top_stay_duration, self.total_bottom_stay_duration )
+        self.convert_datatype() ####
+                
+    def as_dict(self) : 
+        return {
+            'mean_velocity' : self.mean_velocity, 
+            'mean_power' : self.mean_power,
+            'max_velocity' : self.max_velocity, 
+            'max_power' : self.max_power,
+            'initial_mean_velocity' : self.initial_mean_velocity,
+            'inc_mean_velocity' : self.inc_mean_velocity,
+            'last_mean_velocity' : self.last_mean_velocity, 
+            'total_rep_duration' : self.total_rep_duration,
+            'total_rep_duration_con' : self.total_rep_duration_con,
+            'total_rep_duration_ecc' : self.total_rep_duration_ecc,
+            'total_top_stay_duration' : self.total_top_stay_duration,
+            'total_bottom_stay_duration' : self.total_bottom_stay_duration
+        }

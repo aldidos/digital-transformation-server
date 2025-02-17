@@ -1,6 +1,5 @@
 import pandas as pd
 from dtServer.data.report.workout_set_report import WorkoutSetReport
-from dtServer.data.dto.workout_report_dto import WorkoutReportDTO
 
 class WorkoutReport : 
 
@@ -54,7 +53,9 @@ class WorkoutReport :
                 'res_end_time' : name[6],
             }
 
-            workout_set_report = WorkoutSetReport().make_report(workout_set, df_group)            
+            workout_set_report = WorkoutSetReport()
+            workout_set_report.make_report(workout_set, df_group)
+
             self.total_volume = self.total_volume + workout_set_report.volume
             self.total_reps = self.total_reps + total_reps
             self.total_lifting_time = self.total_lifting_time + workout_set_report.total_lifting_time
@@ -68,7 +69,19 @@ class WorkoutReport :
         self.total_workout_time = self.total_workout_time.total_seconds()
 
         self.conver_datatype()        
-        return WorkoutReportDTO(self.total_workout_time, self.total_lifting_time, self.total_sets, self.total_volume, 
-                                self.total_reps, self.avg_reps_pet_set, self.avg_weight, self.burned_kcl, self.intensity, self.exercise_libraries, self.body_parts, self.list_set_reports 
-                                )
-       
+             
+    def as_dict(self) : 
+        return {
+            'total_workout_time' : self.total_workout_time, 
+            'total_lifting_time' : self.total_lifting_time, 
+            'total_sets' : self.total_sets, 
+            'total_volume' : self.total_volume, 
+            'total_reps' : self.total_reps, 
+            'avg_reps_pet_set' : self.avg_reps_pet_set, 
+            'avg_weight' : self.avg_weight,
+            'burned_kcl' : self.burned_kcl,
+            'intensity' : self.intensity,
+            'exercise_libraries' : self.exercise_libraries,
+            'body_parts' : self.body_parts,
+            'set_reports' : [ d.as_dict() for d in self.list_set_reports]
+        }

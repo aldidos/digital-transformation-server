@@ -1,7 +1,6 @@
 import pandas as pd
 
 from dtServer.data.report.workout_report import WorkoutReport
-from dtServer.data.dto.workout_session_report_dto import WorkoutSessionReportDTO
 
 class WokroutSessionReport : 
 
@@ -44,7 +43,9 @@ class WokroutSessionReport :
                 'end_time' : name[3]
             }
 
-            workout_report = WorkoutReport().make_report(workout, dataset) 
+            workout_report = WorkoutReport()
+            workout_report.make_report(workout, dataset) 
+            
             self.total_sets = self.total_sets + workout_report.total_sets
             self.total_volume = self.total_volume + workout_report.total_volume
             self.total_workout_time = self.total_workout_time + workout_report.total_workout_time
@@ -57,5 +58,15 @@ class WokroutSessionReport :
 
             self.list_workout_reports.append( workout_report ) 
 
-        self.convert_datatype()
-        return WorkoutSessionReportDTO(self.total_volume, self.total_sets, self.total_workout_time, self.total_workouts, self.exercise_libs_workout_set_freq, self.body_part_workout_set_freq, self.list_workout_reports)
+        self.convert_datatype()       
+
+    def as_dict(self) : 
+        return {
+            'total_volume' : self.total_volume,
+            'total_sets' : self.total_sets,
+            'total_workout_time' : self.total_workout_time,
+            'total_workouts' : self.total_workouts,
+            'exercise_libs_workout_set_freq' : self.exercise_libs_workout_set_freq,
+            'body_part_workout_set_freq' : self.body_part_workout_set_freq,
+            'list_workout_reports' : [d.as_dict() for d in self.list_workout_reports]
+        }
