@@ -7,6 +7,8 @@ from dtServer.data.model.equipment import Equipment
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao
+from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
+from dtServer.data.dao.workout_bodypart_dao import workoutBodypartDao
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutsDao(BaseDAO) : 
@@ -54,6 +56,12 @@ class WorkoutsDao(BaseDAO) :
             for exer_lib in list_exercise_lib : 
                 exer_lib_id = exer_lib['id'] 
                 workoutExerciselibDao.create(workout_id, exer_lib_id)
+
+                list_body_parts = exerciseLibBodyPartDao.select_by_exercise_library_id(exer_lib_id)
+                for body_part in list_body_parts : 
+                    body_part_id = body_part['id']
+                    workoutBodypartDao.create(workout_id, body_part_id)
+                    
             return workout_id
 
     def insert_many(self, list_data) : 

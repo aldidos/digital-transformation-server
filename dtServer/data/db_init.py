@@ -28,6 +28,7 @@ from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDif
 from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
 from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
 from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao, WorkoutExerciseLib
+from dtServer.data.dao.workout_bodypart_dao import workoutBodypartDao, WorkoutBodypart
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8') as f : 
@@ -118,9 +119,14 @@ def init_workout_exerciselib() :
     list_data = open_data_file_csv('./data/test_data/workout_exerciselib.csv')
     workoutExerciselibDao.insert_many(list_data)    
 
+def init_wokrout_bodypart() : 
+    list_data = open_data_file_csv('./data/test_data/workout_bodypart.csv')
+    workoutBodypartDao.insert_many(list_data)    
+
+
 if __name__ == '__main__' : 
     tables = [
-              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, WorkoutExerciseLib, 
+              User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, WorkoutExerciseLib, WorkoutBodypart, 
               BodyPart, CenterEquipment, CenterMember, CenterStaff, 
               ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
               UserSurvey, NFCTag, Equipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
@@ -150,6 +156,7 @@ if __name__ == '__main__' :
     init_workout_sessions()
     init_workouts()
     init_workout_exerciselib()
+    init_wokrout_bodypart()
     init_workout_sets()
     init_workout_metrics()
 
