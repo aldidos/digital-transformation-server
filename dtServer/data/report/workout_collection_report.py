@@ -21,6 +21,7 @@ class WorkoutColectionReport(BaseReport) :
             workout_id = name
 
             sub_df = pd.DataFrame(group)
+            sub_df = sub_df.drop( columns = ['exercise_library_id', 'exercise_library', 'body_part_id', 'body_part']).drop_duplicates()
             workout_report = WorkoutReport(workout_id)
             workout_report.make_report(sub_df)
 

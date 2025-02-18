@@ -30,11 +30,11 @@ class WokroutSessionReport(BaseReport) :
             body_part_name = name[1]
             
             volume = self.compute_volume(group) 
-            usage_freq = group[['set_id']].drop_duplicates().count()
+            usage_freq = group['set_id'].drop_duplicates().count()
             usage_freq = usage_freq / self.total_sets
 
             list.append({ 
-                'body_part_id' : body_part_id, 
+                'body_part_id' : int(body_part_id), 
                 'name' : body_part_name,
                 'volume' : float(volume), 
                 'usage_freq' : float(usage_freq)
@@ -52,11 +52,11 @@ class WokroutSessionReport(BaseReport) :
             
             volume = self.compute_volume(group)
 
-            usage_freq = group[['set_id']].drop_duplicates().count()
+            usage_freq = group['set_id'].drop_duplicates().count()
             usage_freq = usage_freq / self.total_sets
 
             list.append({ 
-                'exercise_library_id' : exer_lib_id, 
+                'exercise_library_id' : int(exer_lib_id), 
                 'name' : exer_name,
                 'volume' : float(volume), 
                 'usage_freq' : float(usage_freq)

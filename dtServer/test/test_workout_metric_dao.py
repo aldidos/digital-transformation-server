@@ -38,13 +38,7 @@ def test_select_workout_sets_data() :
     workout_id = 1
     
     data = workoutMetricDao.select_workout_sets_data(workout_id)
-    print(data)
-
-    df = pd.DataFrame(data)    
-    df = df[['exercise_library_id', 'exercise_library']].drop_duplicates()
-
-    for a,b in df.values : 
-        print(a)
+    print(data)    
 
 if __name__ == '__main__' : 
     # test_select_workout_session_level_data()
