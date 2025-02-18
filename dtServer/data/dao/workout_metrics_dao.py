@@ -28,38 +28,47 @@ class WorkoutMetricsDao(BaseDAO) :
         return WorkoutMetrics.insert(data).execute()
         
     def select_by_user_and_dateperiod(self, user_id, from_date, to_date ) : 
-        q = WorkoutMatricQueryBuilder.query_for_session_data()
+        q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where(User.id == user_id, WorkoutSessions.is_completed == True, WorkoutSessions.date.between( from_date, to_date) )
 
         list_data = [ row for row in q.dicts()]
         return list_data  
     
     def select_workout_session_level_data(self, workout_session_id ) : 
-        q = WorkoutMatricQueryBuilder.query_for_session_data()
+        q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where( WorkoutSessions.id == workout_session_id )
+        print(q.sql)
 
         list_data = [ row for row in q.dicts()]
         return list_data
     
     def select_workout_level_data(self, workout_id) : 
-        q = WorkoutMatricQueryBuilder.query_for_workout_data()
+        q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where(Workouts.id == workout_id)
 
         list_data = [ row for row in q.dicts()]
         return list_data  
     
     def select_workoutset_level_data(self, workout_id, workoutset_id) : 
-        q = WorkoutMatricQueryBuilder.query_for_set_data()
+        q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where(Workouts.id == workout_id, WorkoutSet.id == workoutset_id)
 
         list_data = [ row for row in q.dicts()]
         return list_data
     
     def select_workout_sets_data(self, workout_id) : 
-        q = WorkoutMatricQueryBuilder.query_for_set_data()
+        q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where(Workouts.id == workout_id)
 
         list_data = [ row for row in q.dicts()]
         return list_data  
+        
+    def select_by_workouts(self, workout_ids) : 
+        q = WorkoutMatricQueryBuilder.make_select_query()
+        q = q.where(Workouts.id.in_(workout_ids))
+
+        list_data = [ row for row in q.dicts()]
+        return list_data  
+
 
 workoutMetricDao = WorkoutMetricsDao()

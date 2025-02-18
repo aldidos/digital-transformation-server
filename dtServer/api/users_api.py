@@ -104,7 +104,7 @@ def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, wo
           return create_response({ 'message' : 'Created workout set metrics', 'set_id' : set_id }, 201 ) ####
      
 @app.route("/users/<user_id>/recent_report/<exercise_library_id>/<set_number>", methods=['GET'])
-def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) : 
+def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) :      
      report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set_number)
      if not report : 
           return abort(404)
