@@ -166,7 +166,7 @@ def get_user_workout_report_recent(user_id) :
           
      return create_response(report.as_dict(), 200)
      
-@app.route("/users/<user_id>/workout_sessions/recent", methods = ['GET'])
+@app.route("/users/<user_id>/workout_sessions/report/recent", methods = ['GET'])
 def get_user_workoutreports_recent(user_id) : 
      from_date, to_date = get_recent_date_period()
 
