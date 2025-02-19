@@ -22,54 +22,33 @@ class WokroutSessionReport(BaseReport) :
         self.total_sets = int(self.total_sets)
         self.total_workouts = int(self.total_workouts)
 
-    def compute_body_part_reports(self, df : pd.DataFrame) : ####
-        groups = df.groupby(['body_part_id', 'body_part'])
-        list = []
-        for name, group in groups : 
-            body_part_id = name[0]
-            body_part_name = name[1]
+    def compute_part_reports(self, part_id, part_name, df : pd.DataFrame) : ####
+        groups = df.groupby([part_id, part_name])
+        list_reports = []
+        for part_name, group in groups : 
+            part_id = part_name[0]
+            part_name = part_name[1]
             
             volume = self.compute_volume(group) 
             usage_freq = group['set_id'].drop_duplicates().count()
             usage_freq = usage_freq / self.total_sets
 
-            list.append({ 
-                'body_part_id' : int(body_part_id), 
-                'name' : body_part_name,
+            list_reports.append({ 
+                part_id : int(part_id), 
+                'name' : part_name,
                 'volume' : float(volume), 
                 'usage_freq' : float(usage_freq)
             })
 
-        return list
-
-    def compute_exercise_lib_reports(self, df : pd.DataFrame) : ####
-        groups = df.groupby(['exercise_library_id', 'exercise_library'])
-        list = []
-        for name, group in groups : 
-            exer_lib_id = name[0]
-            exer_name = name[1]
-            
-            volume = self.compute_volume(group)
-
-            usage_freq = group['set_id'].drop_duplicates().count()
-            usage_freq = usage_freq / self.total_sets
-
-            list.append({ 
-                'exercise_library_id' : int(exer_lib_id), 
-                'name' : exer_name,
-                'volume' : float(volume), 
-                'usage_freq' : float(usage_freq)
-            })
-
-        return list
+        return list_reports
 
     def make_report(self, df : pd.DataFrame) : 
         self.date = df['date'].iat[0].isoformat()
         self.total_sets = df['set_id'].drop_duplicates().count()
         self.total_workouts = df['workout'].drop_duplicates().count()
 
-        self.exercise_library_reports = self.compute_exercise_lib_reports(df) ####
-        self.body_part_reports = self.compute_body_part_reports(df) #####
+        self.exercise_library_reports = self.compute_part_reports('exercise_library_id', 'exercise_library', df) 
+        self.body_part_reports = self.compute_part_reports('body_part_id', 'body_part', df) 
         self.total_volume = self.compute_volume( df )
 
         df = df.drop( columns = ['exercise_library_id', 'exercise_library', 'body_part_id', 'body_part']).drop_duplicates()
