@@ -3,7 +3,6 @@ sys.path.append('.')
 
 from dtServer.data.conn import make_database_connection, db_proxy
 from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-import pandas as pd
 
 conn = make_database_connection()
 db_proxy.initialize(conn)
@@ -41,8 +40,8 @@ def test_select_workout_sets_data() :
     print(data)    
 
 if __name__ == '__main__' : 
-    # test_select_workout_session_level_data()
-    # test_select_by_user_and_dateperiod() 
-    # test_select_workout_level_data() 
-    # test_select_workoutset_level_data()
+    test_select_workout_session_level_data()
+    test_select_by_user_and_dateperiod() 
+    test_select_workout_level_data() 
+    test_select_workoutset_level_data()
     test_select_workout_sets_data()

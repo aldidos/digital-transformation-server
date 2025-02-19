@@ -7,6 +7,8 @@ from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 conn = make_database_connection()
 db_proxy.initialize(conn)
 
-data = exerciseLibraryDao.select_by_equipment(16)
+def test_select_by_equipment() : 
+    data = exerciseLibraryDao.select_by_equipment(16)
+    print(data)
 
-print(data)
+test_select_by_equipment()

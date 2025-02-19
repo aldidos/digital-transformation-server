@@ -50,9 +50,9 @@ def test_get_workoutsession_data() :
     print(data)
 
 if __name__ == '__main__' : 
-    # test_get_recent_set_data()
-    # test_get_recent_workout_data_by_user_and_exercise()
+    test_get_recent_set_data()
+    test_get_recent_workout_data_by_user_and_exercise()
     test_get_set_data()
-    # test_get_workout_data()
-    # test_get_workout_sessions_by_dateperiod()
-    # test_get_workoutsession_data()
+    test_get_workout_data()
+    test_get_workout_sessions_by_dateperiod()
+    test_get_workoutsession_data()
