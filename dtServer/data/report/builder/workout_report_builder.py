@@ -74,7 +74,6 @@ class WorkoutReportBuilder :
             return None
         
         df = pd.DataFrame(dataset)
-
         workout_session_reports = WokroutSessionCollectionReport()
         workout_session_reports.make_report(df)
 

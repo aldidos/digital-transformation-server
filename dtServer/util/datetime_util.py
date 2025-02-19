@@ -30,7 +30,7 @@ def compute_diff_to_seconds(from_time, to_time) :
     if not isinstance(from_time, datetime) or not isinstance(to_time, datetime) : 
         return 0
     diff_time = to_time - from_time 
-    return diff_time.total_seconds()    
+    return diff_time.total_seconds() 
 
 def second_to_minute(second) : 
     return second / 60

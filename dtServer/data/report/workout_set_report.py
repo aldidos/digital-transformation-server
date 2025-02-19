@@ -1,6 +1,6 @@
 import pandas as pd
 from dtServer.data.report.base_report import BaseReport
-from dtServer.util.datetime_util import compute_diff_to_seconds
+from dtServer.util.datetime_util import compute_diff_to_seconds, second_to_minute
 
 class WorkoutSetReport(BaseReport) : 
 
@@ -27,6 +27,8 @@ class WorkoutSetReport(BaseReport) :
         self.total_top_stay_duration = 0
         self.total_bottom_stay_duration = 0
 
+        self.burned_kcl = 0 ####  
+
     def convert_datatype(self) : 
         self.volume = float(self.volume)
         self.set = int(self.set)
@@ -48,6 +50,8 @@ class WorkoutSetReport(BaseReport) :
         self.total_rep_duration_ecc = self.total_rep_duration_ecc.total_seconds()
         self.total_top_stay_duration = self.total_top_stay_duration.total_seconds()
         self.total_bottom_stay_duration = self.total_bottom_stay_duration.total_seconds()
+
+        self.burned_kcl = float(self.burned_kcl)
 
     def compute_total_time_duration(self, time_from, time_to, df : pd.DataFrame) : 
         df = df[['set_id', time_from, time_to]].drop_duplicates()
@@ -90,6 +94,8 @@ class WorkoutSetReport(BaseReport) :
         self.total_rep_duration_ecc = self.sum_time_duration(df['rep_duration_ecc'])
         self.total_top_stay_duration = self.sum_time_duration(df['top_stay_duration'])
         self.total_bottom_stay_duration = self.sum_time_duration(df['bottom_stay_duration'])
+
+        self.burned_kcl = self.weight * second_to_minute(self.set_time_duration)
 
         self.convert_datatype() ####
 

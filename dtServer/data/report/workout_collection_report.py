@@ -11,6 +11,12 @@ class WorkoutColectionReport(BaseReport) :
         self.total_sets = 0
         self.workout_reports = []
 
+    def convert_data(self) : 
+        self.total_volume = float(self.total_volume)
+        self.total_workout_time = float(self.total_workout_time)
+        self.total_workouts = int(self.total_workouts)
+        self.total_sets = int(self.total_sets)
+
     def make_report(self, df : pd.DataFrame) : 
         self.total_volume = self.compute_volume(df)
         self.total_workouts = df['workout'].drop_duplicates().count()
@@ -25,7 +31,11 @@ class WorkoutColectionReport(BaseReport) :
             workout_report = WorkoutReport(workout_id)
             workout_report.make_report(sub_df)
 
+            self.total_workout_time = self.total_workout_time + workout_report.total_workout_time
+
             self.workout_reports.append(workout_report)  
+
+        self.convert_data()
 
     def as_dict(self) : 
         return {

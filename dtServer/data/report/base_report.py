@@ -12,5 +12,5 @@ class BaseReport :
 
     def compute_volume(self, df : pd.DataFrame) : 
         df = df[['set_id', 'weight', 'total_reps']].drop_duplicates()
-        df['volume'] = df['weight'] * df['total_reps']
-        return df['volume'].sum()
+        volume = df['weight'] * df['total_reps']
+        return volume.sum()
