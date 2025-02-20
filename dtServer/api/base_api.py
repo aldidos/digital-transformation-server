@@ -71,20 +71,37 @@ def qr_certification() :
 @app.route("/end_wokrout_session", methods=['PUT'])
 def end_workout() : 
       return destroy_session( SESSION_MACHINE_CERTIFICATION )
+
+def valid_user_account(user_account) : 
+     login_id = user_account['login_id']
+     login_pw = user_account['login_pw']
+     if len(login_id) < 4 : 
+          return 'THIS MESSGAE IS SENT DURING DEVELOPING : the length of login_id must be over 4', False
+
+     if len(login_pw) < 4 : 
+          return 'THIS MESSGAE IS SENT DURING DEVELOPING : the length of login_pw must be over 4', False
+
+     return 'THIS MESSGAE IS SENT DURING DEVELOPING : the login id and pw can be used', True
       
 @app.route("/signup", methods = ['POST'])
 def signup() : ###
     if request.method == 'POST' : 
           data = request.get_json()
           user_account = data['user_account']
-          user_info = data['user_info'] 
-          login_id = user_account['login_id']          
+          user_info = data['user_info']           
+
+          valid_mes, r = valid_user_account(user_account)
+          if not r : 
+               return create_response(valid_mes, 400)
+
+          login_id = user_account['login_id']
+          login_pw = user_account['login_pw']          
 
           if userAccountDao.is_user_account(login_id) : 
                return abort(400)
           
           user = signupTrans.insert_signup_data(user_info, user_account) ####
-          return create_response(user, 201)          
+          return create_response(user, 201) 
 
 @app.route("/signin", methods=['PUT']) 
 def signin() : 
