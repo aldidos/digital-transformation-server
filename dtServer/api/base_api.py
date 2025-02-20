@@ -13,6 +13,7 @@ from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDa
 from dtServer.data.tranjection.signup_trans import signupTrans
 from dtServer.data.dto.machine_certification_dto import MachineCertificationDTO
 from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
+from dtServer.data.dto.user_account_dto import UserAccountDTO
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
@@ -71,36 +72,24 @@ def qr_certification() :
 @app.route("/end_wokrout_session", methods=['PUT'])
 def end_workout() : 
       return destroy_session( SESSION_MACHINE_CERTIFICATION )
-
-def valid_user_account(user_account) : 
-     login_id = user_account['login_id']
-     login_pw = user_account['login_pw']
-     if len(login_id) < 4 : 
-          return 'THIS MESSGAE IS SENT DURING DEVELOPING : the length of login_id must be over 4', False
-
-     if len(login_pw) < 4 : 
-          return 'THIS MESSGAE IS SENT DURING DEVELOPING : the length of login_pw must be over 4', False
-
-     return 'THIS MESSGAE IS SENT DURING DEVELOPING : the login id and pw can be used', True
       
 @app.route("/signup", methods = ['POST'])
 def signup() : ###
     if request.method == 'POST' : 
           data = request.get_json()
-          user_account = data['user_account']
-          user_info = data['user_info']           
+          user_account = UserAccountDTO( data['user_account'] )
+          user_info = data['user_info'] 
 
-          valid_mes, r = valid_user_account(user_account)
+          valid_mes, r = user_account.valid_user_account()
           if not r : 
                return create_response(valid_mes, 400)
 
-          login_id = user_account['login_id']
-          login_pw = user_account['login_pw']          
+          login_id = user_account.get_login_id()
 
           if userAccountDao.is_user_account(login_id) : 
                return abort(400)
           
-          user = signupTrans.insert_signup_data(user_info, user_account) ####
+          user = signupTrans.insert_signup_data(user_info, user_account.get_user_account()) ####
           return create_response(user, 201) 
 
 @app.route("/signin", methods=['PUT']) 
