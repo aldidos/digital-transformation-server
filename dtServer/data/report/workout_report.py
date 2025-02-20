@@ -2,7 +2,12 @@ import pandas as pd
 from dtServer.data.report.workout_set_report import WorkoutSetReport
 from dtServer.data.report.base_report import BaseReport
 
-class WorkoutReport(BaseReport) : 
+class WorkoutReport(BaseReport) :      
+
+    def attrs() :         
+        attrs = ['date', 'workout', 'completed_sets', 'workout_start_time', 'workout_end_time'] 
+        attrs.extend( WorkoutSetReport.attrs() )
+        return attrs 
 
     def __init__(self, workout_id) : 
         self.workout_id = workout_id
@@ -32,6 +37,9 @@ class WorkoutReport(BaseReport) :
         return workout_time_duration.total_seconds()
 
     def make_report(self, df : pd.DataFrame ) : 
+        workout_attrs = WorkoutReport.attrs()
+        df = df[ workout_attrs ].drop_duplicates()
+
         self.date = df['date'].iat[0].isoformat()
         self.total_sets = df['completed_sets'].iat[0]
         self.total_reps = df[['set_id', 'total_reps']].drop_duplicates()['total_reps'].sum()

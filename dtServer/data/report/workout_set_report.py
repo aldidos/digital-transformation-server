@@ -4,6 +4,20 @@ from dtServer.util.datetime_util import compute_diff_to_seconds, second_to_minut
 
 class WorkoutSetReport(BaseReport) : 
 
+    def attrs() : 
+        return ['set_id', 'set', 'weight', 'total_reps', 'set_start_time', 'set_end_time', 'res_start_time', 'res_end_time', 
+                'rep', 'peak_velocity', 'mean_velocity',   'peak_power', 'mean_power', 
+                'rep_duration_con', 'rep_duration_ecc', 'top_stay_duration', 'bottom_stay_duration', 'rep_duration']
+    
+        # return ['set', 'weight', 'total_reps', 'set_start_time', 'set_end_time', 'res_start_time', 'res_end_time', 
+        #         'rep', 'peak_velocity', 'mean_velocity',   'peak_power', 'mean_power', 'peak_force', 'mean_force', 
+        #         'peak_velocity_con', 'mean_velocity_con', 'peak_power_con', 'mean_power_con',
+        #         'peak_force_con', 'mean_force_con', 'peak_acceleration_con', 'mean_acceleration_con', 
+        #         'peak_velocity_ecc', 'mean_velocity_ecc', 'peak_power_ecc', 'mean_power_ecc', 
+        #         'peak_force_ecc', 'mean_force_ecc', 'peak_acceleration_ecc', 'mean_acceleration_ecc', 
+        #         'rep_duration_con', 'rep_duration_ecc', 'top_stay_duration', 'bottom_stay_duration', 'rep_duration', 'RFD']
+
+
     def __init__(self, set_id) : 
         self.set_id = set_id
         self.volume = 0 
@@ -63,6 +77,9 @@ class WorkoutSetReport(BaseReport) :
         return total_time_duration
 
     def make_report(self, df : pd.DataFrame ) : 
+        set_attrs = WorkoutSetReport.attrs()
+        df = df[ set_attrs ].drop_duplicates()
+
         self.set = df['set'].iat[0]
         self.weight = df['weight'].iat[0]
         self.total_reps = df[['set_id', 'rep']].drop_duplicates()['rep'].count()

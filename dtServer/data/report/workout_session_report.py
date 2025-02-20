@@ -17,6 +17,11 @@ class WokroutSessionReport(BaseReport) :
 
         self.wokrout_reports = []
 
+    def attrs() : 
+        attrs = ['exercise_library_id', 'exercise_library', 'body_part_id', 'body_part'  ]
+        attrs.extend(WorkoutReport.attrs())
+        return attrs
+
     def convert_datatype(self) : 
         self.total_volume = float(self.total_volume)
         self.total_sets = int(self.total_sets)
@@ -43,6 +48,9 @@ class WokroutSessionReport(BaseReport) :
         return list_reports
 
     def make_report(self, df : pd.DataFrame) : 
+        attrs = WokroutSessionReport.attrs()
+        df = df[ attrs ].drop_duplicates()
+
         self.date = df['date'].iat[0].isoformat()
         self.total_sets = df['set_id'].drop_duplicates().count()
         self.total_workouts = df['workout'].drop_duplicates().count()
@@ -50,8 +58,6 @@ class WokroutSessionReport(BaseReport) :
         self.exercise_library_reports = self.compute_part_reports('exercise_library_id', 'exercise_library', df) 
         self.body_part_reports = self.compute_part_reports('body_part_id', 'body_part', df) 
         self.total_volume = self.compute_volume( df )
-
-        df = df.drop( columns = ['exercise_library_id', 'exercise_library', 'body_part_id', 'body_part']).drop_duplicates()
 
         groups = df.groupby('workout')
         for name, workout_dataset in groups :            
