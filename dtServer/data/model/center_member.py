@@ -17,5 +17,5 @@ class CenterMember(BaseModel) :
     visit_date = DateField(DATE_FORMAT, null = True)
     
     class Meta : 
-        table_name = 'center_member'        
+        table_name = 'center_member'
 

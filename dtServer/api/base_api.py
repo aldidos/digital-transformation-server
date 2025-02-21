@@ -8,12 +8,12 @@ from dtServer.data.dao.center_member_dao import centerMemberDao
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
-from dtServer.data.tranjection.app_base_data_trans import appBaseDataTrans
 from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDataTrans
 from dtServer.data.tranjection.signup_trans import signupTrans
 from dtServer.data.dto.machine_certification_dto import MachineCertificationDTO
 from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
 from dtServer.data.dto.user_account_dto import UserAccountDTO
+from dtServer.data.dto.user_auth_centers_dto import UserAuthCentersDTO
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
@@ -104,8 +104,8 @@ def signin() :
         return abort(400)
      
      if login_pw == user_account['login_pw'] : 
-          app_base_data = appBaseDataTrans.get_data(user_account['user']['id'])
-          return create_response(app_base_data, 200) 
+          user_auth_centers = UserAuthCentersDTO( user_account['user']['id'] )
+          return create_response(user_auth_centers.as_dict(), 200) 
      return abort(400)
 
 @app.route("/exercise_libraries", methods=['GET'])
