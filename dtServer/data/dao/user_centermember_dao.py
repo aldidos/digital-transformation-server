@@ -15,11 +15,15 @@ class UserCenterMemberDao(BaseDAO) :
         return self.save(data)
 
     def get_by_user(self, user_id) : 
-        model = UserCenterMember.get_or_none( UserCenterMember.user == user_id )     
-        return model_to_dict_or_none(model)
+        q = UserCenterMember.select().where( UserCenterMember.user == user_id )
+        return [ row for row in q.dicts() ]
 
     def get_by_center_member(self, centermember_id) : 
-        model = UserCenterMember.get_or_none( UserCenterMember.centermember == centermember_id ) 
+        q = UserCenterMember.select().where( UserCenterMember.centermember == centermember_id )
+        return [ row for row in q.dicts() ]
+    
+    def get_by_user_and_center(self, user_id, center_id) : 
+        model = UserCenterMember.get_or_none( UserCenterMember.user == user_id, UserCenterMember.center == center_id )
         return model_to_dict_or_none(model)
     
 userCenterMemberDao = UserCenterMemberDao()

@@ -1,5 +1,4 @@
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.user_centermember_dao import userCenterMemberDao
 from dtServer.data.dao.center_dao import centerDao
 from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
