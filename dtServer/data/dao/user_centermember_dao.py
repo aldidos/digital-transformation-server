@@ -12,7 +12,7 @@ class UserCenterMemberDao(BaseDAO) :
         data = {
             "user" : user_id, 
             'center' : center_id,
-            "centermember" : centermember_id
+            "center_member" : centermember_id
         }
         return self.save(data)
 

@@ -15,6 +15,7 @@ from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
 from dtServer.data.dto.user_account_dto import UserAccountDTO
 from dtServer.data.dto.user_auth_centers_dto import UserAuthCentersDTO
 from dtServer.data.dto.app_lounge_dto import AppLoungeDTO
+from dtServer.data.dao.user_centermember_dao import userCenterMemberDao
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
@@ -162,6 +163,8 @@ def center_authentication() : ###
                return ('The user is not a member of the center', 400)
           
           user_center = userCenterDao.create_user_center(user_id, center_id)
+          userCenterMemberDao.insert(user_id, center_id, center_member['id'])
+          
           return create_response(user_center, 201)  
      
      if request.method == 'GET' : #
