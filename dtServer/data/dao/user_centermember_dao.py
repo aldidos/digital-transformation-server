@@ -7,9 +7,10 @@ class UserCenterMemberDao(BaseDAO) :
     def save(self, data : dict) :         
         return self.save_model( dict_to_model(UserCenterMember, data) )
     
-    def insert(self, user_id, centermember_id) : 
+    def insert(self, user_id, center_id, centermember_id) : 
         data = {
             "user" : user_id, 
+            'center' : center_id,
             "centermember" : centermember_id
         }
         return self.save(data)
