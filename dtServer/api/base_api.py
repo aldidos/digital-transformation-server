@@ -14,6 +14,7 @@ from dtServer.data.dto.machine_certification_dto import MachineCertificationDTO
 from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
 from dtServer.data.dto.user_account_dto import UserAccountDTO
 from dtServer.data.dto.user_auth_centers_dto import UserAuthCentersDTO
+from dtServer.data.dto.app_lounge_dto import AppLoungeDTO
 
 SESSION_MACHINE_CERTIFICATION = 'machine_certification'
 
@@ -173,3 +174,12 @@ def center_authentication() : ###
                return "user's center authentication cannot found.", 404
           
           return create_response(user_center, 200)
+     
+@app.route("/lounge", methods=['GET'])
+def get_lounge() : 
+     data = request.get_json()
+     user_id = data['user_id']
+     center_id = data['center_id']
+
+     app_lounge = AppLoungeDTO(user_id, center_id)
+     return create_response(app_lounge.as_dict(), 200)
