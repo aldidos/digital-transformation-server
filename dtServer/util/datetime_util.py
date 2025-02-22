@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 
 from dtServer.data.model.base_model import DATETIME_FORMAT, TIME_FORMAT
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 def diff_time_second(from_datetime_time, to_datetime_time) : 
     str_start_time = from_datetime_time.isoformat()
@@ -28,10 +28,25 @@ def diff_datetime(from_datetime, to_datetime) :
 
 def compute_diff_to_seconds(from_time, to_time) : 
     if not isinstance(from_time, datetime) or not isinstance(to_time, datetime) : 
-        return 0
+        return timedelta()
     diff_time = to_time - from_time 
-    return diff_time.total_seconds() 
+    return diff_time 
 
 def second_to_minute(second) : 
     return second / 60
 
+def timedelta_to_dhm_format(td : timedelta) : 
+    seconds = td.total_seconds() % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+    day = td.days
+
+    return {
+        'day' : day, 
+        'hour' : hour, 
+        'minutes' : minutes, 
+        'seconds' : seconds
+    }   
+    

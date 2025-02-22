@@ -1,6 +1,7 @@
 import pandas as pd
 from dtServer.data.report.base_report import BaseReport
 from dtServer.data.report.workout_report import WorkoutReport
+from datetime import timedelta
 
 class WokroutSessionReport(BaseReport) : 
 
@@ -9,7 +10,7 @@ class WokroutSessionReport(BaseReport) :
         self.total_volume = 0
         self.total_sets = 0
         self.total_workouts = 0
-        self.total_workout_time = 0
+        self.total_workout_time = timedelta()
         self.total_burned_kcl = 0 ####  
 
         self.exercise_library_reports = []
@@ -26,6 +27,7 @@ class WokroutSessionReport(BaseReport) :
         self.total_volume = float(self.total_volume)
         self.total_sets = int(self.total_sets)
         self.total_workouts = int(self.total_workouts)
+        self.total_workout_time = self.total_workout_time.total_seconds()
 
     def compute_part_reports(self, part_id, part_name, df : pd.DataFrame) : ####
         groups = df.groupby([part_id, part_name])
@@ -39,7 +41,7 @@ class WokroutSessionReport(BaseReport) :
             usage_freq = usage_freq / self.total_sets
 
             list_reports.append({ 
-                part_id : int(part_id), 
+                'id' : int(part_id), 
                 'name' : part_name,
                 'volume' : float(volume), 
                 'usage_freq' : float(usage_freq)
@@ -59,20 +61,19 @@ class WokroutSessionReport(BaseReport) :
         self.body_part_reports = self.compute_part_reports('body_part_id', 'body_part', df) 
         self.total_volume = self.compute_volume( df )
 
+        self.total_workout_time = self.compute_total_workout_time(df)
+
         groups = df.groupby('workout')
         for name, workout_dataset in groups :            
             workout_id = name            
 
             workout_report = WorkoutReport(workout_id)
-            workout_report.make_report(workout_dataset) 
+            workout_report.make_report(workout_dataset)            
 
-            self.total_workout_time = self.total_workout_time + workout_report.total_workout_time
-
-            self.wokrout_reports.append(workout_report)         
-
-        self.convert_datatype()
+            self.wokrout_reports.append(workout_report)                 
 
     def as_dict(self) : 
+        self.convert_datatype()
         return {
             'workout_session_id' : self.workout_session_id,
             'date' : self.date, 

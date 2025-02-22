@@ -184,5 +184,7 @@ def get_lounge() :
      user_id = data['user_id']
      center_id = data['center_id']
 
-     app_lounge = AppLoungeDTO(user_id, center_id)
+     from_date, to_date = get_recent_date_period()
+
+     app_lounge = AppLoungeDTO(user_id, center_id, from_date, to_date)
      return create_response(app_lounge.as_dict(), 200)

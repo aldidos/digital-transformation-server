@@ -1,6 +1,7 @@
 import pandas as pd
 from dtServer.data.report.base_report import BaseReport
-from dtServer.util.datetime_util import compute_diff_to_seconds, second_to_minute
+from dtServer.util.datetime_util import second_to_minute
+from datetime import timedelta
 
 class WorkoutSetReport(BaseReport) : 
 
@@ -24,8 +25,8 @@ class WorkoutSetReport(BaseReport) :
         self.set = 0  ## Set order
         self.weight = 0
         self.total_reps = 0 
-        self.set_time_duration = 0
-        self.rest_time_duration = 0
+        self.set_time_duration = timedelta()
+        self.rest_time_duration = timedelta()
 
         self.mean_velocity = 0
         self.mean_power = 0
@@ -48,8 +49,8 @@ class WorkoutSetReport(BaseReport) :
         self.set = int(self.set)
         self.weight = float(self.weight)
         self.total_reps = int(self.total_reps)
-        self.set_time_duration = self.set_time_duration
-        self.rest_time_duration = self.rest_time_duration
+        self.set_time_duration = self.set_time_duration.total_seconds()
+        self.rest_time_duration = self.rest_time_duration.total_seconds()
 
         self.mean_velocity = float(self.mean_velocity)
         self.mean_power = float(self.mean_power)
@@ -65,16 +66,7 @@ class WorkoutSetReport(BaseReport) :
         self.total_top_stay_duration = self.total_top_stay_duration.total_seconds()
         self.total_bottom_stay_duration = self.total_bottom_stay_duration.total_seconds()
 
-        self.burned_kcl = float(self.burned_kcl)
-
-    def compute_total_time_duration(self, time_from, time_to, df : pd.DataFrame) : 
-        df = df[['set_id', time_from, time_to]].drop_duplicates()
-        total_time_duration = 0
-        for v in df.values : 
-            from_time = v[1]
-            to_time = v[2]         
-            total_time_duration = total_time_duration + compute_diff_to_seconds(from_time, to_time)        
-        return total_time_duration
+        self.burned_kcl = float(self.burned_kcl)    
 
     def make_report(self, df : pd.DataFrame ) : 
         set_attrs = WorkoutSetReport.attrs()
@@ -84,8 +76,8 @@ class WorkoutSetReport(BaseReport) :
         self.weight = df['weight'].iat[0]
         self.total_reps = df[['set_id', 'rep']].drop_duplicates()['rep'].count()
         self.volume = self.compute_volume(df)        
-        self.set_time_duration = self.compute_total_time_duration('set_start_time', 'set_end_time', df)
-        self.rest_time_duration = self.compute_total_time_duration('res_start_time', 'res_end_time', df)
+        self.set_time_duration = self.compute_set_time_duration(df)
+        self.rest_time_duration = self.compute_res_time_duration(df)
 
         means = df[['mean_velocity', 'peak_velocity', 'mean_power', 'peak_power']].mean()
         self.mean_velocity = means['mean_velocity']
@@ -112,11 +104,10 @@ class WorkoutSetReport(BaseReport) :
         self.total_top_stay_duration = self.sum_time_duration(df['top_stay_duration'])
         self.total_bottom_stay_duration = self.sum_time_duration(df['bottom_stay_duration'])
 
-        self.burned_kcl = self.weight * second_to_minute(self.set_time_duration)
-
-        self.convert_datatype() ####
+        # self.burned_kcl = self.weight * second_to_minute(self.set_time_duration) ####
 
     def as_dict(self) : 
+        self.convert_datatype() ####
         return {
             'set_id' : self.set_id,
             'set' : self.set, 

@@ -1,6 +1,7 @@
 import pandas as pd
 from dtServer.data.report.workout_set_report import WorkoutSetReport
 from dtServer.data.report.base_report import BaseReport
+from datetime import timedelta
 
 class WorkoutReport(BaseReport) :      
 
@@ -17,7 +18,7 @@ class WorkoutReport(BaseReport) :
         self.total_lifting_time = 0
         self.avg_weight = 0
         self.avg_reps_pet_set = 0
-        self.total_workout_time = 0 
+        self.total_workout_time = timedelta()
         self.total_burned_kcl = 0 #### 소모 칼로리
         self.intensity = 0  #### 운동 강도
 
@@ -29,13 +30,9 @@ class WorkoutReport(BaseReport) :
         self.total_reps = int(self.total_reps)        
         self.avg_weight = float(self.avg_weight)
         self.avg_reps_pet_set = float(self.avg_reps_pet_set)
+        self.total_workout_time = self.total_workout_time.total_seconds()
+        self.total_burned_kcl = float(self.total_burned_kcl)
     
-    def compute_total_workout_time(self, df : pd.DataFrame) : 
-        df = df[['workout', 'workout_end_time', 'workout_start_time']]
-        workout_time_duration = df['workout_end_time'] - df['workout_start_time']
-        workout_time_duration = workout_time_duration.sum()
-        return workout_time_duration.total_seconds()
-
     def make_report(self, df : pd.DataFrame ) : 
         workout_attrs = WorkoutReport.attrs()
         df = df[ workout_attrs ].drop_duplicates()
@@ -48,21 +45,18 @@ class WorkoutReport(BaseReport) :
         self.avg_weight = sum_weight / self.total_sets
         self.avg_reps_pet_set = self.total_reps / self.total_sets        
         self.total_workout_time = self.compute_total_workout_time( df )
+        self.total_lifting_time = self.compute_total_lifting_time( df )        
         
         set_groups = df.groupby([ 'set_id' ])
         for name, set_dataset in set_groups : 
             set_id = name[0]
             workout_set_report = WorkoutSetReport(set_id)
             workout_set_report.make_report(set_dataset)
-
-            self.total_lifting_time = self.total_lifting_time + workout_set_report.total_rep_duration
-            self.total_burned_kcl = self.total_burned_kcl + workout_set_report.burned_kcl
-
+            
             self.workout_set_reports.append( workout_set_report )
-        
-        self.conver_datatype()        
              
     def as_dict(self) : 
+        self.conver_datatype()
         return {
             'wokrout_id' : self.workout_id,
             'date' : self.date,
