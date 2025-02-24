@@ -40,11 +40,6 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['JSON_AS_ASCII'] = False
 app.config['SCHEDULER_API_ENABLED'] = True
 
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-scheduler.pause()
-
 RES_MES_200 = 'Request OK'
 RES_MES_201 = 'Resource created'
 RES_MES_400 = 'Bad request'
