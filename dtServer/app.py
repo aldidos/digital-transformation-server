@@ -1,5 +1,4 @@
 from flask import Flask, request, make_response
-from flask_apscheduler import APScheduler
 from dtServer.data.conn import make_database_connection, db_proxy
 from datetime import datetime, timedelta
 from dtServer.data.statistics.stat_workout import statWorkout
