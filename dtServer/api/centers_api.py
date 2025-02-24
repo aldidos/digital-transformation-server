@@ -4,6 +4,8 @@ from dtServer.data.dao.center_dao import centerDao
 from dtServer.data.dao.center_member_dao import centerMemberDao
 from dtServer.data.dao.center_staff_dao import centerStaffDao
 from dtServer.data.dao.center_equipment_dao import centerEquipmentDao
+from dtServer.api.exercise_machine_auth import add_machine_key_value, get_key_data, pop_key_data
+from dtServer.data.dto.center_equipment_auth_dto import CenterEquipmentAuthDTO
 
 @app.route("/centers", methods=['POST'])
 def centers() : 
@@ -91,3 +93,49 @@ def patch_center_equipments(center_id, center_equipment_id) :
           if not center_equipments : 
                return abort(404)
           return create_response(center_equipments, 200)
+     
+@app.route("/centers/<center_id>/equipments/<center_equipment_id>/auth", methods=['GET', 'PUT'])
+def get_put_center_equipemnt_auth(center_id, center_equipment_id) :
+     if request.method == 'PUT' : 
+          data = request.get_json()
+          machine_key = data['machine_key']
+          user_id = data['user_id']
+          workout_session_id = data['workout_session_id']
+          machine_auth_data = {
+               'user_id' : user_id, 
+               'workout_session_id' : workout_session_id,
+               'center_equipment_id' : center_equipment_id
+          }
+
+          if get_key_data(machine_key) : 
+               return create_response('Authentication request for the center equipment has already been maed', 400)
+
+          add_machine_key_value(machine_key, machine_auth_data)
+
+          return create_response('OK', 200)
+     
+     if request.method == 'GET' : 
+          data = request.get_json()
+          machine_key = data['machine_key']
+
+          machine_auth_data = get_key_data(machine_key)
+
+          if not machine_auth_data : 
+               return create_response('The requested machine key cannot found', 404)
+          
+          pop_key_data(machine_key) ####
+
+          center_equipment_auth_dto = CenterEquipmentAuthDTO(machine_auth_data['user_id'], machine_auth_data['workout_session_id'], machine_auth_data['center_equipment_id'])
+
+          return create_response(center_equipment_auth_dto.as_dict(), 200)
+     
+@app.route("/centers/<center_id>/equipments/<center_equipment_id>/leave", methods=['PUT'])
+def put_center_equipemnt_leave(center_id, center_equipment_id) :
+     data = request.get_json()
+     user_id = data['user_id']
+
+     center_equipment = centerEquipmentDao.get_by_id(center_equipment_id)
+     center_equipment['usage'] = False
+     centerEquipmentDao.save(center_equipment)
+
+     return create_response('OK', 200)

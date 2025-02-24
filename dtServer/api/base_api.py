@@ -1,80 +1,19 @@
 from dtServer.app import *
-from flask import request, abort, session
+from flask import request, abort
 from dtServer.data.dao.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
 from dtServer.data.dao.user_account_dao import userAccountDao
 from dtServer.data.dao.center_dao import centerDao
 from dtServer.data.dao.center_member_dao import centerMemberDao
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
-from dtServer.data.dao.nfc_tag_dao import nfcTagDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
-from dtServer.data.tranjection.machin_app_base_data_trans import machinAppBaseDataTrans
 from dtServer.data.tranjection.signup_trans import signupTrans
-from dtServer.data.dto.machine_certification_dto import MachineCertificationDTO
 from dtServer.data.dto.center_certification_dto import CenterCertificationDTO
 from dtServer.data.dto.user_account_dto import UserAccountDTO
 from dtServer.data.dto.user_auth_centers_dto import UserAuthCentersDTO
 from dtServer.data.dto.app_lounge_dto import AppLoungeDTO
 from dtServer.data.dao.user_centermember_dao import userCenterMemberDao
 
-SESSION_MACHINE_CERTIFICATION = 'machine_certification'
-
-def make_session(key : str, data : dict) : 
-     if key in session : 
-          return False     
-     session[key] = data
-     return True
-
-def destroy_session(key) : 
-     if key in session :
-           session.pop(key, None)
-           return "Destroyed workout session", 200
-     return abort(400)
-
-@app.route("/nfc_certification", methods=['PUT', "GET"])
-def nfc_certification() : 
-     if request.method == 'PUT' :
-          data = request.get_json()
-          form = MachineCertificationDTO(data)
-
-          nfc_tag = nfcTagDao.select_by_nfc_tag_id( form.get_nfc_tag_id() )
-          if nfc_tag is None : 
-               return abort(400)
-          else : 
-               if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
-                    return (RES_MES_200, 200) 
-               return "The user has unfinished machine certification", 400               
-          
-     if request.method == 'GET' : 
-          if SESSION_MACHINE_CERTIFICATION in session : 
-               session_data = session[SESSION_MACHINE_CERTIFICATION]
-               base_data = machinAppBaseDataTrans.get_data( session_data['user_id'], session_data['center_equipment_id'], session_data['workout_session_id'] ) 
-
-               return create_response( base_data, 200)
-          
-          return abort(404)
-
-@app.route("/qr_certification", methods=['PUT', 'GET']) ####
-def qr_certification() :      
-     if request.method == 'PUT' :  
-          data = request.get_json()
-          form = MachineCertificationDTO(data)          
-
-          if make_session(SESSION_MACHINE_CERTIFICATION, form.get_data() ) : 
-               return (RES_MES_200, 200)          
-          return "The user has unfinished machine certification", 400     
-     
-     if request.method == 'GET' : 
-          if SESSION_MACHINE_CERTIFICATION in session : 
-               session_data = session[SESSION_MACHINE_CERTIFICATION]
-               base_data = machinAppBaseDataTrans.get_data( session_data['user_id'], session_data['center_equipment_id'], session_data['workout_session_id'] ) 
-               return create_response(base_data, 200) 
-          return abort(404)
-     
-@app.route("/end_wokrout_session", methods=['PUT'])
-def end_workout() : 
-      return destroy_session( SESSION_MACHINE_CERTIFICATION )
-      
 @app.route("/signup", methods = ['POST'])
 def signup() : ###
     if request.method == 'POST' : 

@@ -1,4 +1,5 @@
 from flask import Flask, request, make_response
+from flask_apscheduler import APScheduler
 from dtServer.data.conn import make_database_connection, db_proxy
 from datetime import datetime, timedelta
 from dtServer.data.statistics.stat_workout import statWorkout
@@ -30,11 +31,20 @@ def get_workout_metric_stat(list_data) :
 def json_to_dict(data) : 
      return json.loads(data)
 
+class Config : 
+     SCHEDULER_API_ENABLED = True
+
 app = Flask(__name__)
 app.secret_key = b'_@sD2&f^L(i8p]2#mHzVs1@^&gj]'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['JSON_AS_ASCII'] = False
+app.config['SCHEDULER_API_ENABLED'] = True
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+scheduler.pause()
 
 RES_MES_200 = 'Request OK'
 RES_MES_201 = 'Resource created'
