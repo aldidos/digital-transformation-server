@@ -32,7 +32,7 @@ from dtServer.data.dao.workout_bodypart_dao import workoutBodypartDao, WorkoutBo
 from dtServer.data.dao.user_centermember_dao import userCenterMemberDao, UserCenterMember
 
 def open_data_file_csv(file_path : str) : 
-     with open(file_path, 'r', encoding='utf-8') as f : 
+     with open(file_path, 'r', encoding='utf-8-sig') as f : 
         csv_reader = csv.DictReader(f)
         list_data = list(csv_reader)
         return list_data
