@@ -1,8 +1,8 @@
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.workout_set_dao import workoutSetDao
-from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
-from dtServer.data.dao.workouts_dao import workoutDao
-from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
+from dtServer.data.dao.workout.workout_set_dao import workoutSetDao
+from dtServer.data.dao.workout.workout_metrics_dao import workoutMetricDao
+from dtServer.data.dao.workout.workouts_dao import workoutDao
+from dtServer.data.dao.workout.workout_sessions_dao import workoutSessionDao
 
 class WorkoutReportDao : 
     

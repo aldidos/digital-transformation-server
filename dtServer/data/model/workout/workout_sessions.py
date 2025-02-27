@@ -1,6 +1,6 @@
 from peewee import *
 from dtServer.data.model.base_model import BaseModel, db_proxy, DATE_FORMAT
-from dtServer.data.model.user import User
+from dtServer.data.model.user.user import User
 from datetime import date
 from playhouse.shortcuts import model_to_dict, dict_to_model
 

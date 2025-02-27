@@ -1,6 +1,6 @@
 from peewee import *
 from dtServer.data.model.base_model import BaseModel
-from dtServer.data.model.workouts import Workouts
+from dtServer.data.model.workout.workouts import Workouts
 from dtServer.data.model.body_part import BodyPart
 
 class WorkoutBodypart(BaseModel) : 

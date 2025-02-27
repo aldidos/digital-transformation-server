@@ -1,7 +1,6 @@
 from peewee import *
 from dtServer.data.model.base_model import BaseModel, db_proxy, TIME_FORMAT
-from dtServer.data.model.workout_set import WorkoutSet
-
+from dtServer.data.model.workout.workout_set import WorkoutSet
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutMetrics(BaseModel) :

@@ -1,6 +1,6 @@
 from dtServer.data.dao.base_dao import BaseDAO
 from dtServer.data.model.base_model import db_proxy, model_to_dict_or_none
-from dtServer.data.model.user import User
+from dtServer.data.model.user.user import User
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class UserDao(BaseDAO) : 

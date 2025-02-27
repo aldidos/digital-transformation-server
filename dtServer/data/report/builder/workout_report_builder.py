@@ -1,4 +1,4 @@
-from dtServer.data.dao.workout_report_data_dao import workoutReportDao
+from dtServer.data.dao.workout.workout_report_data_dao import workoutReportDao
 from dtServer.data.report.workout_session_report import WokroutSessionReport
 from dtServer.data.report.workout_report import WorkoutReport
 from dtServer.data.report.workout_set_report import WorkoutSetReport

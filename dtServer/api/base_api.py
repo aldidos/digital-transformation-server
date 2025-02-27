@@ -1,10 +1,10 @@
 from dtServer.app import *
 from flask import request, abort
-from dtServer.data.dao.user_dao import userDao
+from dtServer.data.dao.user.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
-from dtServer.data.dao.user_account_dao import userAccountDao
-from dtServer.data.dao.center_dao import centerDao
-from dtServer.data.dao.center_member_dao import centerMemberDao
+from dtServer.data.dao.user.user_account_dao import userAccountDao
+from dtServer.data.dao.center.center_dao import centerDao
+from dtServer.data.dao.center.center_member_dao import centerMemberDao
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
 from dtServer.data.tranjection.signup_trans import signupTrans

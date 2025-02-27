@@ -1,9 +1,9 @@
 from flask import request, abort
 from dtServer.app import *
-from dtServer.data.dao.center_dao import centerDao
-from dtServer.data.dao.center_member_dao import centerMemberDao
-from dtServer.data.dao.center_staff_dao import centerStaffDao
-from dtServer.data.dao.center_equipment_dao import centerEquipmentDao
+from dtServer.data.dao.center.center_dao import centerDao
+from dtServer.data.dao.center.center_member_dao import centerMemberDao
+from dtServer.data.dao.center.center_staff_dao import centerStaffDao
+from dtServer.data.dao.center.center_equipment_dao import centerEquipmentDao
 from dtServer.api.exercise_machine_auth import add_machine_key_value, get_key_data, pop_key_data
 from dtServer.data.dto.center_equipment_auth_dto import CenterEquipmentAuthDTO
 

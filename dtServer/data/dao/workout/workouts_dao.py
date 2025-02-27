@@ -1,8 +1,8 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.workouts import Workouts, db_proxy, model_to_dict_or_none
-from dtServer.data.model.workout_sessions import WorkoutSessions
+from dtServer.data.model.workout.workouts import Workouts, db_proxy, model_to_dict_or_none
+from dtServer.data.model.workout.workout_sessions import WorkoutSessions
 from dtServer.data.model.exercise_library import ExerciseLibrary
-from dtServer.data.model.user import User
+from dtServer.data.model.user.user import User
 from dtServer.data.model.equipment import Equipment
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao

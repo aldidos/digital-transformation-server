@@ -2,7 +2,7 @@ import sys
 sys.path.append('.')
 
 from dtServer.data.conn import make_database_connection, db_proxy
-from dtServer.data.dao.workout_report_data_dao import workoutReportDao
+from dtServer.data.dao.workout.workout_report_data_dao import workoutReportDao
 
 conn = make_database_connection()
 db_proxy.initialize(conn)

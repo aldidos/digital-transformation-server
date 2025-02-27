@@ -1,7 +1,7 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.workout_metrics import db_proxy
+from dtServer.data.model.workout.workout_metrics import db_proxy
 from dtServer.data.model.workout_body_part import WorkoutBodypart
-from dtServer.data.model.workouts import Workouts
+from dtServer.data.model.workout.workouts import Workouts
 from dtServer.data.model.body_part import BodyPart
 from playhouse.shortcuts import model_to_dict, dict_to_model
 

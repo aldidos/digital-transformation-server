@@ -1,6 +1,6 @@
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.user_dao import userDao
-from dtServer.data.dao.user_account_dao import userAccountDao
+from dtServer.data.dao.user.user_dao import userDao
+from dtServer.data.dao.user.user_account_dao import userAccountDao
 
 class SignupTrans : 
 

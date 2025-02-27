@@ -4,23 +4,23 @@ sys.path.append('.')
 import csv
 from dtServer.data.conn import make_database_connection
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.user_dao import userDao, User
+from dtServer.data.dao.user.user_dao import userDao, User
 from dtServer.data.dao.body_part_dao import bodyPartDao, BodyPart
-from dtServer.data.dao.center_equipment_dao import centerEquipmentDao, CenterEquipment
-from dtServer.data.dao.center_dao import centerDao, Center
-from dtServer.data.dao.center_member_dao import centerMemberDao, CenterMember
-from dtServer.data.dao.center_staff_dao import centerStaffDao, CenterStaff
+from dtServer.data.dao.center.center_equipment_dao import centerEquipmentDao, CenterEquipment
+from dtServer.data.dao.center.center_dao import centerDao, Center
+from dtServer.data.dao.center.center_member_dao import centerMemberDao, CenterMember
+from dtServer.data.dao.center.center_staff_dao import centerStaffDao, CenterStaff
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao, ExerciseLibrary
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao, ExerciseLibBodyPart
-from dtServer.data.dao.user_account_dao import userAccountDao, UserAccount
+from dtServer.data.dao.user.user_account_dao import userAccountDao, UserAccount
 from dtServer.data.dao.user_center_dao import userCenterDao, UserCenter
 from dtServer.data.dao.weight_metric_session_dao import weightMetricSession, WeightMetricSession
 from dtServer.data.dao.weight_metric_dao import weightMetricDao, WeightMetric
 from dtServer.data.dao.user_survey_dao import userSurveyDao, UserSurvey
-from dtServer.data.dao.workout_sessions_dao import workoutSessionDao, WorkoutSessions
-from dtServer.data.dao.workouts_dao import workoutDao, Workouts
-from dtServer.data.dao.workout_set_dao import workoutSetDao, WorkoutSet
-from dtServer.data.dao.workout_metrics_dao import workoutMetricDao, WorkoutMetrics
+from dtServer.data.dao.workout.workout_sessions_dao import workoutSessionDao, WorkoutSessions
+from dtServer.data.dao.workout.workouts_dao import workoutDao, Workouts
+from dtServer.data.dao.workout.workout_set_dao import workoutSetDao, WorkoutSet
+from dtServer.data.dao.workout.workout_metrics_dao import workoutMetricDao, WorkoutMetrics
 from dtServer.data.dao.nfc_tag_dao import nfcTagDao, NFCTag
 from dtServer.data.dao.equipment_dao import equipmentDao, Equipment
 from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, ExerciseLibraryType

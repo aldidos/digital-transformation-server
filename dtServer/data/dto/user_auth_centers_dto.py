@@ -1,5 +1,5 @@
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.user_dao import userDao
+from dtServer.data.dao.user.user_dao import userDao
 from dtServer.data.dao.user_center_dao import userCenterDao
 
 class UserAuthCentersDTO : 

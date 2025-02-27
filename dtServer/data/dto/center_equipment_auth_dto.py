@@ -1,7 +1,7 @@
 from dtServer.data.model.base_model import db_proxy
-from dtServer.data.dao.user_dao import userDao
-from dtServer.data.dao.workout_sessions_dao import workoutSessionDao
-from dtServer.data.dao.center_equipment_dao import centerEquipmentDao
+from dtServer.data.dao.user.user_dao import userDao
+from dtServer.data.dao.workout.workout_sessions_dao import workoutSessionDao
+from dtServer.data.dao.center.center_equipment_dao import centerEquipmentDao
 
 class CenterEquipmentAuthDTO : 
 

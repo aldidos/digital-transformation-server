@@ -1,5 +1,5 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.workout_sessions import WorkoutSessions, db_proxy
+from dtServer.data.model.workout.workout_sessions import WorkoutSessions, db_proxy
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 class WorkoutSessionsDao(BaseDAO) : 

@@ -1,13 +1,13 @@
 from dtServer.data.dao.base_dao import BaseDAO
-from dtServer.data.model.workout_metrics import WorkoutMetrics
-from dtServer.data.model.workout_sessions import WorkoutSessions
-from dtServer.data.model.workouts import Workouts
-from dtServer.data.model.workout_set import WorkoutSet
+from dtServer.data.model.workout.workout_metrics import WorkoutMetrics
+from dtServer.data.model.workout.workout_sessions import WorkoutSessions
+from dtServer.data.model.workout.workouts import Workouts
+from dtServer.data.model.workout.workout_set import WorkoutSet
 from dtServer.data.model.exercise_library import ExerciseLibrary
 from dtServer.data.model.body_part import BodyPart
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
 from dtServer.data.model.workout_body_part import WorkoutBodypart
-from dtServer.data.model.user import User
+from dtServer.data.model.user.user import User
 from dtServer.data.model.equipment import Equipment
 
 class WorkoutMatricQueryBuilder : 
