@@ -25,11 +25,13 @@ from dtServer.data.dao.nfc_tag_dao import nfcTagDao, NFCTag
 from dtServer.data.dao.equipment_dao import equipmentDao, Equipment
 from dtServer.data.dao.exercise_library_type_dao import exerciseLibraryTypeDao, ExerciseLibraryType
 from dtServer.data.dao.exercise_library_difficulty_dao import exerciseLibraryDifficultyDao, ExerciseLibraryDifficulty
-from dtServer.data.dao.user_fvp_profile_dao import userFVPProfileDao, UserFVPProfile
-from dtServer.data.dao.user_fvp_profile_value_dao import userFVPProfileValueDao, UserFVPProfileValue
 from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao, WorkoutExerciseLib
 from dtServer.data.dao.workout_bodypart_dao import workoutBodypartDao, WorkoutBodypart
 from dtServer.data.dao.user_centermember_dao import userCenterMemberDao, UserCenterMember
+from dtServer.data.model.ormworkout.ormworkout import ORMWorkout
+from dtServer.data.model.ormworkout.ormworkout_bodypart import ORMWorkoutBodypart
+from dtServer.data.model.ormworkout.ormworkout_exerciselib import ORMWorkoutExerciseLibrary
+from dtServer.data.model.ormworkout.ormworkout_metric import ORMWorkoutMetric
 
 def open_data_file_csv(file_path : str) : 
      with open(file_path, 'r', encoding='utf-8-sig') as f : 
@@ -132,8 +134,9 @@ if __name__ == '__main__' :
     tables = [
               User, WorkoutSessions, Workouts, Center, WorkoutMetrics, WorkoutSet, WorkoutExerciseLib, WorkoutBodypart, 
               BodyPart, CenterEquipment, CenterMember, CenterStaff, UserCenterMember,
-              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, WeightMetricSession, 
-              UserSurvey, NFCTag, Equipment, UserFVPProfile, UserFVPProfileValue, ExerciseLibraryType, ExerciseLibraryDifficulty
+              ExerciseLibrary, ExerciseLibBodyPart, UserAccount, UserCenter, 
+              NFCTag, Equipment, ExerciseLibraryType, ExerciseLibraryDifficulty, 
+              ORMWorkout, ORMWorkoutBodypart, ORMWorkoutExerciseLibrary, ORMWorkoutMetric
               ]
     
     conn = make_database_connection()   

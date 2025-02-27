@@ -1,7 +1,6 @@
 from peewee import *
 from dtServer.data.model.base_model import BaseModel, DATETIME_FORMAT, db_proxy, model_to_dict_or_none
 from dtServer.data.model.workout.workout_sessions import WorkoutSessions
-from dtServer.data.model.exercise_library import ExerciseLibrary
 from dtServer.data.model.equipment import Equipment
 
 class Workouts(BaseModel) : 
@@ -14,4 +13,3 @@ class Workouts(BaseModel) :
 
     class Meta : 
         table_name = 'workouts'
-        
