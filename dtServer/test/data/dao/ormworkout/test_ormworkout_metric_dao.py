@@ -25,8 +25,15 @@ def test_select_recent_by_exerciselibrary() :
     user_id = 1
     exercise_library_id = 12
     orm_metric = ormWorkoutMetricDao.select_recent_by_exerciselibrary(user_id, exercise_library_id)
-    print(orm_metric)    
+    print(orm_metric)
 
-test_insert_many()
+def test_select_recent_by_bodypart() : 
+    user_id = 1
+    body_part_id = 21
+    orm_metric = ormWorkoutMetricDao.select_recent_by_bodypart(user_id, body_part_id)
+    print(orm_metric)
+
+# test_insert_many()
 test_select_by_ormworkout_id()
 test_select_recent_by_exerciselibrary()
+test_select_recent_by_bodypart()
