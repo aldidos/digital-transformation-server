@@ -1,7 +1,6 @@
 import sys
 sys.path.append('.')
 
-from dtServer.data.dao.workout_metrics_dao import workoutMetricDao
 from dtServer.data.report.workout_session_collection_report import WokroutSessionCollectionReport
 from dtServer.test.data.report.create_test_data import create_test_dataset
 from datetime import datetime

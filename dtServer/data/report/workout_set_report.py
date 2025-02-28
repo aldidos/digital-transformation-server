@@ -74,8 +74,8 @@ class WorkoutSetReport(BaseReport) :
 
         self.set = df['set'].iat[0]
         self.weight = df['weight'].iat[0]
-        self.total_reps = df[['set_id', 'rep']].drop_duplicates()['rep'].count()
-        self.volume = self.compute_volume(df)        
+        self.total_reps = self.compute_total_reps(df)
+        self.volume = self.compute_volume(df) 
         self.set_time_duration = self.compute_set_time_duration(df)
         self.rest_time_duration = self.compute_res_time_duration(df)
 

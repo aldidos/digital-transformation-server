@@ -20,6 +20,10 @@ class BaseReport :
         volume = df['weight'] * df['total_reps']
         return volume.sum()
     
+    def compute_total_reps(self, df : pd.DataFrame) : 
+        total_reps = df[['set_id', 'total_reps']].drop_duplicates()['total_reps'].sum()
+        return total_reps
+    
     def compute_total_workout_time(self, df : pd.DataFrame) : 
         df = df[['workout', 'workout_end_time', 'workout_start_time']].drop_duplicates()
         workout_time_duration = df['workout_end_time'] - df['workout_start_time']

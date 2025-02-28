@@ -39,11 +39,10 @@ class WorkoutReport(BaseReport) :
 
         self.date = df['date'].iat[0].isoformat()
         self.total_sets = df['completed_sets'].iat[0]
-        self.total_reps = df[['set_id', 'total_reps']].drop_duplicates()['total_reps'].sum()
-        self.total_volume = self.compute_volume( df )
-        sum_weight = df[['set_id', 'weight']].drop_duplicates()['weight'].sum()        
-        self.avg_weight = sum_weight / self.total_sets
-        self.avg_reps_pet_set = self.total_reps / self.total_sets        
+        self.total_reps = self.compute_total_reps(df)
+        self.total_volume = self.compute_volume(df)
+        self.avg_weight = df[['set_id', 'weight']].drop_duplicates()['weight'].mean() 
+        self.avg_reps_pet_set = self.total_reps / self.total_sets 
         self.total_workout_time = self.compute_total_workout_time( df )
         self.total_lifting_time = self.compute_total_lifting_time( df )        
         
@@ -67,7 +66,7 @@ class WorkoutReport(BaseReport) :
             'total_reps' : self.total_reps, 
             'avg_reps_pet_set' : self.avg_reps_pet_set, 
             'avg_weight' : self.avg_weight,
-            'burned_kcl' : self.total_burned_kcl,
+            'total_burned_kcl' : self.total_burned_kcl,
             'intensity' : self.intensity,            
             'set_reports' : [ d.as_dict() for d in self.workout_set_reports]
         }

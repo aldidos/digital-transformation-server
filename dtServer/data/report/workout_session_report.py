@@ -11,6 +11,7 @@ class WokroutSessionReport(BaseReport) :
         self.total_sets = 0
         self.total_workouts = 0
         self.total_workout_time = timedelta()
+        self.avg_weight = 0
         self.total_burned_kcl = 0 ####  
 
         self.exercise_library_reports = []
@@ -28,6 +29,8 @@ class WokroutSessionReport(BaseReport) :
         self.total_sets = int(self.total_sets)
         self.total_workouts = int(self.total_workouts)
         self.total_workout_time = self.total_workout_time.total_seconds()
+        self.avg_weight = float(self.avg_weight)
+        self.total_burned_kcl = float(self.total_burned_kcl)
 
     def compute_part_reports(self, part_id, part_name, df : pd.DataFrame) : ####
         groups = df.groupby([part_id, part_name])
@@ -62,6 +65,7 @@ class WokroutSessionReport(BaseReport) :
         self.total_volume = self.compute_volume( df )
 
         self.total_workout_time = self.compute_total_workout_time(df)
+        self.avg_weight = df[['workout', 'set_id', 'weight']].drop_duplicates()['weight'].mean() 
 
         groups = df.groupby('workout')
         for name, workout_dataset in groups :            
@@ -81,6 +85,8 @@ class WokroutSessionReport(BaseReport) :
             'total_sets' : self.total_sets,
             'total_workout_time' : self.total_workout_time,
             'total_workouts' : self.total_workouts,
+            'avg_weight' : self.avg_weight, 
+            'total_burned_kcl' : self.total_burned_kcl,
             'exercise_library_reports' : [ d for d in self.exercise_library_reports ],
             'body_part_reports' : [ d for d in self.body_part_reports ],
             'workout_reports' : [d.as_dict() for d in self.wokrout_reports]

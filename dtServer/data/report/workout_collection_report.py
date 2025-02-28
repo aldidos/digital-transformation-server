@@ -10,6 +10,8 @@ class WorkoutColectionReport(BaseReport) :
         self.total_workout_time = timedelta()
         self.total_workouts = 0
         self.total_sets = 0
+        self.avg_weight = 0 
+        self.total_burned_kcl = 0 
         self.workout_reports = []
 
     def convert_data(self) : 
@@ -17,6 +19,8 @@ class WorkoutColectionReport(BaseReport) :
         self.total_workout_time = self.total_workout_time.total_seconds()
         self.total_workouts = int(self.total_workouts)
         self.total_sets = int(self.total_sets)
+        self.avg_weight = float(self.avg_weight)
+        self.total_burned_kcl = float(self.total_burned_kcl)
 
     def make_report(self, df : pd.DataFrame) : 
         self.total_volume = self.compute_volume(df)
@@ -42,5 +46,7 @@ class WorkoutColectionReport(BaseReport) :
             'total_workout_time' : self.total_workout_time,
             'total_workouts' : self.total_workouts,
             'total_sets' : self.total_sets,
+            'avg_weight' : self.avg_weight, 
+            'total_burned_kcl' : self.total_burned_kcl,
             'workout_reports' : [ d.as_dict() for d in self.workout_reports]
         }
