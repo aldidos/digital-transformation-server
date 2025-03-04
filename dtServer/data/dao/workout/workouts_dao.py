@@ -1,10 +1,13 @@
+from dtServer.data.model.base_model import model_to_dict_or_none
 from dtServer.data.dao.base_dao import BaseDAO
 from dtServer.data.model.workout.workouts import Workouts, db_proxy, model_to_dict_or_none
 from dtServer.data.model.workout.workout_sessions import WorkoutSessions
 from dtServer.data.model.exercise_library import ExerciseLibrary
+from dtServer.data.model.body_part import BodyPart
 from dtServer.data.model.user.user import User
 from dtServer.data.model.equipment import Equipment
 from dtServer.data.model.workout_exerciselib import WorkoutExerciseLib
+from dtServer.data.model.workout_body_part import WorkoutBodypart
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.workout_exerciselib_dao import workoutExerciselibDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
@@ -48,6 +51,42 @@ class WorkoutsDao(BaseDAO) :
         
         return [ row for row in q.dicts() ]
     
+    def get_recent_by_exercise_library(self, user_id, exercise_library_id) : 
+        q = self.make_select_query()
+        q = q.join_from(Workouts, WorkoutExerciseLib)\
+            .join(ExerciseLibrary)\
+            .where(User.id == user_id, Workouts.is_completed == True, ExerciseLibrary.id == exercise_library_id)\
+            .limit(7)
+                
+        return [ row for row in q.dicts() ]
+    
+    def get_most_recent_by_exercise_library(self, user_id, exercise_library_id) : 
+        q = self.make_select_query()
+        q = q.join_from(Workouts, WorkoutExerciseLib)\
+            .join(ExerciseLibrary)\
+            .where(User.id == user_id, Workouts.is_completed == True, ExerciseLibrary.id == exercise_library_id)\
+            .limit(7)
+                
+        return model_to_dict_or_none( q.get_or_none() )
+    
+    def get_recent_by_body_part(self, user_id, body_part_id) : 
+        q = self.make_select_query()
+        q = q.join_from(Workouts, WorkoutBodypart)\
+            .join(BodyPart)\
+            .where(User.id == user_id, Workouts.is_completed == True, BodyPart.id == body_part_id)\
+            .limit(7)
+                
+        return [ row for row in q.dicts() ]
+    
+    def get_most_recent_by_body_part(self, user_id, body_part_id) : 
+        q = self.make_select_query()
+        q = q.join_from(Workouts, WorkoutBodypart)\
+            .join(BodyPart)\
+            .where(User.id == user_id, Workouts.is_completed == True, BodyPart.id == body_part_id)\
+            .limit(7)
+                
+        return model_to_dict_or_none( q.get_or_none() )
+    
     def insert(self, data) : 
         with db_proxy.atomic() : 
             workout_id = Workouts.insert(data).execute()
@@ -63,6 +102,30 @@ class WorkoutsDao(BaseDAO) :
                     workoutBodypartDao.create(workout_id, body_part_id)
                     
             return workout_id
+        
+    def make_select_query(self) :
+        q = Workouts.select()\
+            .join(WorkoutSessions)\
+            .join(User)\
+            .order_by(WorkoutSessions.date.desc())
+                
+        return q
+            
+    def get_recent_by_equipment(self, user_id, equipment_id) : 
+        q = self.make_select_query()
+        q = q.join_from(Workouts, Equipment)\
+            .where(User.id == user_id, Workouts.is_completed == True, Equipment.id == equipment_id)\
+            .limit(7)        
+
+        return [ row for row in q.dicts() ]
+    
+    def get_most_recent_by_equipment(self, user_id, equipment_id) : 
+       q = self.make_select_query()
+       q = q.join_from(Workouts, Equipment)\
+            .where(User.id == user_id, Workouts.is_completed == True, Equipment.id == equipment_id)\
+            .limit(7)
+       
+       return model_to_dict_or_none( q.get_or_none() )
 
     def insert_many(self, list_data) : 
         with db_proxy.atomic() :

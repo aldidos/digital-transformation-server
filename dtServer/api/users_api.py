@@ -7,6 +7,7 @@ from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
 from dtServer.data.dto.workout_data_dto import WorkoutSetMetricsDTO
 from dtServer.data.report.builder.workout_report_builder import WorkoutReportBuilder
 from dtServer.data.dao.workout.workout_metrics_dao import workoutMetricDao
+from dtServer.data.dao.ormworkout.ormworkout_dao import ormWorkoutDao
 
 @app.route("/users", methods=['POST'])
 def post_users() : 
@@ -176,3 +177,58 @@ def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_nu
           return abort(404)
      return create_response(report.as_dict(), 200)
 
+@app.route("/users/<user_id>/workouts/equipments/<equipment_id>/recent", methods=['GET'])
+def get_user_workouts_recent_by_equipment(user_id, equipment_id) : 
+     workouts = workoutDao.get_recent_by_equipment(user_id, equipment_id)
+     if not workouts : 
+          return abort(404)
+     return create_response( workouts, 200)
+
+@app.route("/users/<user_id>/workouts/equipments/<equipment_id>/most_recent", methods=['GET'])
+def get_user_workouts_most_recent_by_equipment(user_id, equipment_id) : 
+     workout = workoutDao.get_most_recent_by_equipment(user_id, equipment_id)
+     if not workout : 
+          return abort(404)
+     return create_response( workout, 200)
+     
+@app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/recent", methods=['GET'])
+def get_user_workouts_recent_by_exercise_library(user_id, exercise_library_id) : 
+     workouts = workoutDao.get_recent_by_exercise_library(user_id, exercise_library_id)
+     if not workouts : 
+          return abort(404)
+     return create_response( workouts, 200)
+
+@app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/most_recent", methods=['GET'])
+def get_user_workouts_most_recent_by_exercise_library(user_id, exercise_library_id) :
+     workout = workoutDao.get_most_recent_by_exercise_library(user_id, exercise_library_id)
+     if not workout : 
+          return abort(404)
+     return create_response( workout, 200)
+
+@app.route("/users/<user_id>/workouts/body_parts/<body_part_id>/recent", methods=['GET'])
+def get_user_workouts_recent_by_body_part(user_id, body_part_id) : 
+     workouts = workoutDao.get_recent_by_body_part(user_id, body_part_id)
+     if not workouts : 
+          return abort(404)
+     return create_response( workouts, 200)
+
+@app.route("/users/<user_id>/workouts/body_parts/<body_part_id>/most_recent", methods=['GET'])
+def get_user_workouts_most_recent_by_body_part(user_id, body_part_id) : 
+     workout = workoutDao.get_most_recent_by_body_part(user_id, body_part_id)
+     if not workout : 
+          return abort(404)
+     return create_response(workout, 200)
+
+@app.route("/users/<user_id>/1RMS/equipments/<equipment_id>/recent", methods=['GET'])
+def get_users_recent_1RMs_by_equipment(user_id, equipment_id) : 
+     ormworkouts = ormWorkoutDao.get_recent_by_equipment(user_id, equipment_id)
+     if not ormworkouts : 
+          return abort(404)
+     return create_response(ormworkouts, 200)
+
+@app.route("/users/<user_id>/1RMS/equipments/<equipment_id>/most_recent", methods=['GET'])
+def get_users_most_recent_1RM_by_equipment(user_id, equipment_id) : 
+     ormworkout = ormWorkoutDao.get_most_recent_by_equipment(user_id, equipment_id)
+     if not ormworkout : 
+          return abort(404)
+     return create_response(ormworkout, 200)

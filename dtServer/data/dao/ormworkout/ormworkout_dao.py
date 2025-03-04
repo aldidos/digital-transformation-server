@@ -1,10 +1,12 @@
-from dtServer.data.model.base_model import db_proxy
+from dtServer.data.model.base_model import db_proxy, model_to_dict_or_none
 from dtServer.data.dao.base_dao import BaseDAO, dict_to_model, model_to_dict
 from dtServer.data.model.ormworkout.ormworkout import ORMWorkout
 from dtServer.data.dao.ormworkout.ormworkout_exerciselib_dao import ormworkoutExerciseLibraryDao
 from dtServer.data.dao.ormworkout.ormworkout_bodypart_dao import ormworkoutBodypartDao
 from dtServer.data.dao.exercise_library_dao import exerciseLibraryDao
 from dtServer.data.dao.exerciselib_bodypart_dao import exerciseLibBodyPartDao
+from dtServer.data.model.user.user import User
+from dtServer.data.model.equipment import Equipment
 
 class ORMWorkoutDAO(BaseDAO) : 
 
@@ -42,5 +44,24 @@ class ORMWorkoutDAO(BaseDAO) :
     def get_by_id(self, id) : 
         model = ORMWorkout.get_by_id(id)
         return model_to_dict(model)
+    
+    def get_most_recent_by_equipment(self, user_id, equipment_id) : 
+        q = ORMWorkout.select()\
+            .join(User)\
+            .join_from(ORMWorkout, Equipment)\
+            .where(User.id == user_id, Equipment.id == equipment_id)\
+            .order_by(ORMWorkout.date.desc())
+        
+        return model_to_dict_or_none( q.get_or_none() )    
+    
+    def get_recent_by_equipment(self, user_id, equipment_id) : 
+        q = ORMWorkout.select()\
+            .join(User)\
+            .join_from(ORMWorkout, Equipment)\
+            .where(User.id == user_id, Equipment.id == equipment_id)\
+            .order_by(ORMWorkout.date.desc())\
+            .limit(7)
+        
+        return [ row for row in q.dicts() ]  
 
 ormWorkoutDao = ORMWorkoutDAO()
