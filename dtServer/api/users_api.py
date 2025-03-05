@@ -163,14 +163,14 @@ def get_user_workoutreports_recent(user_id) :
           
      return create_response(report.as_dict(), 200)
 
-@app.route("/users/<user_id>/reports/recent/exercise_libraries/<exercise_library_id>", methods = ['GET'])
+@app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/report/recent", methods = ['GET'])
 def get_recent_exercise_library_workout_report(user_id, exercise_library_id) : 
      report = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
      if not report : 
           return abort(404)
      return create_response(report.as_dict(), 200)
 
-@app.route("/users/<user_id>/reports/recent/exercise_libraries/<exercise_library_id>/<set_number>", methods=['GET'])
+@app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/<set_number>/report/recent", methods=['GET'])
 def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) :      
      report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set_number)
      if not report : 
