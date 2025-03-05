@@ -33,7 +33,7 @@ def test_build_col_workout_report() :
     user_id = 1
     exercise_library_id = 1
 
-    workout_reports = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
+    workout_reports = WorkoutReportBuilder.build_recent_workout_reports_by_exercise_library(user_id, exercise_library_id)
 
     print(workout_reports.as_dict())
 
@@ -46,20 +46,54 @@ def test_build_date_period_workout_session_reports() :
 
     print(workout_session_reports.as_dict())
 
-def test_build_recent_exercise_library_set_report() : 
+def test_build_recent_workout_set_report_by_exercise_library() : 
     user_id = 1
     exercise_library_id = 1
     set = 1
 
-    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_exercise_library_set_report(user_id, exercise_library_id, set)    
+    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_workout_set_report_by_exercise_library(user_id, exercise_library_id, set)    
 
     print(recent_exercise_library_set_report.as_dict())
 
-def test_build_recent_exerciselib_workout_reports() : 
+def test_build_recent_workout_set_report_by_body_part() : 
+    user_id = 1
+    body_part_id = 4
+    set = 1
+
+    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_workout_set_report_by_body_part(user_id, body_part_id, set)    
+
+    print(recent_exercise_library_set_report.as_dict())
+
+def test_build_recent_workout_set_report_by_equipment() : 
+    user_id = 1
+    equipment_id = 11
+    set = 1
+
+    recent_exercise_library_set_report = WorkoutReportBuilder.build_recent_workout_set_report_by_equipment(user_id, equipment_id, set)    
+
+    print(recent_exercise_library_set_report.as_dict())
+
+def test_build_recent_workout_reports_by_exercise_library() : 
     user_id = 1
     exercise_library_id = 1
 
-    reports = WorkoutReportBuilder.build_recent_exerciselib_workout_reports(user_id, exercise_library_id)
+    reports = WorkoutReportBuilder.build_recent_workout_reports_by_exercise_library(user_id, exercise_library_id)
+
+    print(reports.as_dict())
+
+def test_build_recent_workout_reports_by_body_part() : 
+    user_id = 1
+    body_part_id = 4
+
+    reports = WorkoutReportBuilder.build_recent_workout_reports_by_body_part(user_id, body_part_id)
+
+    print(reports.as_dict())
+
+def test_build_recent_workout_reports_by_equipment() : 
+    user_id = 1
+    equipment_id = 11
+
+    reports = WorkoutReportBuilder.build_recent_workout_reports_by_equipment(user_id, equipment_id)
 
     print(reports.as_dict())
 
@@ -69,5 +103,9 @@ if __name__ == "__main__" :
     test_build_workout_set_report()
     test_build_col_workout_report()
     test_build_date_period_workout_session_reports()
-    test_build_recent_exercise_library_set_report()
-    test_build_recent_exerciselib_workout_reports()
+    test_build_recent_workout_set_report_by_exercise_library()
+    test_build_recent_workout_set_report_by_body_part()
+    test_build_recent_workout_set_report_by_equipment()
+    test_build_recent_workout_reports_by_exercise_library()
+    test_build_recent_workout_reports_by_body_part()
+    test_build_recent_workout_reports_by_equipment()
