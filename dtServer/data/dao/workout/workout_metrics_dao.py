@@ -37,7 +37,6 @@ class WorkoutMetricsDao(BaseDAO) :
     def select_workout_session_level_data(self, workout_session_id ) : 
         q = WorkoutMatricQueryBuilder.make_select_query()
         q = q.where( WorkoutSessions.id == workout_session_id )
-        print(q.sql)
 
         list_data = [ row for row in q.dicts()]
         return list_data
