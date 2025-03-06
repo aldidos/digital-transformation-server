@@ -23,14 +23,14 @@ class WorkoutSetDao(BaseDAO) :
         with db_proxy.atomic() : 
             WorkoutSet.insert_many(list_data).execute() 
 
-    def get_recent_by_exerciselibrary(self, user_id, exercise_library, set) :
+    def get_recent_by_exerciselibrary(self, user_id, exercise_library_id, set) :
         recent_workout_set = WorkoutSet.select( WorkoutSet )\
                             .join(Workouts)\
                             .join(WorkoutExerciseLib)\
                             .join(ExerciseLibrary)\
                             .join_from(Workouts, WorkoutSessions)\
                             .join(User)\
-                            .where( User.id == user_id, WorkoutSessions.is_completed == True, ExerciseLibrary.id == exercise_library, WorkoutSet.set == set )\
+                            .where( User.id == user_id, WorkoutSessions.is_completed == True, ExerciseLibrary.id == exercise_library_id, WorkoutSet.set == set )\
                             .order_by(WorkoutSessions.date.desc()).get_or_none()
         
         return model_to_dict_or_none(recent_workout_set )
