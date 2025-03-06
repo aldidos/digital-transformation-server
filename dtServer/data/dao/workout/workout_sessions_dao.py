@@ -14,7 +14,7 @@ class WorkoutSessionsDao(BaseDAO) :
             'status' : status, 
             'is_completed' : False
         }
-        return self.save(date)
+        return self.save(data)
 
     def select_by_id(self, id) : 
         model = WorkoutSessions.select().where(WorkoutSessions.id == id).get()
