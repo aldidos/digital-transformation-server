@@ -127,14 +127,14 @@ def get_user_workout_set_report(user_id, workout_session_id, workout_id, set_id)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/workout_metrics", methods = ['GET'])
 def get_workout_sets_metrics(user_id, workout_session_id, workout_id) : 
-     list_workout_metric_data = workoutMetricDao.select_workout_sets_data(workout_id)
+     list_workout_metric_data = workoutMetricDao.select_by_workout_id(workout_id)
      if not list_workout_metric_data : 
           return abort(404)
      return create_response(list_workout_metric_data, 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/<set_id>/workout_metrics", methods = ['GET'])
 def get_workout_set_metrics(user_id, workout_session_id, workout_id, set_id) : 
-     list_workout_metrics = workoutMetricDao.select_workoutset_level_data(workout_id, set_id)
+     list_workout_metrics = workoutMetricDao.select_by_workout_and_workoutset_id(workout_id, set_id)
      if not list_workout_metrics : 
           return abort(404)
      return create_response(list_workout_metrics, 200)

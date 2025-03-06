@@ -12,7 +12,7 @@ class WorkoutReportDao :
         
         workout_set_id = workoutset['id']
         workout_id = workoutset['workout']['id']       
-        workout_metric = workoutMetricDao.select_workoutset_level_data(workout_id, workout_set_id)            
+        workout_metric = workoutMetricDao.select_by_workout_and_workoutset_id(workout_id, workout_set_id)            
         return workoutset, workout_metric
     
     def get_workout_set_data(self, workout_set_id) : 
@@ -37,12 +37,12 @@ class WorkoutReportDao :
     
     def get_workout_data(self, workout_id) : 
         with db_proxy.atomic() : 
-            workout_metrics = workoutMetricDao.select_workout_level_data(workout_id)
+            workout_metrics = workoutMetricDao.select_by_workout_id(workout_id)
             return workout_metrics
 
     def get_workoutsession_data(self, workout_session_id) : 
         with db_proxy.atomic() : 
-            workout_metrics = workoutMetricDao.select_workout_session_level_data(workout_session_id)
+            workout_metrics = workoutMetricDao.select_by_workout_session_id(workout_session_id)
             return workout_metrics
         
     def get_recent_workout_data_by_exercise(self, user_id, exercise_library_id) : 
@@ -68,7 +68,7 @@ class WorkoutReportDao :
         
     def get_workout_sessions_by_dateperiod(self, user_id, from_date, to_date) : 
         with db_proxy.atomic() : 
-            workout_metrics = workoutMetricDao.select_by_user_and_dateperiod(user_id, from_date, to_date)
+            workout_metrics = workoutMetricDao.select_by_date_period(user_id, from_date, to_date)
             return workout_metrics
     
 workoutReportDao = WorkoutReportDao()
