@@ -5,9 +5,11 @@ from dtServer.data.dao.workout.workout_sessions_dao import workoutSessionDao
 from dtServer.data.dao.workout.workouts_dao import workoutDao
 from dtServer.data.tranjection.workout_data_trans import workoutDataTrans
 from dtServer.data.dto.workout_data_dto import WorkoutSetMetricsDTO
-from dtServer.data.report.builder.workout_report_builder import WorkoutReportBuilder
 from dtServer.data.dao.workout.workout_metrics_dao import workoutMetricDao
 from dtServer.data.dao.ormworkout.ormworkout_dao import ormWorkoutDao
+from dtServer.data.report.builder.workout_session_report_builder import workoutSessionReportBuilder
+from dtServer.data.report.builder.workout_report_builder import workoutReportBuilder
+from dtServer.data.report.builder.workout_set_report_builder import workoutSetReportBuilder
 
 @app.route("/users", methods=['POST'])
 def post_users() : 
@@ -106,21 +108,21 @@ def post_user_workoutsession_workout_set_metrics(user_id, workout_session_id, wo
      
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/report", methods=['GET'])
 def get_workout_session_report(user_id, workout_session_id) : 
-     report = WorkoutReportBuilder.build_workout_session_report(workout_session_id)
+     report = workoutSessionReportBuilder.build_workout_session_report(workout_session_id)
      if not report : 
           return abort(404)
      return create_response(report.as_dict(), 200)
 
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/report", methods=['GET'])
 def get_user_workout_report(user_id, workout_session_id, workout_id) : 
-     workout_report = WorkoutReportBuilder.build_workout_report(workout_id)
+     workout_report = workoutReportBuilder.build_workout_report(workout_id)
      if workout_report : 
           return create_response(workout_report.as_dict(), 200)
      return abort(404)
      
 @app.route("/users/<user_id>/workout_sessions/<workout_session_id>/workouts/<workout_id>/sets/<set_id>/report", methods = ['GET'])
 def get_user_workout_set_report(user_id, workout_session_id, workout_id, set_id) :    
-     report = WorkoutReportBuilder.build_workout_set_report(workout_id, set_id)
+     report = workoutSetReportBuilder.build_workout_set_report(workout_id, set_id)
      if not report : 
           return abort(404)
      return create_response(report.as_dict(), 200)
@@ -146,8 +148,8 @@ def get_user_workout_report_recent(user_id) :
 
      if from_date > to_date : 
           return abort(400)
-     
-     report = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+
+     report = workoutSessionReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
      if not report : 
           return abort(404)
           
@@ -157,7 +159,7 @@ def get_user_workout_report_recent(user_id) :
 def get_user_workoutreports_recent(user_id) : 
      from_date, to_date = get_recent_date_period()
 
-     report = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+     report = workoutSessionReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
      if not report : 
           return abort(404)
           
@@ -165,14 +167,14 @@ def get_user_workoutreports_recent(user_id) :
 
 @app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/report/recent", methods = ['GET'])
 def get_recent_exercise_library_workout_report(user_id, exercise_library_id) : 
-     report = WorkoutReportBuilder.build_recent_workout_reports_by_exercise_library(user_id, exercise_library_id)
+     report = workoutReportBuilder.build_recent_workout_reports_by_exercise_library(user_id, exercise_library_id)
      if not report : 
           return abort(404)
      return create_response(report.as_dict(), 200)
 
 @app.route("/users/<user_id>/workouts/exercise_libraries/<exercise_library_id>/<set_number>/report/recent", methods=['GET'])
 def get_user_recent_exercise_lib_set_report(user_id, exercise_library_id, set_number) :      
-     report = WorkoutReportBuilder.build_recent_workout_set_report_by_exercise_library(user_id, exercise_library_id, set_number)
+     report = workoutSetReportBuilder.build_recent_workout_set_report_by_exercise_library(user_id, exercise_library_id, set_number)
      if not report : 
           return abort(404)
      return create_response(report.as_dict(), 200)

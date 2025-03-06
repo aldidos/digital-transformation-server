@@ -1,7 +1,7 @@
 from dtServer.data.model.base_model import db_proxy
 from dtServer.data.dao.user_centermember_dao import userCenterMemberDao
 from dtServer.data.dto.weekly_workout_summary import WeeklyWorkoutSummary
-from dtServer.data.report.builder.workout_report_builder import WorkoutReportBuilder
+from dtServer.data.report.builder.workout_session_report_builder import workoutSessionReportBuilder
 from dtServer.util.datetime_util import timedelta_to_dhm_format
 from datetime import timedelta
 
@@ -21,7 +21,7 @@ class AppLoungeDTO :
             self.center_reg_to = self.center_member['reg_to']
             self.last_visit_date = self.center_member['visit_date']
 
-            report_set = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+            report_set = workoutSessionReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
             if report_set : 
                 total_volume = report_set.get_total_volume()
                 total_workout_time = report_set.get_total_workout_time()
@@ -33,7 +33,7 @@ class AppLoungeDTO :
         total_volume = 0
         total_workout_time = timedelta()
 
-        report_set = WorkoutReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
+        report_set = workoutSessionReportBuilder.build_date_period_workout_session_reports(user_id, from_date, to_date)
         if report_set : 
             total_volume = report_set.get_total_volume()
             total_workout_time = report_set.get_total_workout_time()
